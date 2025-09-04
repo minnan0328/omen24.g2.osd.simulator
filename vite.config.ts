@@ -3,6 +3,7 @@ import { defineConfig } from 'vite';
 import vue from '@vitejs/plugin-vue';
 import vueDevTools from 'vite-plugin-vue-devtools';
 import packageJson from './package.json';
+import autoPrefixer from 'autoprefixer';
 
 import path from 'path';
 export default defineConfig(({ command, mode, isSsrBuild, isPreview }) => {
@@ -20,7 +21,15 @@ export default defineConfig(({ command, mode, isSsrBuild, isPreview }) => {
 			}
 		},
 		css: {
-			devSourcemap: isDev
+			devSourcemap: isDev,
+			postcss: {
+				plugins: [autoPrefixer]
+			},
+			preprocessorOptions: {
+				scss: {
+					additionalData: `@use "@/styles/var.scss" as *;`
+				}
+			}
 		},
 		build: {
 			assetsInlineLimit: 10000,

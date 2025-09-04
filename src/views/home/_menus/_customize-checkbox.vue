@@ -51,7 +51,7 @@ function isLastNode(node: Nodes, previousNodes: Nodes): boolean {
     if(previousNodes.nodes) {
         let nodesList = previousNodes.nodes.filter(n => n.mode == ModeType.checkBox);
 
-        return nodesList[nodesList.length - 1].key == node.key && props.bottomLine;
+        return nodesList[nodesList.length - 1]!.key == node.key && props.bottomLine;
     } else {
         return false
     }
@@ -60,7 +60,6 @@ function isLastNode(node: Nodes, previousNodes: Nodes): boolean {
 
 </script>
 <style lang="scss" scoped>
-@import '@/styles/_var';
 .customize-checkbox {
     border: 1px solid transparent;
 

@@ -1,4 +1,4 @@
-@import "@/styles/_var";
+@use "../_var.scss" as *;
 
 .modal {
     position: absolute;

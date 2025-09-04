@@ -1,11 +1,11 @@
-@import './_var';
-@import './_reset';
-@import './site';
+// @forward './_var';
+@forward './_reset';
+@forward './site';
 
 // element
-@import "./element/button";
-@import "./element/tab";
+@forward "./element/button";
+@forward "./element/tab";
 
 // layout
-@import "./layout/setting";
-@import "./layout/modal";
+@forward "./layout/setting";
+@forward "./layout/modal";

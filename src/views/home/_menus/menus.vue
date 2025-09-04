@@ -1405,7 +1405,7 @@ function handlerMenuTimeout() {
 
 </script>
 <style lang="scss" scoped>
-@import '@/styles/_var';
+
 
 .menu-wrapper {
     position: absolute;

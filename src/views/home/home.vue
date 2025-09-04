@@ -277,7 +277,7 @@ provide<HomeEvent>("homeEvent", {
 </script>
 
 <style lang="scss" >
-@import '@/styles/_var';
+@forward '@/styles/_var';
 
 .container {
     display: flex;

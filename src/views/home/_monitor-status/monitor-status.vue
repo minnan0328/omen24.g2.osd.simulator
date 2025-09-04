@@ -80,7 +80,7 @@ const Inactive = ref({
 
 </script>
 <style lang="scss" scoped>
-@import '@/styles/_var';
+
 
 .monitor-status {
     position: absolute;

@@ -62,7 +62,7 @@ function isLastNode(node: Nodes, previousNodes: Nodes): boolean {
 
 </script>
 <style lang="scss" scoped>
-@import '@/styles/_var';
+
 
 .customize-radio {
     height: 26px;

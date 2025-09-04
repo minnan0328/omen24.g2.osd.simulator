@@ -12,7 +12,7 @@
 import config from '@/config/config';
 </script>
 <style lang="scss" scoped>
-@import '@/styles/_var';
+
 .ribbon {
     background-color: #0083ca;
     width: initial;
