@@ -6,10 +6,10 @@ export class DefaultNodes implements Nodes {
     key = "";
     selected!: number | string | string[] | boolean | null;
     result!: number | string | string[] | boolean | null;
-    assignDisplay = true;
-    disabled = false;
-    displayValue = false;
-    displayState = false;
+    assignDisplay = true; // 顯示在快捷 menu 上面
+    disabled = false; // 是否禁用該選項
+    displayValue = false; // 顯示選擇的結果在下一層 menu 上面
+    displayState = false; // 顯示選擇的結果在該層 menu 上面
     livePreview = false;
     size = 0;
     page = 1;

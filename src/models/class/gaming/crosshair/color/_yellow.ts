@@ -1,0 +1,24 @@
+import type { Nodes } from "@/types";
+import { ModeType } from "@/types";
+import { DefaultNodes } from '../../../_utilities';
+
+export default class Yellow extends DefaultNodes implements Nodes {
+    key = "Yellow";
+    selected = "Yellow";
+    result = "Yellow";
+    livePreview = true;
+    mode = ModeType.radio;
+    language = {
+        German: "Gelb",
+        SimplifiedChinese: "黃色",
+        TraditionalChinese: "黃色",
+        English: "Yellow",
+        Español: "Amarillo",
+        French: "Jaune",
+        Italian: "Giallo",
+        Japanese: "黄",
+        Nederlands: "Geel",
+        BrazilianPortuguese: "Amarelo",
+        Russian: "Жёлтый"
+    };
+}

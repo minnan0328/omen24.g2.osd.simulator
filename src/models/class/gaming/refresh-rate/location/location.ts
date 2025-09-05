@@ -1,0 +1,58 @@
+import type { Nodes } from "@/types";
+import { ModeType } from "@/types";
+import { DefaultNodes, BackNodes } from '../../../_utilities';
+import TopLeftNodes from './_top-left';
+import TopRightNodes from './_top-right';
+import BottomLeftNodes from './_bottom-left';
+import BottomRightNodes from './_bottom-right';
+
+const TopLeftNodesEnum = new TopLeftNodes();
+const TopRightNodesEnum = new TopRightNodes();
+const BottomLeftNodesEnum = new BottomLeftNodes();
+const BottomRightNodesEnum = new BottomRightNodes();
+const BackNodesEnum = new BackNodes();
+
+export default class Location extends DefaultNodes implements Nodes {
+    key = "Location";
+    selected = TopRightNodesEnum.selected;
+    result = TopRightNodesEnum.result;
+    displayValue = true;
+    size = 5;
+    page = 1;
+    mode = ModeType.radio;
+    language = {
+        German: "Speicherort",
+        SimplifiedChinese: "位置",
+        TraditionalChinese: "位置",
+        English: "Location",
+        Español: "Ubicación",
+        French: "Emplacement",
+        Italian: "Posizione",
+        Japanese: "場所",
+        Nederlands: "Locatie",
+        BrazilianPortuguese: "Localização",
+        Russian: "Местоположение"
+    };
+    nodes = [
+        {
+            ...JSON.parse(JSON.stringify(TopLeftNodesEnum)),
+            parents: this.key
+        },
+        {
+            ...JSON.parse(JSON.stringify(TopRightNodesEnum)),
+            parents: this.key
+        },
+        {
+            ...JSON.parse(JSON.stringify(BottomLeftNodesEnum)),
+            parents: this.key
+        },
+        {
+            ...JSON.parse(JSON.stringify(BottomRightNodesEnum)),
+            parents: this.key
+        },
+        {
+            ...JSON.parse(JSON.stringify(BackNodesEnum)),
+            parents: this.key
+        }
+    ];
+}
