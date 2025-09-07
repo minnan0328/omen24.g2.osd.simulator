@@ -17,7 +17,7 @@ const CrosshairNodesEnum = new CrosshairNodes();
 const MessageTimersNodesEnum = new MessageTimersNodes();
 const MultiMonitorAlignNodesEnum = new MultiMonitorAlignNodes();
 
-export class GamingNodes extends DefaultNodes implements Nodes {
+export default class Gaming extends DefaultNodes implements Nodes {
     key = "Gaming";
     selected = null;
     result = null;

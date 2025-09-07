@@ -1,22 +1,21 @@
 import type { Nodes } from "@/types";
 import { ModeType } from "@/types";
 import { DefaultNodes, ResetNodes, BackNodes } from '../_utilities';
-import AutoAdjustmentNodes from './_auto-adjustment-nodes';
-import ClockandPhaseNodes from './_clock-and-phase-nodes';
-import ImagePositionNodes from './_image-position-nodes';
-import ResponseTimeNodes from './_response-rime-nodes';
 import SharpnessNodes from './_sharpness-nodes';
 import ImageScalingNodes from './_image-scaling-nodes';
-
-const DefaultNodesEnum = new DefaultNodes(); 
+import BrightnessNodes from './brightness/_brightness-nodes';
+import ContrastNodes from './brightness/_contrast-nodes';
+import DynamicContrastNodes from './brightness/_dynamic-contrast-nodes';
+import VideoLevelNodes from './brightness/_video-level-nodes';
 const ResetNodesEnum = new ResetNodes(); 
 const BackNodesEnum = new BackNodes();
-const AutoAdjustmentNodesEnum = new AutoAdjustmentNodes();
-const ClockandPhaseNodesEnum = new ClockandPhaseNodes();
-const ImagePositionNodesEnum = new ImagePositionNodes();
-const ResponseTimeNodesEnum = new ResponseTimeNodes();
+
 const SharpnessNodesEnum = new SharpnessNodes();
 const ImageScalingNodesEnum = new ImageScalingNodes();
+const BrightnessNodesEnum = new BrightnessNodes();
+const ContrastNodesEnum = new ContrastNodes();
+const DynamicContrastNodesEnum = new DynamicContrastNodes();
+const VideoLevelNodesEnum = new VideoLevelNodes();
 
 export default class Image extends DefaultNodes implements Nodes {
     key = "Image";
@@ -37,24 +36,24 @@ export default class Image extends DefaultNodes implements Nodes {
         Russian: "Изображение"
     };
     nodes = [
-        // 自動調整
+        // 亮度
         {
-            ...JSON.parse(JSON.stringify(AutoAdjustmentNodesEnum)),
+            ...JSON.parse(JSON.stringify(BrightnessNodesEnum)),
             parents: this.key
         },
-        // 時脈和相位
+        // 對比
         {
-            ...JSON.parse(JSON.stringify(ClockandPhaseNodesEnum)),
+            ...JSON.parse(JSON.stringify(ContrastNodesEnum)),
             parents: this.key
         },
-        // 影像位置
+        // 動態對比
         {
-            ...JSON.parse(JSON.stringify(ImagePositionNodesEnum)),
+            ...JSON.parse(JSON.stringify(DynamicContrastNodesEnum)),
             parents: this.key
         },
-        // 回應時間
+        // 視訊等級
         {
-            ...JSON.parse(JSON.stringify(ResponseTimeNodesEnum)),
+            ...JSON.parse(JSON.stringify(VideoLevelNodesEnum)),
             parents: this.key
         },
         // 銳利度

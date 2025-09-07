@@ -2,7 +2,7 @@
 
 import type { Nodes } from "@/types";
 import { ModeType } from "@/types";
-import { DefaultNodes } from '../_utilities';
+import { DefaultNodes } from '../../_utilities';
 const DefaultNodesEnum = new DefaultNodes();
 
 export default class contrastNodes extends DefaultNodes implements Nodes {

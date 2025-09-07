@@ -1,4 +1,4 @@
-import Brightness from '@/models/class/brightness/brightness';
+import Gaming from '@/models/class/gaming/gaming';
 import Color from '@/models/class/color/color';
 import Image from '@/models/class/image/image';
 import Input from '@/models/class/input/input';
@@ -9,7 +9,7 @@ import Information from '@/models/class/information/information';
 import Exit from '@/models/class/exit/exit';
 
 export {
-    Brightness,
+    Gaming,
     Color,
     Image,
     Input,
