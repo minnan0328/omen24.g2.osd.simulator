@@ -1,10 +1,10 @@
 import type { Nodes } from "@/types";
 import { ModeType } from "@/types";
-import { DefaultNodes, BackNodes } from '../../../_utilities';
-import TopLeftNodes from './_top-left';
-import TopRightNodes from './_top-right';
-import BottomLeftNodes from './_bottom-left';
-import BottomRightNodes from './_bottom-right';
+import { DefaultNodes, BackNodes } from '../../_utilities';
+import TopLeftNodes from './_top-left-nodes';
+import TopRightNodes from './_top-right-nodes';
+import BottomLeftNodes from './_bottom-left-nodes';
+import BottomRightNodes from './_bottom-right-nodes';
 
 const TopLeftNodesEnum = new TopLeftNodes();
 const TopRightNodesEnum = new TopRightNodes();
@@ -12,7 +12,7 @@ const BottomLeftNodesEnum = new BottomLeftNodes();
 const BottomRightNodesEnum = new BottomRightNodes();
 const BackNodesEnum = new BackNodes();
 
-export default class Location extends DefaultNodes implements Nodes {
+export default class LocationNodes extends DefaultNodes implements Nodes {
     key = "Location";
     selected = TopRightNodesEnum.selected;
     result = TopRightNodesEnum.result;

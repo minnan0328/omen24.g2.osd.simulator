@@ -1,8 +1,8 @@
 import type { Nodes } from "@/types";
 import { ModeType } from "@/types";
 import { DefaultNodes, BackNodes, ResetNodes, OnNodes, OffNodes } from '../../_utilities';
-import ColorNodes from './color/color';
-import LocationNodes from './location/location';
+import ColorNodes from '../_color/color-nodes';
+import LocationNodes from '../_location/location-nodes';
 const BackNodesEnum = new BackNodes();
 const OnNodesEnum = new OnNodes();
 const OffNodesEnum = new OffNodes();
@@ -10,7 +10,7 @@ const ResetNodesEnum = new ResetNodes();
 const ColorNodesEnum = new ColorNodes();
 const LocationNodesEnum = new LocationNodes();
 
-export default class RefreshRate extends DefaultNodes implements Nodes {
+export default class RefreshRateNodes extends DefaultNodes implements Nodes {
     key = "RefreshRate";
     selected = OnNodesEnum.selected;
     result = OnNodesEnum.result;

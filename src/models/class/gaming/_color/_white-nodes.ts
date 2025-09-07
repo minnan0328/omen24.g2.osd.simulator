@@ -1,8 +1,8 @@
 import type { Nodes } from "@/types";
 import { ModeType } from "@/types";
-import { DefaultNodes } from '../../../_utilities';
+import { DefaultNodes } from '../../_utilities';
 
-export default class White extends DefaultNodes implements Nodes {
+export default class WhiteNodes extends DefaultNodes implements Nodes {
     key = "White";
     selected =  "White";
     result = "White";

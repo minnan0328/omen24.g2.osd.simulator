@@ -1,14 +1,14 @@
 import type { Nodes } from "@/types";
 import { ModeType } from "@/types";
-import { DefaultNodes, BackNodes } from '../../../_utilities';
-import WhileNodes from './_white';
-import RedNodes from './_red';
-import GreenNodes from './_green';
-import BlueNodes from './_blue';
-import YellowNodes from './_yellow';
-import PurpleNodes from './_purple';
-import LightBlue from './_light-blue';
-import OrangeNodes from './_orange';
+import { DefaultNodes, BackNodes } from '../../_utilities';
+import WhileNodes from './_white-nodes';
+import RedNodes from './_red-nodes';
+import GreenNodes from './_green-nodes';
+import BlueNodes from './_blue-nodes';
+import YellowNodes from './_yellow-nodes';
+import PurpleNodes from './_purple-nodes';
+import LightBlue from './_light-blue-nodes';
+import OrangeNodes from './_orange-nodes';
 
 const WhileNodesEnum = new WhileNodes();
 const RedNodesEnum = new RedNodes();
@@ -20,7 +20,7 @@ const LightBlueNodesEnum = new LightBlue();
 const OrangeNodesEnum = new OrangeNodes();
 const BackNodesEnum = new BackNodes();
 
-export default class Color extends DefaultNodes implements Nodes {
+export default class ColorNodes extends DefaultNodes implements Nodes {
     key = "Color";
     selected = WhileNodesEnum.selected;
     result = WhileNodesEnum.result;

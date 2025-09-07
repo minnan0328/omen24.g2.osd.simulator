@@ -5,7 +5,7 @@ import { DefaultNodes, BackNodes, OnNodes, OffNodes } from '../../_utilities';
 const DefaultNodesEnum = new DefaultNodes();
 const BackNodesEnum = new BackNodes();
 
-export default class Configure extends DefaultNodes implements Nodes {
+export default class ConfigureNodes extends DefaultNodes implements Nodes {
     key = "Configure";
     selected = ["option 1 bmp", "option 2 bmp", "option 3 bmp"];
     result = ["option 1 bmp", "option 2 bmp", "option 3 bmp"];

@@ -1,8 +1,8 @@
 import { ModeType } from "@/types";
 import type { Nodes } from "@/types";
 import { DefaultNodes, BackNodes, ResetNodes, OnNodes, OffNodes } from '../../_utilities';
-import ConfigureNodes from './_configure';
-import ColorNodes from './color/color';
+import ConfigureNodes from './_configure-nodes';
+import ColorNodes from '../_color/color-nodes';
 
 const OnNodesEnum = new OnNodes();
 const OffNodesEnum = new OffNodes();
@@ -11,7 +11,7 @@ const BackNodesEnum = new BackNodes();
 const ConfigureNodesEnum = new ConfigureNodes();
 const ColorNodesEnum = new ColorNodes();
 
-export default class Crosshair extends DefaultNodes implements Nodes {
+export default class CrosshairNodes extends DefaultNodes implements Nodes {
     key = "Crosshair";
     selected = OffNodesEnum.selected;
     result = OffNodesEnum.result;

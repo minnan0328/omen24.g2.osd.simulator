@@ -1,8 +1,8 @@
 import type { Nodes } from "@/types";
 import { ModeType } from "@/types";
-import { DefaultNodes, BackNodes } from '../../../_utilities';
+import { DefaultNodes, BackNodes } from '../../_utilities';
 
-export default class TopLeft extends DefaultNodes implements Nodes {
+export default class TopLeftNodes extends DefaultNodes implements Nodes {
     key = "TopLeft";
     selected = "Top Left";
     result = "Top Left";
