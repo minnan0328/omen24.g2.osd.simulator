@@ -1,7 +1,7 @@
 import { reactive, toRefs } from 'vue';
 import { defineStore } from 'pinia';
 import {
-	Brightness, Color, Image, Input,
+	Gaming, Color, Image, Input,
 	Power, Menu, Management,Information, Exit
 } from '@/models/index';
 
@@ -11,7 +11,7 @@ const AssignVolumeNodesEnum = new AssignVolumeNodes();
 const AssignColorNodesEnum = new AssignColorNodes();
 
 export interface StoreState {
-    brightnessPlus: Brightness;
+    gaming: Gaming;
     color: Color;
     image: Image;
     input: Input;
@@ -26,7 +26,7 @@ export interface StoreState {
 
 // 建立 Menus 預設值
 export class MenusDefaultModel implements StoreState  {
-    brightnessPlus = new Brightness()
+    gaming = new Gaming()
     color = new Color()
     image = new Image()
     input = new Input()
@@ -52,7 +52,7 @@ export const useStore = defineStore('counter', () => {
     }
 
     function $resetAll() {
-        state.brightnessPlus = JSON.parse(JSON.stringify(new Brightness()));
+        state.gaming = JSON.parse(JSON.stringify(new Gaming()));
         state.color = JSON.parse(JSON.stringify(new Color()));
         state.image = JSON.parse(JSON.stringify(new Image()));
         state.input = JSON.parse(JSON.stringify(new Input()));

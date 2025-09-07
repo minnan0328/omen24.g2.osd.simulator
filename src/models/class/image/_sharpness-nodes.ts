@@ -4,7 +4,6 @@ import type { Nodes } from "@/types";
 import { ModeType } from "@/types";
 import { DefaultNodes, BackNodes } from '../_utilities';
 const DefaultNodesEnum = new DefaultNodes();
-const BackNodesEnum = new BackNodes();
 
 export default class SharpnessNodes extends DefaultNodes implements Nodes {
     key = "Sharpness";

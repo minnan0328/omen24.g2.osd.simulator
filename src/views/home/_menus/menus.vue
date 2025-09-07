@@ -134,7 +134,7 @@ import iconAutoAdjustment from '@/assets/icons/icon-auto-adjustment.svg';
 import iconSoundVolume from '@/assets/icons/icon-sound-volume.svg';
 
 import { 
-    AssignAutoAdjustmentNodes, AssignBrightnessNodes,
+    AssignInputNodes, AssignBrightnessNodes,
     AssignColorNodes, AssignDisplayInformationNodes,
     AssignNextActiveInputNodes, AssignVolumeNodes, AssignEmptyNodes
 } from '@/models/class/menu/assign-buttons/_utilities';
@@ -155,7 +155,7 @@ const OffNodesEnum = new OffNodes();
 const YesNodesEnum = new YesNodes();
 const NoNodesEnum = new NoNodes();
 
-const AssignAutoAdjustmentNodesEnum = new AssignAutoAdjustmentNodes();
+const AssignInputNodesEnum = new AssignInputNodes();
 const AssignBrightnessNodesEnum = new AssignBrightnessNodes();
 const AssignColorNodesEnum = new AssignColorNodes();
 const AssignDisplayInformationNodesEnum = new AssignDisplayInformationNodes();
@@ -194,7 +194,7 @@ const menus = computed(() => {
         page: 1,
         mode: ModeType.button,
         nodes: [
-            store.$state.brightnessPlus,
+            store.$state.gaming,
             store.$state.color,
             store.$state.image,
             store.$state.input,
@@ -245,15 +245,15 @@ const displayCurrentNodes = computed(() => {
 // 自訂選單功能表
 const assignMenus = computed(() => {
     return {
-        [AssignAutoAdjustmentNodesEnum.key]: {
-            key: AssignAutoAdjustmentNodesEnum.key,
+        [AssignInputNodesEnum.key]: {
+            key: AssignInputNodesEnum.key,
             icon: iconAutoAdjustment,
-            node: AssignAutoAdjustmentNodesEnum
+            node: AssignInputNodesEnum
         },
         [AssignBrightnessNodesEnum.key]: {
             key: AssignBrightnessNodesEnum.key,
             icon: iconBrightness,
-            node: store.$state.brightnessPlus.nodes[0]
+            node: store.$state.image.nodes[0]
         }, 
         [AssignColorNodesEnum.key]: {
             key: AssignColorNodesEnum.key,
@@ -334,7 +334,7 @@ function handlerControllerMenus() {
 function handlerOpenAllMenu() {
     openAllMenu.value = true;
     openAssignButton.value = false;
-    selectedMenuPanel(menus.value.nodes[0]);
+    selectedMenuPanel(menus.value.nodes[0]!);
 
     handlerMenuTimeout();
 };
@@ -348,13 +348,15 @@ function handleAssignButton(key: string) {
     if(key == AssignNextActiveInputNodesEnum.key) {
         handlerClose();
         openAllMenu.value = true;
-        selectedMenuPanel(assignMenus.value[key].node as Nodes);
+        selectedMenuPanel(assignMenus.value[key]!.node as Nodes);
         handlerNextPanel();
-    } else if(key == AssignAutoAdjustmentNodesEnum.key) {
-        handlerClose();
-        homeEvent.autoAdjustment();
-        return;
-    } else {
+    }
+    // else if(key == AssignAutoAdjustmentNodesEnum.key) {
+    //     handlerClose();
+    //     homeEvent.autoAdjustment();
+    //     return;
+    // }
+    else {
         menuState.menuPanel = null;
         menuState.secondPanel = null;
         menuState.menuPanelIndex = 0;

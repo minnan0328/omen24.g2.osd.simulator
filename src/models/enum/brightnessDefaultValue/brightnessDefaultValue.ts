@@ -26,18 +26,18 @@ export function setBrightnessDefaultValue() {
     store.$state.information.nodes[2].selected = store.$state.color.selected;
     store.$state.information.nodes[2].result = store.$state.color.result;
     
-    store.$state.brightnessPlus.nodes[0].selected = BrightnessDefaultValueEnum[store.$state.color.selected];
-    store.$state.brightnessPlus.nodes[0].result = BrightnessDefaultValueEnum[store.$state.color.result];
-    store.$state.brightnessPlus.nodes[0].nodes![0].selected = BrightnessDefaultValueEnum[store.$state.color.selected];
-    store.$state.brightnessPlus.nodes[0].nodes![0].result = BrightnessDefaultValueEnum[store.$state.color.result];
+    store.$state.image.nodes[0].selected = BrightnessDefaultValueEnum[store.$state.color.selected];
+    store.$state.image.nodes[0].result = BrightnessDefaultValueEnum[store.$state.color.result];
+    store.$state.image.nodes[0].nodes![0].selected = BrightnessDefaultValueEnum[store.$state.color.selected];
+    store.$state.image.nodes[0].nodes![0].result = BrightnessDefaultValueEnum[store.$state.color.result];
 
 
     // 當 color 是 HP Enhance+ 時 brightness 的 dynamic contrast 為 disable 並且關閉
     if(store.$state.color.result == store.$state.color.nodes[5].result) {
         
         // 動態對比設定 Dynamic Contrast
-        store.$state.brightnessPlus.nodes[2].disabled = true;
-        store.$state.brightnessPlus.nodes[2].result = OffNodesEnum.result;
-        store.$state.brightnessPlus.nodes[2].selected = OffNodesEnum.selected;
+        store.$state.image.nodes[2].disabled = true;
+        store.$state.image.nodes[2].result = OffNodesEnum.result;
+        store.$state.image.nodes[2].selected = OffNodesEnum.selected;
     }
 };

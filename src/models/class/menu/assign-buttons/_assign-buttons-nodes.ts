@@ -4,7 +4,7 @@ import type { Nodes } from "@/types";
 import { ModeType } from "@/types";
 import { DefaultNodes, BackNodes } from '../../_utilities';
 import { 
-    AssignAutoAdjustmentNodes,
+    AssignInputNodes,
     AssignBrightnessNodes,
     AssignColorNodes,
     AssignDisplayInformationNodes,
@@ -15,7 +15,7 @@ import {
 
 const DefaultNodesEnum = new DefaultNodes();
 const BackNodesEnum = new BackNodes();
-const AssignAutoAdjustmentNodesEnum = new AssignAutoAdjustmentNodes();
+const AssignInputNodesEnum = new AssignInputNodes();
 const AssignBrightnessNodesEnum = new AssignBrightnessNodes();
 const AssignColorNodesEnum = new AssignColorNodes();
 const AssignDisplayInformationNodesEnum = new AssignDisplayInformationNodes();
@@ -69,16 +69,17 @@ export default class AssignButtonsNodes extends DefaultNodes implements Nodes {
                 Russian: "Назначить кнопку 1"
             },
             nodes: [
-                {
-                    ...JSON.parse(JSON.stringify(AssignAutoAdjustmentNodesEnum)),
-                    parents: "AssignButton1"
-                },
+
                 {
                     ...JSON.parse(JSON.stringify(AssignBrightnessNodesEnum)),
                     parents: "AssignButton1"
                 },
                 {
                     ...JSON.parse(JSON.stringify(AssignColorNodesEnum)),
+                    parents: "AssignButton1"
+                },
+                {
+                    ...JSON.parse(JSON.stringify(AssignInputNodesEnum)),
                     parents: "AssignButton1"
                 },
                 {
@@ -133,15 +134,15 @@ export default class AssignButtonsNodes extends DefaultNodes implements Nodes {
             },
             nodes: [
                 {
-                    ...JSON.parse(JSON.stringify(AssignAutoAdjustmentNodesEnum)),
-                    parents: "AssignButton2"
-                },
-                {
                     ...JSON.parse(JSON.stringify(AssignBrightnessNodesEnum)),
                     parents: "AssignButton2"
                 },
                 {
                     ...JSON.parse(JSON.stringify(AssignColorNodesEnum)),
+                    parents: "AssignButton2"
+                },
+                {
+                    ...JSON.parse(JSON.stringify(AssignInputNodesEnum)),
                     parents: "AssignButton2"
                 },
                 {
@@ -195,15 +196,15 @@ export default class AssignButtonsNodes extends DefaultNodes implements Nodes {
             },
             nodes: [
                 {
-                    ...JSON.parse(JSON.stringify(AssignAutoAdjustmentNodesEnum)),
-                    parents: "AssignButton3"
-                },
-                {
                     ...JSON.parse(JSON.stringify(AssignBrightnessNodesEnum)),
                     parents: "AssignButton3"
                 },
                 {
                     ...JSON.parse(JSON.stringify(AssignColorNodesEnum)),
+                    parents: "AssignButton3"
+                },
+                {
+                    ...JSON.parse(JSON.stringify(AssignInputNodesEnum)),
                     parents: "AssignButton3"
                 },
                 {

@@ -16,7 +16,7 @@ const LowNodesEnum = new LowNodes();
 const MediumNodesEnum = new MediumNodes();
 const HighNodesEnum = new HighNodes();
 
-const brightness = computed(()=> store.$state.brightnessPlus);
+const brightness = computed(()=> store.$state.image.nodes[0]);
 const color = computed(()=> store.$state.color);
 const image = computed(()=> store.$state.image);
 const input = computed(()=> store.$state.input);
@@ -40,7 +40,7 @@ export const monitorScreenResult = computed(() => {
         // 取得亮度值 Brightness
         brightness: `${brightness.value.nodes[0].result}%`,
         // 取得對比值 Contrast
-        contrast: `${brightness.value.nodes[1].result}%`,
+        contrast: `${brightness.value.nodes[0].result}%`,
         RGB: toImageColor.value,
         // 取得黑色延展 Black Stretch 對應亮度圖片
         blackStretchImage: getBlackStretchImage.value,
@@ -218,7 +218,7 @@ const getSharpness = computed(() => {
 function extractStringFromParentheses(input: string): number {
     const match = input.match(/\(([^)]+)\)/); // 匹配括號中的內容
     if (match) {
-        const cleanedString = match[1].replace(/°/g, ""); // 移除 ° 符號
+        const cleanedString = match[1]!.replace(/°/g, ""); // 移除 ° 符號
         const number = parseFloat(cleanedString); // 將移除後的字串轉換為數字
         return isNaN(number) ? 0 : number; // 確保結果為有效的數字
     }
@@ -263,10 +263,10 @@ store.$subscribe((mutation, state) => {
                 return
             }
             patternsIndex.value = resultIndex;
-            state.currentDiagnosticPatterns = patterns.value[patternsIndex.value];
+            state.currentDiagnosticPatterns = patterns.value[patternsIndex.value]!;
             intervalId.value = setInterval(() => {
                 patternsIndex.value = (patternsIndex.value + 1) % patterns.value.length;
-                state.currentDiagnosticPatterns = patterns.value[patternsIndex.value];
+                state.currentDiagnosticPatterns = patterns.value[patternsIndex.value]!;
             }, 3000);
 
         } else if(resultIndex >= 1) {
@@ -275,7 +275,7 @@ store.$subscribe((mutation, state) => {
                 intervalId.value = null;
             };
             patternsIndex.value = resultIndex - 1;
-            state.currentDiagnosticPatterns = patterns.value[patternsIndex.value];
+            state.currentDiagnosticPatterns = patterns.value[patternsIndex.value]!;
         }
     } else {
         if (intervalId.value !== null) {

@@ -3,23 +3,22 @@
 import type { Nodes } from "@/types";
 import { ModeType } from "@/types";
 import { DefaultNodes } from '@/models/class/_utilities';
-import BrightnessNodes from '@/models/class/brightness/_brightness-nodes';
+import InputNodes from '@/models/class/input/input';
+import BrightnessNodes from '@/models/class/image/brightness/_brightness-nodes';
 import ColorNodes from '@/models/class/color/color';
-import AutoAdjustmentNodes from '@/models/class/image/_auto-adjustment-nodes';
 import volumeNodes from '@/models/class/input/audio/_volume-nodes';
 
 const BrightnessNodesEnum = new BrightnessNodes();
 const ColorNodesEnum = new ColorNodes();
-const AutoAdjustmentNodesEnum = new AutoAdjustmentNodes();
+const InputNodesEnum = new InputNodes();
 const volumeNodesEnum = new volumeNodes();
 
-export class AssignAutoAdjustmentNodes extends DefaultNodes implements Nodes {
-    key = "AssignAuto-Adjustment";
-    selected = "Auto-Adjustment";
-    result = "Auto-Adjustment";
+export class AssignInputNodes extends DefaultNodes implements Nodes {
+    key = "AssignInput";
+    selected = "Input";
+    result = "Input";
     mode = ModeType.radio;
-    only = ["VGA"];
-    language = AutoAdjustmentNodesEnum.language;
+    language = InputNodesEnum.language
 };
 
 export class AssignBrightnessNodes extends DefaultNodes implements Nodes {
