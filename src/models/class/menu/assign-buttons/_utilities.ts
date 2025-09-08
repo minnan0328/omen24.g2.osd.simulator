@@ -3,23 +3,17 @@
 import type { Nodes } from "@/types";
 import { ModeType } from "@/types";
 import { DefaultNodes } from '@/models/class/_utilities';
-import InputNodes from '@/models/class/input/input';
 import BrightnessNodes from '@/models/class/image/_brightness-nodes';
 import ColorNodes from '@/models/class/color/color';
-import volumeNodes from '@/models/class/input/audio/_volume-nodes';
+import MessageTimersNodes from '@/models/class//gaming/message-timers/message-timers-nodes';
+import RefreshRateNodes from '@/models/class/gaming/_refresh-rate-nodes';
+import CrosshairNodes from '@/models/class/gaming/crosshair/crosshair-nodes';
 
 const BrightnessNodesEnum = new BrightnessNodes();
 const ColorNodesEnum = new ColorNodes();
-const InputNodesEnum = new InputNodes();
-const volumeNodesEnum = new volumeNodes();
-
-export class AssignInputNodes extends DefaultNodes implements Nodes {
-    key = "AssignInput";
-    selected = "Input";
-    result = "Input";
-    mode = ModeType.radio;
-    language = InputNodesEnum.language
-};
+const MessageTimersNodesEnum = new MessageTimersNodes();
+const RefreshRateNodesEnum = new RefreshRateNodes();
+const CrosshairNodesEnum = new CrosshairNodes();
 
 export class AssignBrightnessNodes extends DefaultNodes implements Nodes {
     key = "AssignBrightness";
@@ -77,14 +71,29 @@ export class AssignNextActiveInputNodes extends DefaultNodes implements Nodes {
     };
 };
 
-export class AssignVolumeNodes extends DefaultNodes implements Nodes {
-    key = "AssignVolume";
-    selected = "Volume";
-    result = "Volume";
+export class AssignMessageTimersNodes extends DefaultNodes implements Nodes {
+    key = "AssignMessageTimers";
+    selected = "Message Timers";
+    result = "Message Timers";
     mode = ModeType.radio;
-    language = volumeNodesEnum.language;
+    language = MessageTimersNodesEnum.language;
 };
 
+export class AssignRefreshRateNodes extends DefaultNodes implements Nodes {
+    key = "AssignRefreshRate";
+    selected = "Refresh Rate";
+    result = "Refresh Rate";
+    mode = ModeType.radio;
+    language = RefreshRateNodesEnum.language;
+};
+
+export class AssignCrosshairNodes extends DefaultNodes implements Nodes {
+    key = "AssignCrosshair";
+    selected = "Crosshair";
+    result = "Crosshair";
+    mode = ModeType.radio;
+    language = CrosshairNodesEnum.language;
+};
 export class AssignEmptyNodes extends DefaultNodes implements Nodes {
     key = "AssignEmpty(NoFunction)";
     selected = "Empty (No Function)";
