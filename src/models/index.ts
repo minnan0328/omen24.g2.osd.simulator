@@ -10,8 +10,8 @@ import Exit from '@/models/class/exit/exit';
 
 export {
     Gaming,
-    Color,
     Image,
+    Color,
     Input,
     Power,
     Menu,

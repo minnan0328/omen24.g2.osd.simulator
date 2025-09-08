@@ -2,7 +2,7 @@
 
 import type { Nodes } from "@/types";
 import { ModeType } from "@/types";
-import { DefaultNodes, BackNodes, OnNodes, OffNodes } from '../../_utilities';
+import { DefaultNodes, BackNodes, OnNodes, OffNodes } from '../_utilities';
 
 const BackNodesEnum = new BackNodes();
 const OnNodesEnum = new OnNodes();

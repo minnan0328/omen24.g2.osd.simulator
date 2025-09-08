@@ -1,13 +1,15 @@
 import type { Nodes } from "@/types";
 import { ModeType } from "@/types";
 import { DefaultNodes, BackNodes, ResetNodes, OnNodes, OffNodes } from '../../_utilities';
+import SpeedrunTimerNodes from './_speedrun-timer-nodes';
 import MessageNodes from './_message-nodes';
-import ColorNodes from '../_color/color-nodes';
-import LocationNodes from '../_location/location-nodes';
+import ColorNodes from '../color/color-nodes';
+import LocationNodes from '../location/location-nodes';
 const DefaultNodesEnum = new DefaultNodes();
 const BackNodesEnum = new BackNodes();
 const OffNodesEnum = new OffNodes();
 const ResetNodesEnum = new ResetNodes();
+const SpeedrunTimerNodesEnum = new SpeedrunTimerNodes();
 const MessageNodesEnum = new MessageNodes();
 const ColorNodesEnum = new ColorNodes();
 const LocationNodesEnum = new LocationNodes();
@@ -39,42 +41,14 @@ export default class MessageTimersNodes extends DefaultNodes implements Nodes {
             parents: this.key
         },
         {
-            ...JSON.parse(JSON.stringify(DefaultNodesEnum)),
-            key: "SpeedrunTimer",
-            selected: 20,
-            result: 20,
-            parents: this.key,
-            mode: ModeType.timer,
-            language: {
-                German: "Speedrun Timer",
-                SimplifiedChinese: "竞速计时器",
-                TraditionalChinese: "競速計時器",
-                English: "Speedrun Timer",
-                Español: "Temporizador de speedrun",
-                French: "Minuterie de speedrun",
-                Italian: "Timer velocità di esecuzione",
-                Japanese: "スピードランタイマー",
-                Nederlands: "Speedrun-timer",
-                BrazilianPortuguese: "Temporizador de speedrun",
-                Russian: "Таймер скоростн. прохождения"
-            },
-            nodes: [
-                {
-                    ...JSON.parse(JSON.stringify(DefaultNodesEnum)),
-                    key: "SpeedrunTimer",
-                    selected: 20,
-                    result: 20,
-                    parents: this.key,
-                    mode: ModeType.timer,
-                    language: this.language
-                }
-            ]
+            ...JSON.parse(JSON.stringify(SpeedrunTimerNodesEnum)),
+            parents: this.key
         },
         {
             ...JSON.parse(JSON.stringify(DefaultNodesEnum)),
             key: "CountdownTimer",
-            selected: 20,
-            result: 20,
+            selected: SpeedrunTimerNodesEnum.selected,
+            result: SpeedrunTimerNodesEnum.result,
             parents: this.key,
             mode: ModeType.verticalRange,
             language: {
@@ -120,17 +94,17 @@ export default class MessageTimersNodes extends DefaultNodes implements Nodes {
             parents: this.key,
             mode: ModeType.button,
             language: {
-                German: "Start / Stopp",
-                SimplifiedChinese: "开始/结束",
-                TraditionalChinese: "開始 / 停止",
-                English: "Start / Stop",
-                Español: "Iniciar / Parar",
-                French: "Commencer / Arrêter",
-                Italian: "Avvia / Arresta",
-                Japanese: "スタート / ストップ",
-                Nederlands: "Starten / stoppen",
-                BrazilianPortuguese: "Iniciar / parar",
-                Russian: "Пуск / стоп"
+                German: "Timer zurücksetzen",
+                SimplifiedChinese: "重置计时器",
+                TraditionalChinese: "重設計時器",
+                English: "Reset Timer",
+                Español: "Resetear temporizador",
+                French: "Réinitialisez la minuterie",
+                Italian: "Timer di reset",
+                Japanese: "タイマーのリセット",
+                Nederlands: "Timer opnieuw instellen",
+                BrazilianPortuguese: "Repor temporizador",
+                Russian: "Сбросить таймер"
             }
         },
         {

@@ -4,7 +4,7 @@ import type { Nodes } from "@/types";
 import { ModeType } from "@/types";
 import { DefaultNodes } from '@/models/class/_utilities';
 import InputNodes from '@/models/class/input/input';
-import BrightnessNodes from '@/models/class/image/brightness/_brightness-nodes';
+import BrightnessNodes from '@/models/class/image/_brightness-nodes';
 import ColorNodes from '@/models/class/color/color';
 import volumeNodes from '@/models/class/input/audio/_volume-nodes';
 

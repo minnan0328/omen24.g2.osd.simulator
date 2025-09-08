@@ -5,7 +5,7 @@ import { ModeType } from '@/types';
 import AutoSwitchInputNodes from './_auto-switch-input-nodes';
 import DPHotPlugDetectionNodes from './_dp-hot-plug-detection-nodes';
 import DisplayPortModeNodes from './_ display-port-mode-nodes';
-import AudioNodes from './audio/_audio-nodes';
+import AudioNodes from './audio/audio-nodes';
 import { DefaultNodes, ResetNodes, BackNodes, ExitNodes, OnNodes, OffNodes } from '../_utilities';
 
 let AutoSwitchInputNodesEnum = new AutoSwitchInputNodes(); 
@@ -126,7 +126,6 @@ export default class Input extends DefaultNodes implements Nodes {
             ...JSON.parse(JSON.stringify(DisplayPortModeNodesEnum)),
             parents: this.key
         },
-
         // 重置
         {
             ...JSON.parse(JSON.stringify(ResetNodesEnum)),

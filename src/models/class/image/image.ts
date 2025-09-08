@@ -3,10 +3,10 @@ import { ModeType } from "@/types";
 import { DefaultNodes, ResetNodes, BackNodes } from '../_utilities';
 import SharpnessNodes from './_sharpness-nodes';
 import ImageScalingNodes from './_image-scaling-nodes';
-import BrightnessNodes from './brightness/_brightness-nodes';
-import ContrastNodes from './brightness/_contrast-nodes';
-import DynamicContrastNodes from './brightness/_dynamic-contrast-nodes';
-import VideoLevelNodes from './brightness/_video-level-nodes';
+import BrightnessNodes from './_brightness-nodes';
+import ContrastNodes from './_contrast-nodes';
+import DynamicContrastNodes from './_dynamic-contrast-nodes';
+import VideoLevelNodes from './_video-level-nodes';
 const ResetNodesEnum = new ResetNodes(); 
 const BackNodesEnum = new BackNodes();
 

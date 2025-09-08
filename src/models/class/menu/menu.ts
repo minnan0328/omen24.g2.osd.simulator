@@ -6,8 +6,8 @@ import MenuPositionNodes from './_menu-position-nodes';
 import MenuTransparencyNodes from './_menu-transparency-nodes';
 import MenuTimeoutNodes from './_menu-timeout-nodes';
 import MenuRotationNodes from './_menu-rotation';
-import OSDMessagesNodes from './OSD-messages-nodes/_OSD-messages-nodes';
-import AssignButtonsNodes from './assign-buttons/_assign-buttons-nodes';
+import OSDMessagesNodes from './OSD-messages-nodes/OSD-messages-nodes';
+import AssignButtonsNodes from './assign-buttons/assign-buttons-nodes';
 
 let ResetNodesEnum = new ResetNodes(); 
 let BackNodesEnum = new BackNodes();

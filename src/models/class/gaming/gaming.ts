@@ -3,10 +3,10 @@ import type { Nodes } from "@/types";
 import { DefaultNodes, ResetNodes, BackNodes } from '../_utilities';
 import AndFreeSyncNode from './_amd-free-sync-nodes';
 import ResponseTimeNodes from './_response-rime-nodes';
-import RefreshRateNodes from './refresh-rate/_refresh-rate-nodes';
+import RefreshRateNodes from './_refresh-rate-nodes';
 import CrosshairNodes from './crosshair/crosshair-nodes';
 import MessageTimersNodes from './message-timers/message-timers-nodes';
-import MultiMonitorAlignNodes from './multi-monitor-align/multi-monitor-align-nodes';
+import MultiMonitorAlignNodes from './_multi-monitor-align-nodes';
 
 const ResetNodesEnum = new ResetNodes(); 
 const BackNodesEnum = new BackNodes();
