@@ -135,104 +135,104 @@ function handleMonitor() {
 
 
 // 自動調整
-const autoAdjustmentIntervalId = ref<number | null>(null);
-function autoAdjustment() {
-    if(store.$state.input.result != "VGA") return;
+// const autoAdjustmentIntervalId = ref<number | null>(null);
+// function autoAdjustment() {
+//     if(store.$state.input.result != "VGA") return;
 
-    toastObj.value.open = true;
-    toastObj.value.images = iconWarn;
-    toastObj.value.message = {
-        German: "Automatische Einstellung wird durchgeführt",
-        SimplifiedChinese: "正在自动调整",
-        TraditionalChinese: "自動調整中",
-        English: "Auto-Adjustment in Progress",
-        Español: "Ajuste automático en curso",
-        French: "Ajustement automatique en cours",
-        Italian: "Autoregolazione in corso",
-        Japanese: "自動調整中です",
-        Nederlands: "Bezig met automatisch aanpassen",
-        BrazilianPortuguese: "Ajuste Automático está em Andamento",
-        Russian: "Выполняется автом. регулировка"
+//     toastObj.value.open = true;
+//     toastObj.value.images = iconWarn;
+//     toastObj.value.message = {
+//         German: "Automatische Einstellung wird durchgeführt",
+//         SimplifiedChinese: "正在自动调整",
+//         TraditionalChinese: "自動調整中",
+//         English: "Auto-Adjustment in Progress",
+//         Español: "Ajuste automático en curso",
+//         French: "Ajustement automatique en cours",
+//         Italian: "Autoregolazione in corso",
+//         Japanese: "自動調整中です",
+//         Nederlands: "Bezig met automatisch aanpassen",
+//         BrazilianPortuguese: "Ajuste Automático está em Andamento",
+//         Russian: "Выполняется автом. регулировка"
 
-    };
+//     };
 
-    // 復原時脈和相位
-    const resetImageClockandPhase = () => {
-        store.$state.image.nodes[1].nodes[0].result = 50;
-        store.$state.image.nodes[1].nodes[0].selected = 50;
-        store.$state.image.nodes[1].nodes[1].result = 50;
-        store.$state.image.nodes[1].nodes[1].selected = 50;
+//     // 復原時脈和相位
+//     const resetImageClockandPhase = () => {
+//         store.$state.image.nodes[1].nodes[0].result = 50;
+//         store.$state.image.nodes[1].nodes[0].selected = 50;
+//         store.$state.image.nodes[1].nodes[1].result = 50;
+//         store.$state.image.nodes[1].nodes[1].selected = 50;
 
-        store.$state.image.nodes[2].nodes[0].result = 50;
-        store.$state.image.nodes[2].nodes[0].selected = 50;
-        store.$state.image.nodes[2].nodes[1].result = 50;
-        store.$state.image.nodes[2].nodes[1].selected = 50;
-    };
+//         store.$state.image.nodes[2].nodes[0].result = 50;
+//         store.$state.image.nodes[2].nodes[0].selected = 50;
+//         store.$state.image.nodes[2].nodes[1].result = 50;
+//         store.$state.image.nodes[2].nodes[1].selected = 50;
+//     };
 
-    resetImageClockandPhase();
+//     resetImageClockandPhase();
 
-    setTimeout(() => {
-        resetToast();
-        resetImageClockandPhase();
+//     setTimeout(() => {
+//         resetToast();
+//         resetImageClockandPhase();
 
-        if (autoAdjustmentIntervalId.value !== null) {
-            clearInterval(autoAdjustmentIntervalId.value);
-            autoAdjustmentIntervalId.value = null;
-        };
-    }, toastObj.value.timeout);
+//         if (autoAdjustmentIntervalId.value !== null) {
+//             clearInterval(autoAdjustmentIntervalId.value);
+//             autoAdjustmentIntervalId.value = null;
+//         };
+//     }, toastObj.value.timeout);
 
-    autoAdjustmentIntervalId.value = setInterval(() => {
-        store.$state.image.nodes[2].nodes[0].result += Math.floor(Math.random() * (2 - (-2)) + (-2));
-        store.$state.image.nodes[2].nodes[0].selected += Math.floor(Math.random() * (2 - (-2)) + (-2));
-    }, 100);
-};
+//     autoAdjustmentIntervalId.value = setInterval(() => {
+//         store.$state.image.nodes[2].nodes[0].result += Math.floor(Math.random() * (2 - (-2)) + (-2));
+//         store.$state.image.nodes[2].nodes[0].selected += Math.floor(Math.random() * (2 - (-2)) + (-2));
+//     }, 100);
+// };
 
 // 聲音測試
-let audio = ref<HTMLAudioElement | null>(null);
-function speakerSelfTest() {
-    audio.value = null;
-    // 建立測試聲音
-    audio.value = new Audio(hp227peSound);
+// let audio = ref<HTMLAudioElement | null>(null);
+// function speakerSelfTest() {
+//     audio.value = null;
+//     // 建立測試聲音
+//     audio.value = new Audio(hp227peSound);
     
-    audio.value.addEventListener("loadedmetadata", () => {
-        toastObj.value.timeout = audio.value!.duration * 1000;
+//     audio.value.addEventListener("loadedmetadata", () => {
+//         toastObj.value.timeout = audio.value!.duration * 1000;
 
-        audio.value!.play()
-            .then(res => {
+//         audio.value!.play()
+//             .then(res => {
     
-            toastObj.value.open = true;
-            toastObj.value.images = iconSound;
-            toastObj.value.message = {
-                German: "Lautsprecherselbsttest wird durchgeführt",
-                SimplifiedChinese: "正在进行扬声器自测",
-                TraditionalChinese: "喇叭自我測試中",
-                English: "Speaker Self-Test in Progress",
-                Español: "Autotest altavoz en curso",
-                French: "Test auto. du haut-parleur en cours",
-                Italian: "Test autodiagnostico altoparlante in corso",
-                Japanese: "スピーカー自己診断実行中",
-                Nederlands: "Luidsprekerzelftest wordt uitgevoerd",
-                BrazilianPortuguese: "Autoteste de alto-falante em progresso",
-                Russian: "Выполняется самопроверка встр. динамика"
-            };
+//             toastObj.value.open = true;
+//             toastObj.value.images = iconSound;
+//             toastObj.value.message = {
+//                 German: "Lautsprecherselbsttest wird durchgeführt",
+//                 SimplifiedChinese: "正在进行扬声器自测",
+//                 TraditionalChinese: "喇叭自我測試中",
+//                 English: "Speaker Self-Test in Progress",
+//                 Español: "Autotest altavoz en curso",
+//                 French: "Test auto. du haut-parleur en cours",
+//                 Italian: "Test autodiagnostico altoparlante in corso",
+//                 Japanese: "スピーカー自己診断実行中",
+//                 Nederlands: "Luidsprekerzelftest wordt uitgevoerd",
+//                 BrazilianPortuguese: "Autoteste de alto-falante em progresso",
+//                 Russian: "Выполняется самопроверка встр. динамика"
+//             };
             
-        })
-        .catch((error) => {
-            console.error("Playback Failed:", error);
-        });
+//         })
+//         .catch((error) => {
+//             console.error("Playback Failed:", error);
+//         });
     
-    });
+//     });
 
-    audio.value.addEventListener("ended", () => {
-        audio.value = null;
-        resetToast();
-    });
+//     audio.value.addEventListener("ended", () => {
+//         audio.value = null;
+//         resetToast();
+//     });
 
-    audio.value.addEventListener("error", () => {
-        console.error("Unable to load audio file");
-    });
+//     audio.value.addEventListener("error", () => {
+//         console.error("Unable to load audio file");
+//     });
 
-}
+// }
 
 function resetToast() {
     toastObj.value.open = false;
@@ -269,8 +269,8 @@ function restartScreen() {
 
 provide<HomeEvent>("homeEvent", {
     restartScreen,
-    autoAdjustment,
-    speakerSelfTest
+    // autoAdjustment,
+    // speakerSelfTest
 });
 
 

@@ -134,9 +134,10 @@ import iconAutoAdjustment from '@/assets/icons/icon-auto-adjustment.svg';
 import iconSoundVolume from '@/assets/icons/icon-sound-volume.svg';
 
 import { 
-    AssignInputNodes, AssignBrightnessNodes,
-    AssignColorNodes, AssignDisplayInformationNodes,
-    AssignNextActiveInputNodes, AssignVolumeNodes, AssignEmptyNodes
+    AssignBrightnessNodes,
+    AssignColorNodes, AssignDisplayInformationNodes, AssignNextActiveInputNodes,
+    AssignMessageTimersNodes, AssignRefreshRateNodes, AssignCrosshairNodes,
+    AssignEmptyNodes
 } from '@/models/class/menu/_assign-buttons/_utilities';
 
 import PowerConfirmChangeNodes from '@/models/class/power/message/confirm-change';
@@ -155,12 +156,13 @@ const OffNodesEnum = new OffNodes();
 const YesNodesEnum = new YesNodes();
 const NoNodesEnum = new NoNodes();
 
-const AssignInputNodesEnum = new AssignInputNodes();
 const AssignBrightnessNodesEnum = new AssignBrightnessNodes();
 const AssignColorNodesEnum = new AssignColorNodes();
 const AssignDisplayInformationNodesEnum = new AssignDisplayInformationNodes();
 const AssignNextActiveInputNodesEnum = new AssignNextActiveInputNodes();
-const AssignVolumeNodesEnum = new AssignVolumeNodes();
+const AssignMessageTimersNodesEnum = new AssignMessageTimersNodes();
+const AssignRefreshRateNodesEnum = new AssignRefreshRateNodes();
+const AssignCrosshairNodesEnum = new AssignCrosshairNodes();
 const AssignEmptyNodesEnum = new AssignEmptyNodes();
 
 const PowerConfirmChangeNodesEnum = new PowerConfirmChangeNodes();
@@ -245,11 +247,6 @@ const displayCurrentNodes = computed(() => {
 // 自訂選單功能表
 const assignMenus = computed(() => {
     return {
-        [AssignInputNodesEnum.key]: {
-            key: AssignInputNodesEnum.key,
-            icon: iconAutoAdjustment,
-            node: AssignInputNodesEnum
-        },
         [AssignBrightnessNodesEnum.key]: {
             key: AssignBrightnessNodesEnum.key,
             icon: iconBrightness,
@@ -270,10 +267,20 @@ const assignMenus = computed(() => {
             icon: iconInput,
             node: store.$state.input
         },
-        [AssignVolumeNodesEnum.key]: {
-            key: AssignVolumeNodesEnum.key,
-            icon: iconSoundVolume,
-            node: store.$state.input.nodes[4].nodes[4]
+        [AssignMessageTimersNodesEnum.key]: {
+            key: AssignMessageTimersNodesEnum.key,
+            icon: "",
+            node: store.$state.gaming.nodes[4]
+        },
+        [AssignRefreshRateNodesEnum.key]: {
+            key: AssignRefreshRateNodesEnum.key,
+            icon: "",
+            node: store.$state.gaming.nodes[2]
+        },
+        [AssignCrosshairNodesEnum.key]: {
+            key: AssignCrosshairNodesEnum.key,
+            icon: "",
+            node: store.$state.input.nodes[3]
         },
         [AssignEmptyNodesEnum.key]: {
             key: AssignEmptyNodesEnum.key,
@@ -295,7 +302,8 @@ const getAssignButton = computed(() => {
 // 小選單項目順序
 const assignPanelOrder = reactive([
     AssignBrightnessNodesEnum.key, AssignColorNodesEnum.key,
-    AssignDisplayInformationNodesEnum.key, AssignNextActiveInputNodesEnum.key, AssignVolumeNodesEnum.key
+    AssignDisplayInformationNodesEnum.key, AssignNextActiveInputNodesEnum.key,
+    AssignMessageTimersNodesEnum.key, AssignRefreshRateNodesEnum.key, AssignCrosshairNodesEnum.key
 ]);
 
 // power confirm message menuState
@@ -351,11 +359,7 @@ function handleAssignButton(key: string) {
         selectedMenuPanel(assignMenus.value[key]!.node as Nodes);
         handlerNextPanel();
     }
-    // else if(key == AssignAutoAdjustmentNodesEnum.key) {
-    //     handlerClose();
-    //     homeEvent.autoAdjustment();
-    //     return;
-    // }
+
     else {
         menuState.menuPanel = null;
         menuState.secondPanel = null;
@@ -363,7 +367,7 @@ function handleAssignButton(key: string) {
         menuState.secondPanelIndex = 0;
         menuState.assignPanelOrderIndex = assignPanelOrder.findIndex(a => a == key);
         openAssignButton.value = true;
-        selectedMenuPanel(assignMenus.value[key].node as Nodes);
+        selectedMenuPanel(assignMenus.value[key]!.node as Nodes);
         handlerNextPanel();
     }
 
@@ -405,7 +409,7 @@ const ControllerTypes: Record<string, ControllerButtonList> = reactive({
     confirmClose: { image: iconClose, event: handlerCloseConfirmAction, stopEvent: () => {}, type: "Button" }
 });
 
-const confirmButtonList:ControllerButtonList[] = [ ControllerTypes.checkSave, ControllerTypes.arrowLeft, ControllerTypes.arrowRight, ControllerTypes.confirmClose ];
+const confirmButtonList:ControllerButtonList[] = [ ControllerTypes.checkSave!, ControllerTypes.arrowLeft!, ControllerTypes.arrowRight!, ControllerTypes.confirmClose! ];
 
 const handleControllerButtonList = computed<ControllerButtonList[] | null>(() => {
     if(!props.openMonitor) return[];
@@ -414,9 +418,9 @@ const handleControllerButtonList = computed<ControllerButtonList[] | null>(() =>
         // 開啟螢幕及開啟全部選單列表時候的組合
         return [
             { image: iconAllMenu, event: handlerOpenAllMenu, stopEvent: () => {}, type: "Button" },
-            { image: getAssignButton.value[2].icon, event: () => handleAssignButton(getAssignButton.value[2].key), stopEvent: () => {}, type: "Button"},
-            { image: getAssignButton.value[1].icon, event: () => handleAssignButton(getAssignButton.value[1].key), stopEvent: () => {}, type: "Button" },
-            { image: getAssignButton.value[0].icon, event:() => handleAssignButton(getAssignButton.value[0].key), stopEvent: () => {}, type: "Button" }
+            { image: getAssignButton.value[2]!.icon, event: () => handleAssignButton(getAssignButton.value[2]!.key), stopEvent: () => {}, type: "Button"},
+            { image: getAssignButton.value[1]!.icon, event: () => handleAssignButton(getAssignButton.value[1]!.key), stopEvent: () => {}, type: "Button" },
+            { image: getAssignButton.value[0]!.icon, event:() => handleAssignButton(getAssignButton.value[0]!.key), stopEvent: () => {}, type: "Button" }
         ]
     } 
     
@@ -452,44 +456,44 @@ function createMenuButtonList(): ControllerButtonList[] {
 function createFirstLayerButtonList(): ControllerButtonList[] {
     const mode = menuState.menuPanel?.mode as string;
     const buttonMap: Record<string, ControllerButtonList[]> = {
-        [ModeType.info]: [ControllerTypes.empty, ControllerTypes.arrowBottom, ControllerTypes.arrowUp, ControllerTypes.close],
-        [ModeType.exit]: [ControllerTypes.checkClose, ControllerTypes.arrowBottom, ControllerTypes.arrowUp, ControllerTypes.close],
-        default: [ControllerTypes.next, ControllerTypes.arrowBottom, ControllerTypes.arrowUp, ControllerTypes.close],
+        [ModeType.info]: [ControllerTypes.empty!, ControllerTypes.arrowBottom!, ControllerTypes.arrowUp!, ControllerTypes.close!],
+        [ModeType.exit]: [ControllerTypes.checkClose!, ControllerTypes.arrowBottom!, ControllerTypes.arrowUp!, ControllerTypes.close!],
+        default: [ControllerTypes.next!, ControllerTypes.arrowBottom!, ControllerTypes.arrowUp!, ControllerTypes.close!],
     };
 
-    return buttonMap[mode] || buttonMap.default;
+    return buttonMap[mode] !== undefined ? buttonMap[mode] : buttonMap.default!;
 }
 
 function handlerModeControllerButtonList(nodes: Nodes, previousNodes: Nodes) {
     // 當下一層有節點時候的組合
-    const nextButtonList: ControllerButtonList[] = [ ControllerTypes.next, ControllerTypes.arrowBottom, ControllerTypes.arrowUp, ControllerTypes.previous ];
+    const nextButtonList: ControllerButtonList[] = [ ControllerTypes.next!, ControllerTypes.arrowBottom!, ControllerTypes.arrowUp!, ControllerTypes.previous! ];
 
     // 選單不同旋轉角度組合
     type MenuRotationValue = 0 | 90 | 180 | 270;
     const confirmedButtonListObj: Record<MenuRotationValue, ControllerButtonList[]> = {
-        0: [ ControllerTypes.checkSave!, ControllerTypes.arrowBottom, ControllerTypes.arrowUp, ControllerTypes.previous ],
-        90: [ ControllerTypes.previous, ControllerTypes.arrowUp, ControllerTypes.arrowBottom, ControllerTypes.checkSave! ],
-        180: [ ControllerTypes.previous, ControllerTypes.arrowBottom, ControllerTypes.arrowUp, ControllerTypes.checkSave! ],
-        270: [ ControllerTypes.checkSave!, ControllerTypes.arrowBottom, ControllerTypes.arrowUp, ControllerTypes.previous ]
+        0: [ ControllerTypes.checkSave!, ControllerTypes.arrowBottom!, ControllerTypes.arrowUp!, ControllerTypes.previous! ],
+        90: [ ControllerTypes.previous!, ControllerTypes.arrowUp!, ControllerTypes.arrowBottom!, ControllerTypes.checkSave! ],
+        180: [ ControllerTypes.previous!, ControllerTypes.arrowBottom!, ControllerTypes.arrowUp!, ControllerTypes.checkSave! ],
+        270: [ ControllerTypes.checkSave!, ControllerTypes.arrowBottom!, ControllerTypes.arrowUp!, ControllerTypes.previous! ]
     };
 
     // 確認選擇的按鈕組合
     const confirmedButtonList: ControllerButtonList[] = confirmedButtonListObj[menuStateResult.value.menuRotationValue as MenuRotationValue];
     // range value 組合
-    const rangeButtonList: ControllerButtonList[] = [ ControllerTypes.checkSave!,  ControllerTypes.rangeSubtract,  ControllerTypes.rangeAdd, ControllerTypes.previous ];
+    const rangeButtonList: ControllerButtonList[] = [ ControllerTypes.checkSave!,  ControllerTypes.rangeSubtract!,  ControllerTypes.rangeAdd!, ControllerTypes.previous! ];
     // 多個 range value 組合
-    const rangeNextButtonList: ControllerButtonList[] = [ ControllerTypes.nextRight, ControllerTypes.rangeSubtract, ControllerTypes.rangeAdd, ControllerTypes.previous ];
+    const rangeNextButtonList: ControllerButtonList[] = [ ControllerTypes.nextRight!, ControllerTypes.rangeSubtract!, ControllerTypes.rangeAdd!, ControllerTypes.previous! ];
     // 多個直向 range value 組合，且最後一個時候
-    const rangeNextButtonListLast: ControllerButtonList[] = [ ControllerTypes.empty, ControllerTypes.rangeSubtract, ControllerTypes.rangeAdd, ControllerTypes.previous ];
+    const rangeNextButtonListLast: ControllerButtonList[] = [ ControllerTypes.empty!, ControllerTypes.rangeSubtract!, ControllerTypes.rangeAdd!, ControllerTypes.previous! ];
     // 多個縱向 range value 組合 unfocus
-    const rangeNextButtonListUnfocus: ControllerButtonList[] = [ ControllerTypes.nextSave, ControllerTypes.arrowBottom, ControllerTypes.arrowUp, ControllerTypes.previous ];
+    const rangeNextButtonListUnfocus: ControllerButtonList[] = [ ControllerTypes.nextSave!, ControllerTypes.arrowBottom!, ControllerTypes.arrowUp!, ControllerTypes.previous! ];
     // assign button 確認選擇的按鈕組合
-    const confirmedAssignButtonList: ControllerButtonList[] = [ ControllerTypes.checkSave, ControllerTypes.arrowBottom, ControllerTypes.arrowUp, ControllerTypes.nextAssignRight ];
+    const confirmedAssignButtonList: ControllerButtonList[] = [ ControllerTypes.checkSave!, ControllerTypes.arrowBottom!, ControllerTypes.arrowUp!, ControllerTypes.nextAssignRight! ];
     // assign button range value 組合
-    const rangeAssignButtonList: ControllerButtonList[] = [ ControllerTypes.close, ControllerTypes.rangeSubtract, ControllerTypes.rangeAdd, ControllerTypes.nextAssignRight ];
+    const rangeAssignButtonList: ControllerButtonList[] = [ ControllerTypes.close!, ControllerTypes.rangeSubtract!, ControllerTypes.rangeAdd!, ControllerTypes.nextAssignRight! ];
     // assign button info 組合
-    const infoAssignButtonList: ControllerButtonList[] = [ ControllerTypes.checkSave, ControllerTypes.empty, ControllerTypes.empty, ControllerTypes.nextAssignRight ];
-    
+    const infoAssignButtonList: ControllerButtonList[] = [ ControllerTypes.checkSave!, ControllerTypes.empty!, ControllerTypes.empty!, ControllerTypes.nextAssignRight! ];
+
     // 當為 reset and back, button 下一層沒有節點的時候
     const isLastNode = nodes.key == ResetNodesEnum.key || nodes.key == BackNodesEnum.key
         || (nodes.mode == ModeType.radio || nodes.mode == ModeType.button || nodes.mode == ModeType.checkBox || nodes.mode == ModeType.paginationButton) && !nodes.nodes;
@@ -512,7 +516,7 @@ function handlerModeControllerButtonList(nodes: Nodes, previousNodes: Nodes) {
 
         if(isVerticalRangeNode) {
             // 判斷是不是最後一個
-            return nodes.key == previousNodes!.nodes![previousNodes!.nodes!.length - 1].key ? rangeNextButtonListLast : rangeNextButtonList
+            return nodes.key == previousNodes!.nodes![previousNodes!.nodes!.length - 1]!.key ? rangeNextButtonListLast : rangeNextButtonList
         } 
 
         if(isHorizontalRangeNode) {
@@ -559,14 +563,14 @@ function handlerAssignNextPanel() {
     menuState.secondPanelIndex = 0;
     menuState.assignPanelOrderIndex += 1;
     menuState.assignPanelOrderIndex = menuState.assignPanelOrderIndex == assignPanelOrder.length ? 0 : menuState.assignPanelOrderIndex;
-    const key = assignPanelOrder[menuState.assignPanelOrderIndex];
+    const key = assignPanelOrder[menuState.assignPanelOrderIndex] as string;
 
-    if(!isEnableNode(assignMenus.value[key].node)) {
+    if(!isEnableNode(assignMenus.value[key]!.node)) {
         handlerAssignNextPanel();
         return;
     }    
 
-    selectedMenuPanel(assignMenus.value[key].node as Nodes);
+    selectedMenuPanel(assignMenus.value[key]!.node as Nodes);
     handlerNextPanel();
     handlerMenuTimeout();
 };
@@ -676,13 +680,13 @@ function selectEnabledNode(node: Nodes, startIndex: number, setValue: (node: Nod
         do {
             // 檢查節點是否可用且未被禁用
             if (
-                isEnableNode(node.nodes[index]) && !node.nodes[index].disabled && openAllMenu.value
-                || (openAssignButton.value && node.nodes[index].mode !== ModeType.info)
-                || (openAssignButton.value && node.nodes[index].mode == ModeType.button && !node.nodes[index].assignDisplay)
+                isEnableNode(node.nodes[index]!) && !node.nodes[index]!.disabled && openAllMenu.value
+                || (openAssignButton.value && node.nodes[index]!.mode !== ModeType.info)
+                || (openAssignButton.value && node.nodes[index]!.mode == ModeType.button && !node.nodes[index]!.assignDisplay)
             ) {
                 let selectedIndex = (node.selected || node.selected === 0) ? node.nodes.findIndex(n => n.selected === node.selected) : index;
                 index = selectedIndex >= 0 ? selectedIndex : index;
-                setValue(node.nodes[index], index);
+                setValue(node.nodes[index]!, index);
                 return;
             }
 
@@ -709,7 +713,7 @@ function handlePrevious() {
     } else if(menuState.secondPanel && menuState.thirdPanel && !menuState.fourthPanel) {
         if(menuState.thirdPanel!.mode == ModeType.verticalRange && menuState.secondPanel.nodes!.length > 1 && menuState.thirdPanelIndex != 0) {
             menuState.thirdPanelIndex -= 1;
-            menuState.thirdPanel = menuState.secondPanel.nodes![menuState.thirdPanelIndex];
+            menuState.thirdPanel = menuState.secondPanel.nodes![menuState.thirdPanelIndex] as Nodes;
             return;
         }
 
@@ -750,7 +754,7 @@ function handlerNavigation(direction: 'up' | 'down') {
                     if(menuState.menuPanel) {
                         menus.value.page = page;
                         menuState.menuPanelIndex = index;
-                        menuState.menuPanel = menus.value.nodes[menuState.menuPanelIndex];
+                        menuState.menuPanel = menus.value.nodes[menuState.menuPanelIndex] as Nodes;
     
                         if(menuState.menuPanel!.livePreview) {
                             // 即時預覽效果的時候，暫存原始的值，當沒確認時，反回上一步需要恢復為暫存的值
@@ -770,33 +774,33 @@ function handlerNavigation(direction: 'up' | 'down') {
                     if(menuState.menuPanel && menuState.menuPanel.nodes) {
                         menuState.menuPanel.page = page;
                         menuState.secondPanelIndex = index;
-                        menuState.secondPanel = menuState.menuPanel.nodes[menuState.secondPanelIndex];
+                        menuState.secondPanel = menuState.menuPanel.nodes[menuState.secondPanelIndex] as Nodes;
                         
-                        if(menuState.secondPanel.livePreview) {
+                        if(menuState.secondPanel!.livePreview) {
                             // 即時預覽效果的時候，暫存原始的值，當沒確認時，反回上一步需要恢復為暫存的值
                             if(menuState.temporaryStorage == null) {
                                 menuState.temporaryStorage = JSON.parse(JSON.stringify(menuState.menuPanel));
                             }
     
-                            if(menuState.secondPanel.mode == ModeType.button || menuState.secondPanel.mode == ModeType.radio) {
+                            if(menuState.secondPanel!.mode == ModeType.button || menuState.secondPanel!.mode == ModeType.radio) {
                                 // 目前只有 button 及 radio 類型才需要，如有其他類型在進行判斷
     
                                 // 預覽所選擇顏色亮度
-                                if(menuState.secondPanel.parents == "Color") {
-                                    if(menuState.secondPanel.key != BackNodesEnum.key || menuState.secondPanel.key != ResetNodesEnum.key || menuState.secondPanel.key != ExitNodesEnum.key) {
-                                        menus.value.nodes[0].nodes![0].result = BrightnessDefaultValueEnum[menuState.secondPanel.result as string];
+                                if(menuState.secondPanel!.parents == "Color") {
+                                    if(menuState.secondPanel!.key != BackNodesEnum.key || menuState.secondPanel!.key != ResetNodesEnum.key || menuState.secondPanel!.key != ExitNodesEnum.key) {
+                                        menus.value.nodes[0]!.nodes![0].result = BrightnessDefaultValueEnum[menuState.secondPanel!.result as string];
                                     }
                                 }
-                                
-                                menuState.menuPanel.result = menuState.secondPanel.result;
-                            } 
+
+                                menuState.menuPanel.result = menuState.secondPanel!.result;
+                            }
                         } else if(
-                            menuState.temporaryStorage && menuState.secondPanel.mode == ModeType.button && menuState.secondPanel.key == ExitNodesEnum.key
-                            || menuState.temporaryStorage && menuState.secondPanel.mode == ModeType.button && menuState.secondPanel.key == ResetNodesEnum.key
-                            || menuState.temporaryStorage && menuState.secondPanel.mode == ModeType.button && menuState.secondPanel.key == BackNodesEnum.key
+                            menuState.temporaryStorage && menuState.secondPanel!.mode == ModeType.button && menuState.secondPanel!.key == ExitNodesEnum.key
+                            || menuState.temporaryStorage && menuState.secondPanel!.mode == ModeType.button && menuState.secondPanel!.key == ResetNodesEnum.key
+                            || menuState.temporaryStorage && menuState.secondPanel!.mode == ModeType.button && menuState.secondPanel!.key == BackNodesEnum.key
                         ) {
                             menuState.menuPanel.result = menuState.temporaryStorage.result;
-                            menus.value.nodes[0].nodes![0].result = BrightnessDefaultValueEnum[menuState.menuPanel.result as string];
+                            menus.value.nodes[0]!.nodes![0].result = BrightnessDefaultValueEnum[menuState.menuPanel.result as string];
                             menuState.temporaryStorage = null;
                         }
                     }
@@ -806,14 +810,14 @@ function handlerNavigation(direction: 'up' | 'down') {
                     if(menuState.secondPanel && menuState.secondPanel.nodes) {
                         menuState.secondPanel.page = page;
                         menuState.thirdPanelIndex = index;
-                        menuState.thirdPanel = menuState.secondPanel.nodes[menuState.thirdPanelIndex];
+                        menuState.thirdPanel = menuState.secondPanel.nodes[menuState.thirdPanelIndex] as Nodes;
     
                         if(menuState.secondPanel.nodes.length > 0) {
                             if(
-                                menuState.thirdPanelIndex > 0 && menuState.secondPanel.nodes[menuState.thirdPanelIndex - 1].mode == ModeType.horizontalRange 
-                                && menuState.secondPanel.nodes[menuState.thirdPanelIndex - 1].horizontalRangeFocus 
+                                menuState.thirdPanelIndex > 0 && menuState.secondPanel.nodes[menuState.thirdPanelIndex - 1]!.mode == ModeType.horizontalRange
+                                && menuState.secondPanel.nodes[menuState.thirdPanelIndex - 1]!.horizontalRangeFocus
                             ) {
-                                menuState.secondPanel.nodes[menuState.thirdPanelIndex - 1].horizontalRangeFocus = false;
+                                menuState.secondPanel.nodes[menuState.thirdPanelIndex - 1]!.horizontalRangeFocus = false;
                                 menuState.thirdPanel.horizontalRangeFocus = true;
                             }
                         }
@@ -835,17 +839,17 @@ function handlerNavigation(direction: 'up' | 'down') {
                     if(menuState.thirdPanel && menuState.thirdPanel.nodes) {
                         menuState.thirdPanel.page = page;
                         menuState.fourthPanelIndex = index;
-                        menuState.fourthPanel = menuState.thirdPanel.nodes[menuState.fourthPanelIndex];
+                        menuState.fourthPanel = menuState.thirdPanel.nodes[menuState.fourthPanelIndex] as Nodes;
     
-                        if(menuState.fourthPanel.livePreview) {
+                        if(menuState.fourthPanel!.livePreview) {
                             // 即時預覽效果的時候，暫存原始的值，當沒確認時，反回上一步需要恢復為暫存的值
                             if(menuState.temporaryStorage == null) {
                                 menuState.temporaryStorage = JSON.parse(JSON.stringify(menuState.thirdPanel));
                             };
     
-                            if(menuState.fourthPanel.mode == ModeType.button || menuState.fourthPanel.mode == ModeType.radio) {
+                            if(menuState.fourthPanel!.mode == ModeType.button || menuState.fourthPanel!.mode == ModeType.radio) {
                                 // 目前只有 button 及 radio 類型才需要，如有其他類型在進行判斷
-                                menuState.thirdPanel.result = menuState.fourthPanel.result;
+                                menuState.thirdPanel.result = menuState.fourthPanel!.result;
                             }
                         }
                     }
@@ -861,7 +865,7 @@ function handlerNavigation(direction: 'up' | 'down') {
                 if(confirmState.confirmSecondPanel) {
                     confirmState.confirmSecondPanel.page = page;
                     confirmState.confirmThirdPanelIndex = index;
-                    confirmState.confirmThirdPanel = confirmState.confirmSecondPanel.nodes![confirmState.confirmThirdPanelIndex];
+                    confirmState.confirmThirdPanel = confirmState.confirmSecondPanel.nodes![confirmState.confirmThirdPanelIndex] as Nodes;
                 }
             });
         }
@@ -882,13 +886,13 @@ function updatePanelIndex(node: Nodes, nodeIndex: number, step: number, send: (p
         const oldNodes = JSON.parse(JSON.stringify(node));
 
         if (
-            !isEnableNode(node.nodes[index]) || node.nodes[index].disabled
+            !isEnableNode(node.nodes[index]!) || node.nodes[index]!.disabled
             // 暫時先寫死跳過
-            || openAllMenu.value && node.nodes[index].key == "AudioFollowsVideo" && node.nodes[index].mode == ModeType.info
-            || openAllMenu.value && node.nodes[index].key == ExitNodesEnum.key && node.nodes[index].mode != ModeType.exit
-            || openAssignButton.value && node.nodes[index].key == ResetNodesEnum.key
-            || openAssignButton.value && node.nodes[index].key == BackNodesEnum.key
-            || openAssignButton.value && node.nodes[index].mode == ModeType.button && !node.nodes[index].assignDisplay
+            || openAllMenu.value && node.nodes[index]!.key == "AudioFollowsVideo" && node.nodes[index]!.mode == ModeType.info
+            || openAllMenu.value && node.nodes[index]!.key == ExitNodesEnum.key && node.nodes[index]!.mode != ModeType.exit
+            || openAssignButton.value && node.nodes[index]!.key == ResetNodesEnum.key
+            || openAssignButton.value && node.nodes[index]!.key == BackNodesEnum.key
+            || openAssignButton.value && node.nodes[index]!.mode == ModeType.button && !node.nodes[index]!.assignDisplay
         ) {
             console.log(node.nodes[index]);
             updatePanelIndex(node, index ,step, send);
@@ -972,12 +976,12 @@ function handlerRangeValue(step: string) {
             }
 
             if(previousNodes.key == "Brightness" || previousNodes.key == "Contrast") {
-                menus.value.nodes[0].nodes[2].result = OffNodesEnum.result;
-                menus.value.nodes[0].nodes[2].selected = OffNodesEnum.selected;
+                menus.value.nodes[0]!.nodes[2].result = OffNodesEnum.result;
+                menus.value.nodes[0]!.nodes[2].selected = OffNodesEnum.selected;
             }
 
             if(previousNodes.key == "MenuPosition") {
-                let menuPositionText = `H=${previousNodes.nodes![0].result}, V=${previousNodes.nodes![1].result}`;
+                let menuPositionText = `H=${previousNodes.nodes![0]!.result}, V=${previousNodes.nodes![1]!.result}`;
                 previousNodes.selected = menuPositionText;
                 previousNodes.result = menuPositionText;
             }
@@ -1051,16 +1055,16 @@ function saveNodesValue(nodes: Nodes, previousNodes: Nodes) {
         // 上下一頁 目前只處理 secondaryNodesPagination(第三層畫面)
         NextPageButtons: () => handlerNavigation("down"),
         PreviousPageButtons: () => handlerNavigation("up"),
-        // 自動調整
-        AutoAdjustment: () => {
-            handlerClose();
-            homeEvent.autoAdjustment();
-        },
-        // 測試喇叭
-        InternalSpeakerSelfTest: () => {
-            handlerClose();
-            homeEvent.speakerSelfTest();
-        }
+        // // 自動調整
+        // AutoAdjustment: () => {
+        //     handlerClose();
+        //     homeEvent.autoAdjustment();
+        // },
+        // // 測試喇叭
+        // InternalSpeakerSelfTest: () => {
+        //     handlerClose();
+        //     homeEvent.speakerSelfTest();
+        // }
     };
 
     const previousNodesActions: { [key: string]: () => void } = {
@@ -1071,13 +1075,13 @@ function saveNodesValue(nodes: Nodes, previousNodes: Nodes) {
 
     // 當為 previousNodes.key 時，執行動作
     if (previousNodes.key in previousNodesActions) {
-        previousNodesActions[previousNodes.key]();
+        previousNodesActions[previousNodes.key]!();
         return;
     }
 
     // 當為 nodes.key 時，執行動作
     if (nodes.key in nodesActions) {
-        nodesActions[nodes.key]();
+        nodesActions[nodes.key]!();
         return;
     }
 
@@ -1099,8 +1103,8 @@ function saveNodesValue(nodes: Nodes, previousNodes: Nodes) {
     } else {
         if(nodes.mode != ModeType.horizontalRange && previousNodes.nodes!.length > 0) {
             if(previousNodes.key == "Audio" && nodes.mode == ModeType.radio) {
-                previousNodes.nodes![1].selected = nodes.selected;
-                previousNodes.nodes![1].result = nodes.result;
+                previousNodes.nodes![1]!.selected = nodes.selected;
+                previousNodes.nodes![1]!.result = nodes.result;
             } else if(previousNodes.key == "CustomRGB") {
                 menuState.menuPanel!.selected = previousNodes.selected;
                 menuState.menuPanel!.selected  = previousNodes.result;
@@ -1131,7 +1135,7 @@ function saveNodesValue(nodes: Nodes, previousNodes: Nodes) {
         const keyHandlers: { [key: string]: () => void } = {
             Language: () => reopenMenu(),
             Input: () => {
-                homeEvent.restartScreen();
+                homeEvent.restartScreen!();
                 handlerClose();
             },
             Color: () => setBrightnessDefaultValue(),
@@ -1146,7 +1150,7 @@ function saveNodesValue(nodes: Nodes, previousNodes: Nodes) {
 
         // 當為 previousNodes.key 時，執行動作
         if (previousNodes.key in keyHandlers) {
-            keyHandlers[previousNodes.key]();
+            keyHandlers[previousNodes.key]!();
         }
 
         if(nodes.livePreview) {
@@ -1217,7 +1221,7 @@ function handleChangingMessageAction(nodes: Nodes) {
 
     // 當為 nodes.key 時，執行動作
     if (nodes.key in keyHandlers) {
-        keyHandlers[nodes.key]();
+        keyHandlers[nodes.key]!();
     }
 };
 
@@ -1269,13 +1273,13 @@ function handlerCloseConfirmAction() {
             ? menuState.menuPanel!.nodes?.findIndex(s => s.key == BackNodesEnum.key)
             : menuState.menuPanel!.nodes?.findIndex(s => s.key == ExitNodesEnum.key);
         menuState.secondPanelIndex = index as number;
-        menuState.secondPanel = menuState.menuPanel!.nodes![menuState.secondPanelIndex];
+        menuState.secondPanel = menuState.menuPanel!.nodes![menuState.secondPanelIndex] as Nodes;
     } else if(menuState.currentPanelNumber == 3) {
         let index = openAllMenu.value
             ? menuState.secondPanel!.nodes?.findIndex(s => s.key == BackNodesEnum.key)
             : menuState.secondPanel!.nodes?.findIndex(s => s.key == ExitNodesEnum.key);
         menuState.thirdPanelIndex = index as number;
-        menuState.thirdPanel = menuState.secondPanel!.nodes![menuState.thirdPanelIndex];
+        menuState.thirdPanel = menuState.secondPanel!.nodes![menuState.thirdPanelIndex] as Nodes;
     }
 
     setBrightnessDefaultValue();
