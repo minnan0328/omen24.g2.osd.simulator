@@ -17,8 +17,8 @@ let OffNodesEnum = new OffNodes();
 
 export default class Input extends DefaultNodes implements Nodes {
     key = "Input";
-    selected = "HDMI";
-    result = "HDMI";
+    selected = "HDMI 1";
+    result = "HDMI 1";
     size = 9;
     mode = ModeType.button;
     language = {

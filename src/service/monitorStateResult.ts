@@ -33,6 +33,8 @@ const menuHeight = 356;
 // 螢幕與圖片設定
 export const monitorScreenResult = computed(() => {
     return {
+        // 取得桌面圖片
+        image: screenOff,
         monitorSize: {
             monitorWidth: `${monitorWidth}px`,
             monitorHeight: `${monitorHeight}px`
@@ -42,8 +44,6 @@ export const monitorScreenResult = computed(() => {
         // 取得對比值 Contrast
         contrast: `${brightness.value.nodes[0].result}%`,
         RGB: toImageColor.value,
-        // 取得黑色延展 Black Stretch 對應亮度圖片
-        blackStretchImage: getBlackStretchImage.value,
         // 取得銳利度
         sharpness: getSharpness.value,
         diagnosticPatterns: {
@@ -59,13 +59,6 @@ export const monitorScreenResult = computed(() => {
         },
         // 取得影像縮放設定 Image Scaling
         imageScaling: image.value.nodes[5].result.replace(/\s+/g, ''),
-        // 取得時脈與相位 Clock and Phase
-        imageClockPhase: {
-            // 時脈，圖片寬度
-            width: `${(0.1 * image.value.nodes[1].nodes[0].result) + 95}%`,
-            // 相位，圖片高度(模錢沒使用到)
-            height: `${(0.1 * image.value.nodes[1].nodes[1].result) + 95.5}%`
-        }
     }
 });
 
@@ -180,19 +173,6 @@ const toImageColor = computed(() => {
     return `${combinedHue}deg`;
 });
 
-// 取得黑色延展 Black Stretch 對應亮度圖片
-const getBlackStretchImage = computed(() => {
-    if(brightness.value.nodes[3].result == LowNodesEnum.result) {
-        return screenLow
-    } else if(brightness.value.nodes[3].result == MediumNodesEnum.result) {
-        return screenMedium
-    } else if(brightness.value.nodes[3].result == HighNodesEnum.result) {
-        return screenHigh
-    } else {
-        return screenOff
-    }
-});
-
 // 取讀銳利度
 const getSharpness = computed(() => {
     if(image.value.nodes[4].result == image.value.nodes[4].nodes![0].result) {
@@ -246,14 +226,6 @@ const patterns = ref([
 ]);
 
 store.$subscribe((mutation, state) => {
-    // 當音量不啟用時，所有相關音量設定都 disabled
-    let isEnableSpeakers = state.input.nodes[4].result.includes(state.input.nodes[4].nodes[0].result);
-    state.input.nodes[4].nodes[1].disabled = isEnableSpeakers == false;
-    state.input.nodes[4].nodes[2].disabled = isEnableSpeakers == false;
-    state.input.nodes[4].nodes[3].disabled = isEnableSpeakers == false;
-    state.input.nodes[4].nodes[4].disabled = isEnableSpeakers == false;
-    state.input.nodes[4].nodes[5].disabled = isEnableSpeakers == false;
-
     // 診斷模式需要透過監聽 store
     if(state.isDiagnosticPatterns) {
         const resultIndex = management.value.nodes[2].nodes!.findIndex((node: Nodes) => node.result === management.value.nodes[2].result);

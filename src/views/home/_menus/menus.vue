@@ -888,13 +888,12 @@ function updatePanelIndex(node: Nodes, nodeIndex: number, step: number, send: (p
         if (
             !isEnableNode(node.nodes[index]!) || node.nodes[index]!.disabled
             // 暫時先寫死跳過
-            || openAllMenu.value && node.nodes[index]!.key == "AudioFollowsVideo" && node.nodes[index]!.mode == ModeType.info
+            // || openAllMenu.value && node.nodes[index]!.key == "AudioFollowsVideo" && node.nodes[index]!.mode == ModeType.info
             || openAllMenu.value && node.nodes[index]!.key == ExitNodesEnum.key && node.nodes[index]!.mode != ModeType.exit
             || openAssignButton.value && node.nodes[index]!.key == ResetNodesEnum.key
             || openAssignButton.value && node.nodes[index]!.key == BackNodesEnum.key
             || openAssignButton.value && node.nodes[index]!.mode == ModeType.button && !node.nodes[index]!.assignDisplay
         ) {
-            console.log(node.nodes[index]);
             updatePanelIndex(node, index ,step, send);
         } else {
             page = Math.floor(index / node.size) + 1;

@@ -11,7 +11,7 @@
     </monitorStatus>
 
     <div :class="['screen', monitorScreenResult.imageScaling]" v-if="showScreen && !monitorScreenResult.diagnosticPatterns.start">
-        <img :src="monitorScreenResult.blackStretchImage" alt="">
+        <img :src="monitorScreenResult.image" alt="">
     </div>
     <div v-else-if="monitorScreenResult.diagnosticPatterns.start" :key="monitorScreenResult.diagnosticPatterns.patterns"
         :class="['screen diagnostic-patterns', monitorScreenResult.diagnosticPatterns.patterns]">
@@ -115,7 +115,7 @@ onMounted(() => {
     }
 
     img {
-        width: v-bind("monitorScreenResult.imageClockPhase.width");
+        width: $screen-width;
         height: $screen-height;
         position: absolute;
         bottom: v-bind("monitorScreenResult.imagePosition.y");
