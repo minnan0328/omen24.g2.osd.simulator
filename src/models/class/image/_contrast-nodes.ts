@@ -11,7 +11,6 @@ export default class contrastNodes extends DefaultNodes implements Nodes {
     result = 100;
     displayValue = true;
     size = 1;
-    page = 1;
     mode = ModeType.button;
     language = {
         German: "Kontrast",

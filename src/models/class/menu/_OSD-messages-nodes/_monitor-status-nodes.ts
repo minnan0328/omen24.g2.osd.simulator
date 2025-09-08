@@ -4,7 +4,6 @@ import type { Nodes } from "@/types";
 import { ModeType } from "@/types";
 import { DefaultNodes, BackNodes, OffNodes, TopNodes, MediumNodes, BottomNodes } from '../../_utilities';
 
-const DefaultNodesEnum = new DefaultNodes();
 const BackNodesEnum = new BackNodes();
 const OffNodesEnum = new OffNodes();
 const TopNodesEnum = new TopNodes();
@@ -17,7 +16,6 @@ export default class MonitorStatusNodes extends DefaultNodes implements Nodes {
     result = TopNodesEnum.result;
     displayValue = true;
     size = 5;
-    page = 1;
     mode = ModeType.button;
     language = {
         German: "Monitorstatus",

@@ -8,7 +8,6 @@ export default class BottomRightNodes extends DefaultNodes implements Nodes {
     result = "Bottom Right";
     displayValue = true;
     size = 3;
-    page = 1;
     mode = ModeType.radio;
     language = {
         German: "Unten Rechts",

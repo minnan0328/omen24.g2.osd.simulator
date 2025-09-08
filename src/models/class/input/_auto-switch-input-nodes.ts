@@ -15,7 +15,6 @@ export default class AutoSwitchInputNodes extends DefaultNodes implements Nodes 
     assignDisplay = false;
     displayValue = true;
     size = 3;
-    page = 1;
     mode = ModeType.button;
     language = {
         German: "Autom. ing. omsch.",

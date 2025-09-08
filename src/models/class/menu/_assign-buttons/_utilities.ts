@@ -5,9 +5,9 @@ import { ModeType } from "@/types";
 import { DefaultNodes } from '@/models/class/_utilities';
 import BrightnessNodes from '@/models/class/image/_brightness-nodes';
 import ColorNodes from '@/models/class/color/color';
-import MessageTimersNodes from '@/models/class//gaming/message-timers/message-timers-nodes';
+import MessageTimersNodes from '@/models/class/gaming/_message-timers/message-timers-nodes';
 import RefreshRateNodes from '@/models/class/gaming/_refresh-rate-nodes';
-import CrosshairNodes from '@/models/class/gaming/crosshair/crosshair-nodes';
+import CrosshairNodes from '@/models/class/gaming/_crosshair/crosshair-nodes';
 
 const BrightnessNodesEnum = new BrightnessNodes();
 const ColorNodesEnum = new ColorNodes();

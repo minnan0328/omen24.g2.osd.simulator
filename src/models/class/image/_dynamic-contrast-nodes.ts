@@ -14,7 +14,6 @@ export default class DynamicContrastNodes extends DefaultNodes implements Nodes 
     result = OffNodesEnum.result;
     displayValue = true;
     size = 3;
-    page = 1;
     mode = ModeType.button;
     language = {
         German: "Dynamischer Kontrast",

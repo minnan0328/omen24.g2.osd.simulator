@@ -13,7 +13,6 @@ export default class MenuTimeoutNodes extends DefaultNodes implements Nodes {
     result = 30;
     displayValue = true;
     size = 1;
-    page = 1;
     mode = ModeType.button;
     language = {
         German: "Menü-Timeout",

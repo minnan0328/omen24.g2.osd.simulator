@@ -11,7 +11,6 @@ export default class SharpnessNodes extends DefaultNodes implements Nodes {
     result = "Level 4";
     displayValue = true;
     size = 8;
-    page = 1;
     mode = ModeType.button;
     language = {
         German: "Schärfe",

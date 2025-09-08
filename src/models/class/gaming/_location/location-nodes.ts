@@ -18,7 +18,6 @@ export default class LocationNodes extends DefaultNodes implements Nodes {
     result = TopRightNodesEnum.result;
     displayValue = true;
     size = 5;
-    page = 1;
     mode = ModeType.radio;
     language = {
         German: "Speicherort",

@@ -3,8 +3,8 @@ import { ModeType } from "@/types";
 import { DefaultNodes, BackNodes, ResetNodes, OnNodes, OffNodes } from '../../_utilities';
 import SpeedrunTimerNodes from './_speedrun-timer-nodes';
 import MessageNodes from './_message-nodes';
-import ColorNodes from '../color/color-nodes';
-import LocationNodes from '../location/location-nodes';
+import ColorNodes from '../_color/color-nodes';
+import LocationNodes from '../_location/location-nodes';
 const DefaultNodesEnum = new DefaultNodes();
 const BackNodesEnum = new BackNodes();
 const OffNodesEnum = new OffNodes();
@@ -20,7 +20,6 @@ export default class MessageTimersNodes extends DefaultNodes implements Nodes {
     result = OffNodesEnum.result;
     displayValue = true;
     size = 10;
-    page = 1;
     mode = ModeType.button;
     language = {
         German: "Nachricht-Zeitgeber",

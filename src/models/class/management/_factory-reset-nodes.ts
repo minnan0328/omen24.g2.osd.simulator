@@ -14,7 +14,6 @@ export default class FactoryResetNodes extends DefaultNodes implements Nodes {
     selected = "Yes";
     result = "Yes";
     size = 3;
-    page = 1;
     mode = ModeType.button;
     language = {
         German: "Werkseinst. wiederherst.",

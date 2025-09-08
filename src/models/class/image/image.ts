@@ -20,7 +20,6 @@ const VideoLevelNodesEnum = new VideoLevelNodes();
 export default class Image extends DefaultNodes implements Nodes {
     key = "Image";
     size = 8;
-    page = 1;
     mode = ModeType.button;
     language = {
         German: "Bild",

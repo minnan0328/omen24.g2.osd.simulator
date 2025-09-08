@@ -11,7 +11,6 @@ export default class MenuTransparencyNodes extends DefaultNodes implements Nodes
     result = 0;
     displayValue = true;
     size = 1;
-    page = 1;
     mode = ModeType.button;
     language = {
         German: "Menütransparenz",

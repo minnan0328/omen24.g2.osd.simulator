@@ -14,7 +14,6 @@ export default class DisplayPortModeNodes extends DefaultNodes implements Nodes 
     assignDisplay = false;
     displayValue = true;
     size = 3;
-    page = 1;
     mode = ModeType.button;
     language = {
         German: "DisplayPort-Modus",

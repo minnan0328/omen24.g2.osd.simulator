@@ -14,7 +14,6 @@ export default class DDCCISupportNodes extends DefaultNodes implements Nodes {
     result = OnNodesEnum.result;
     displayValue = true;
     size = 3;
-    page = 1;
     mode = ModeType.button;
     language = {
         German: "DDC/CI-Unterstützung",

@@ -13,7 +13,6 @@ export default class MenuPositionNodes extends DefaultNodes implements Nodes {
     result = "H=98, V=7";
     displayValue = true;
     size = 3;
-    page = 1;
     mode = ModeType.button;
     language = {
         German: "Menüposition",

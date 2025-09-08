@@ -26,7 +26,6 @@ export default class ColorNodes extends DefaultNodes implements Nodes {
     result = WhileNodesEnum.result;
     displayValue = true;
     size = 9;
-    page = 1;
     mode = ModeType.radio;
     language = {
         German: "Farbe",

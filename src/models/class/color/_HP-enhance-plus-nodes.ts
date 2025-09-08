@@ -16,7 +16,6 @@ export default class HPEnhancePlusNode extends DefaultNodes implements Nodes {
     displayValue = true;
     livePreview = true;
     size = 4;
-    page = 1;
     mode = ModeType.radio;
     language = {
         German: "HP Enhance+",

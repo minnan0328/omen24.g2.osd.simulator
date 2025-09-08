@@ -1,7 +1,7 @@
 import { ModeType } from "@/types";
 import type { Nodes } from "@/types";
-import { DefaultNodes, BackNodes, OnNodes, OffNodes } from '../../_utilities';
-import ColorNodes from '../_color/color-nodes';
+import { DefaultNodes, BackNodes, OnNodes, OffNodes } from '../_utilities';
+import ColorNodes from './_color/color-nodes';
 const BackNodesEnum = new BackNodes();
 const OnNodesEnum = new OnNodes();
 const OffNodesEnum = new OffNodes();
@@ -13,7 +13,6 @@ export default class MultiMonitorAlignNodes extends DefaultNodes implements Node
     result = OffNodesEnum.result;
     displayValue = true;
     size = 4;
-    page = 1;
     mode = ModeType.button;
     language = {
         German: "Mehrere Monitore ausrichten",

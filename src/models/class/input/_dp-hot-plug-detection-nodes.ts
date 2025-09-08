@@ -14,7 +14,6 @@ export default class DPHotPlugDetectionNodes extends DefaultNodes implements Nod
     assignDisplay = false;
     displayValue = true;
     size = 3;
-    page = 1;
     mode = ModeType.button;
     language = {
         German: "DP-Hot-Plug-Erkennung",

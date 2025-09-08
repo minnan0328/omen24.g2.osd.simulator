@@ -15,7 +15,6 @@ export default class LanguageNodes extends DefaultNodes implements Nodes {
     result = "English";
     displayValue = true;
     size = 11;
-    page = 1;
     mode = ModeType.button;
     language = {
         German: "Sprache",

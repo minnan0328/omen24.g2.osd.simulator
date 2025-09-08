@@ -137,7 +137,7 @@ import {
     AssignInputNodes, AssignBrightnessNodes,
     AssignColorNodes, AssignDisplayInformationNodes,
     AssignNextActiveInputNodes, AssignVolumeNodes, AssignEmptyNodes
-} from '@/models/class/menu/assign-buttons/_utilities';
+} from '@/models/class/menu/_assign-buttons/_utilities';
 
 import PowerConfirmChangeNodes from '@/models/class/power/message/confirm-change';
 

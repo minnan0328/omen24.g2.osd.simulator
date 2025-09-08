@@ -6,7 +6,7 @@ import {
 } from '@/models/index';
 
 
-import { AssignVolumeNodes, AssignColorNodes } from '@/models/class/menu/assign-buttons/_utilities';
+import { AssignVolumeNodes, AssignColorNodes } from '@/models/class/menu/_assign-buttons/_utilities';
 const AssignVolumeNodesEnum = new AssignVolumeNodes();
 const AssignColorNodesEnum = new AssignColorNodes();
 

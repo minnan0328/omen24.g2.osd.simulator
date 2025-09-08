@@ -11,7 +11,6 @@ export default class MenuRotationNodes extends DefaultNodes implements Nodes {
     result = "Landscape (0°)";
     displayValue = true;
     size = 5;
-    page = 1;
     mode = ModeType.button;
     language = {
         German: "Menürotation",

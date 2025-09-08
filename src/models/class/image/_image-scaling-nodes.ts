@@ -12,7 +12,6 @@ export default class ImageScalingNodes extends DefaultNodes implements Nodes {
     result = "Fill to Screen";
     displayValue = true;
     size = 3;
-    page = 1;
     mode = ModeType.button;
     language = {
         German: "Bildskalierung",

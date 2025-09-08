@@ -14,7 +14,6 @@ export default class OSDMessagesNodes extends DefaultNodes implements Nodes {
     selected = ["Power-On Logo", "No Input Signal Warning", "Confirm Change Message"];
     result = ["Power-On Logo", "No Input Signal Warning", "Confirm Change Message"];
     size = 5;
-    page = 1;
     mode = ModeType.button;
     language = {
         German: "OSD-Nachrichten",
@@ -98,7 +97,6 @@ export default class OSDMessagesNodes extends DefaultNodes implements Nodes {
         {
             ...JSON.parse(JSON.stringify(MonitorStatusNodesEnum)),
         },
-        // 上一步
         {
             ...JSON.parse(JSON.stringify(BackNodesEnum)),
             parents: this.key

@@ -13,7 +13,6 @@ export default class BlackStretchNodes extends DefaultNodes implements Nodes {
     result = "Auto";
     displayValue = true;
     size = 4;
-    page = 1;
     mode = ModeType.button;
     only = ["DisplayPort", "HDMI"];
     language = {

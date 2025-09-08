@@ -11,7 +11,6 @@ export default class amdFreeSync extends DefaultNodes implements Nodes {
     result = OnNodesEnum.result;
     displayValue = true;
     size = 3;
-    page = 1;
     mode = ModeType.radio;
     language = {
         German: "AMD FreeSync",

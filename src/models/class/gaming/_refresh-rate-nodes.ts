@@ -1,8 +1,8 @@
 import type { Nodes } from "@/types";
 import { ModeType } from "@/types";
 import { DefaultNodes, BackNodes, ResetNodes, OnNodes, OffNodes } from '../_utilities';
-import ColorNodes from './color/color-nodes';
-import LocationNodes from './location/location-nodes';
+import ColorNodes from './_color/color-nodes';
+import LocationNodes from './_location/location-nodes';
 const BackNodesEnum = new BackNodes();
 const OnNodesEnum = new OnNodes();
 const OffNodesEnum = new OffNodes();
@@ -16,7 +16,6 @@ export default class RefreshRateNodes extends DefaultNodes implements Nodes {
     result = OnNodesEnum.result;
     displayValue = true;
     size = 3;
-    page = 1;
     mode = ModeType.button;
     language = {
         German: "Bildwiederholungsrate",

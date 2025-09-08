@@ -7,7 +7,6 @@ let DefaultNodesEnum = new DefaultNodes();
 export default class PowerConfirmChangeNodes extends DefaultNodes implements Nodes {
     key = "PowerConfirmChange";
     size = 1;
-    page = 1;
     mode = ModeType.message;
     language = {
         English: "Confirm Change!",

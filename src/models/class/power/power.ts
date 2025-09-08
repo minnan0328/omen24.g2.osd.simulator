@@ -14,7 +14,6 @@ const PowerLEDNodesEnum = new PowerLEDNodes();
 export default class Power extends DefaultNodes implements Nodes {
     key = "Power";
     size = 5;
-    page = 1;
     mode = ModeType.button;
     language = {
         German: "Energie",

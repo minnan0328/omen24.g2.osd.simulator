@@ -10,7 +10,6 @@ export default class MessageNodes extends DefaultNodes implements Nodes {
     result = "Your Gaming Timer has Expired !";
     displayValue = true;
     size = 5;
-    page = 1;
     mode = ModeType.button;
     language = {
         German: "Nachricht",

@@ -4,8 +4,8 @@ import { DefaultNodes, ResetNodes, BackNodes } from '../_utilities';
 import AndFreeSyncNode from './_amd-free-sync-nodes';
 import ResponseTimeNodes from './_response-rime-nodes';
 import RefreshRateNodes from './_refresh-rate-nodes';
-import CrosshairNodes from './crosshair/crosshair-nodes';
-import MessageTimersNodes from './message-timers/message-timers-nodes';
+import CrosshairNodes from './_crosshair/crosshair-nodes';
+import MessageTimersNodes from './_message-timers/message-timers-nodes';
 import MultiMonitorAlignNodes from './_multi-monitor-align-nodes';
 
 const ResetNodesEnum = new ResetNodes(); 
@@ -23,7 +23,6 @@ export default class Gaming extends DefaultNodes implements Nodes {
     result = null;
     displayValue = true;
     size = 8;
-    page = 1;
     mode = ModeType.button;
     language = {
         German: "Spiele",

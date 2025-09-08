@@ -13,7 +13,6 @@ export default class DiagnosticPatternsNodes extends DefaultNodes implements Nod
     selected = "Cycle Patterns";
     result = "Cycle Patterns";
     size = 7;
-    page = 1;
     mode = ModeType.button;
     language = {
         German: "Diagnosemuster",

@@ -14,7 +14,6 @@ export default class AutoSleepModeNodes extends DefaultNodes implements Nodes {
     result = OnNodesEnum.result;
     displayValue = true;
     size = 3;
-    page = 1;
     mode = ModeType.button;
     language = {
         German: "Automat. Ruhemodus",

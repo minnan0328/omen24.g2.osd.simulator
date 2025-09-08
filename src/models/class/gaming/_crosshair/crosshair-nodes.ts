@@ -2,7 +2,7 @@ import { ModeType } from "@/types";
 import type { Nodes } from "@/types";
 import { DefaultNodes, BackNodes, ResetNodes, OnNodes, OffNodes } from '../../_utilities';
 import ConfigureNodes from './_configure-nodes';
-import ColorNodes from '../color/color-nodes';
+import ColorNodes from '../_color/color-nodes';
 
 const OnNodesEnum = new OnNodes();
 const OffNodesEnum = new OffNodes();
@@ -17,7 +17,6 @@ export default class CrosshairNodes extends DefaultNodes implements Nodes {
     result = OffNodesEnum.result;
     displayValue = true;
     size = 8;
-    page = 1;
     mode = ModeType.radio;
     language = {
         German: "Fadenkreuz",

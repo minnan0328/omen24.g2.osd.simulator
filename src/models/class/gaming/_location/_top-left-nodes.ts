@@ -8,7 +8,6 @@ export default class TopLeftNodes extends DefaultNodes implements Nodes {
     result = "Top Left";
     displayValue = true;
     size = 3;
-    page = 1;
     mode = ModeType.radio;
     language = {
         German: "Oben Links",

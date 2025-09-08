@@ -16,7 +16,6 @@ const AccessibilityNodesEnum = new AccessibilityNodes();
 export default class Management extends DefaultNodes implements Nodes {
     key = "Management";
     size = 6;
-    page = 1;
     mode = ModeType.button;
     language = {
         German: "Steuerung",

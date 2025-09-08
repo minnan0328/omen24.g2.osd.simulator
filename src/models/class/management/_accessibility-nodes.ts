@@ -17,7 +17,6 @@ export default class AccessibilityNodes extends DefaultNodes implements Nodes {
     result = OffNodesEnum.result;
     displayValue = true;
     size = 3;
-    page = 1;
     mode = ModeType.button;
     language = {
         German: "Barrierefreiheit",

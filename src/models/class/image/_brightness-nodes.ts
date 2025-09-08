@@ -10,7 +10,6 @@ export default class BrightnessNodes extends DefaultNodes implements Nodes {
     result = 76;
     displayValue = true;
     size = 1;
-    page = 1;
     mode = ModeType.button;
     language = {
         German: "Helligkeit",

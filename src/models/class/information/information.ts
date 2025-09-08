@@ -10,7 +10,6 @@ const ExitNodesEnum = new ExitNodes();
 export default class Information extends DefaultNodes implements Nodes {
     key = "Information";
     size = 7;
-    page = 1;
     mode = ModeType.info;
     language = {
         German: "Information",
