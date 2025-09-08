@@ -14,7 +14,6 @@ export default class BlackStretchNodes extends DefaultNodes implements Nodes {
     displayValue = true;
     size = 4;
     mode = ModeType.button;
-    only = ["DisplayPort", "HDMI"];
     language = {
         German: "Videostufe",
         SimplifiedChinese: "视频电平",
@@ -28,7 +27,6 @@ export default class BlackStretchNodes extends DefaultNodes implements Nodes {
         BrazilianPortuguese: "Nível de vídeo",
         Russian: "Уровень видеосигнала"
     };
-    unit = null;
     nodes = [
         // 自動
         {
@@ -38,7 +36,6 @@ export default class BlackStretchNodes extends DefaultNodes implements Nodes {
             result: "Auto",
             parents: this.key,
             mode: ModeType.radio,
-            only: ["DisplayPort", "HDMI"],
             language: {
                 German: "Automatisch",
                 SimplifiedChinese: "自动",
@@ -61,7 +58,6 @@ export default class BlackStretchNodes extends DefaultNodes implements Nodes {
             result: "Limited Range (16 - 235)",
             parents: this.key,
             mode: ModeType.radio,
-            only: ["DisplayPort", "HDMI"],
             language: {
                 German: "Begrenzter Bereich (16 - 235)",
                 SimplifiedChinese: "有限范围 (16 - 235)",
@@ -85,7 +81,6 @@ export default class BlackStretchNodes extends DefaultNodes implements Nodes {
             result: "Full Range (0 - 255)",
             parents: this.key,
             mode: ModeType.radio,
-            only: ["DisplayPort", "HDMI"],
             language: {
                 German: "Volle Reichweite (0 - 255)",
                 SimplifiedChinese: "完整范围 (0 - 255)",

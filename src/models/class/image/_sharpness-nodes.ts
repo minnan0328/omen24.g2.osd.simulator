@@ -4,11 +4,12 @@ import type { Nodes } from "@/types";
 import { ModeType } from "@/types";
 import { DefaultNodes, BackNodes } from '../_utilities';
 const DefaultNodesEnum = new DefaultNodes();
+const BackNodesEnum = new BackNodes();
 
 export default class SharpnessNodes extends DefaultNodes implements Nodes {
     key = "Sharpness";
-    selected = "Level 4";
-    result = "Level 4";
+    selected = "0";
+    result = "0";
     displayValue = true;
     size = 8;
     mode = ModeType.button;
@@ -28,161 +29,161 @@ export default class SharpnessNodes extends DefaultNodes implements Nodes {
     nodes = [
         {
             ...JSON.parse(JSON.stringify(DefaultNodesEnum)),
-            key: "Soft",
-            selected: "Soft",
-            result: "Soft",
+            key: "– 3",
+            selected: "– 3",
+            result: "– 3",
             livePreview: true,
             parents: this.key,
             mode: ModeType.radio,
             language: {
-                German: "Weich",
-                SimplifiedChinese: "柔和",
-                TraditionalChinese: "柔和",
-                English: "Soft",
-                Español: "Suave",
-                French: "Doux",
-                Italian: "Con poco contrasto",
-                Japanese: "ソフト",
-                Nederlands: "Zacht",
-                BrazilianPortuguese: "Suave",
-                Russian: "Мягкое"
+                German: "– 3",
+                SimplifiedChinese: "– 3",
+                TraditionalChinese: "– 3",
+                English: "– 3",
+                Español: "– 3",
+                French: "– 3",
+                Italian: "– 3",
+                Japanese: "– 3",
+                Nederlands: "– 3",
+                BrazilianPortuguese: "– 3",
+                Russian: "– 3"
             }
         },
         {
             ...JSON.parse(JSON.stringify(DefaultNodesEnum)),
-            key: "Level2",
-            selected: "Level 2",
-            result: "Level 2",
+            key: "– 2",
+            selected: "– 2",
+            result: "– 2",
             livePreview: true,
             parents: this.key,
             mode: ModeType.radio,
             language: {
-                German: "Ebene 2",
-                SimplifiedChinese: "2 级",
-                TraditionalChinese: "2 級",
-                English: "Level 2",
-                Español: "Nivel 2",
-                French: "Niveau 2",
-                Italian: "Livello 2",
-                Japanese: "レベル 2",
-                Nederlands: "Niveau 2",
-                BrazilianPortuguese: "Nível 2",
-                Russian: "Уровень 2"
+                German: "– 2",
+                SimplifiedChinese: "– 2",
+                TraditionalChinese: "– 2",
+                English: "– 2",
+                Español: "– 2",
+                French: "– 2",
+                Italian: "– 2",
+                Japanese: "– 2",
+                Nederlands: "– 2",
+                BrazilianPortuguese: "– 2",
+                Russian: "– 2"
             }
         },
         {
             ...JSON.parse(JSON.stringify(DefaultNodesEnum)),
-            key: "Level3",
-            selected: "Level 3",
-            result: "Level 3",
+            key: "– 1",
+            selected: "– 1",
+            result: "– 1",
             livePreview: true,
             parents: this.key,
             mode: ModeType.radio,
             language: {
-                German: "Ebene 3",
-                SimplifiedChinese: "3 级",
-                TraditionalChinese: "3 級",
-                English: "Level 3",
-                Español: "Nivel 3",
-                French: "Niveau 3",
-                Italian: "Livello 3",
-                Japanese: "レベル 3",
-                Nederlands: "Niveau 3",
-                BrazilianPortuguese: "Nível 3",
-                Russian: "Уровень 3"
+                German: "– 1",
+                SimplifiedChinese: "– 1",
+                TraditionalChinese: "– 1",
+                English: "– 1",
+                Español: "– 1",
+                French: "– 1",
+                Italian: "– 1",
+                Japanese: "– 1",
+                Nederlands: "– 1",
+                BrazilianPortuguese: "– 1",
+                Russian: "– 1"
             }
         },
         {
             ...JSON.parse(JSON.stringify(DefaultNodesEnum)),
-            key: "Level4",
-            selected: "Level 4",
-            result: "Level 4",
+            key: "0",
+            selected: "0",
+            result: "0",
             livePreview: true,
             parents: this.key,
             mode: ModeType.radio,
             language: {
-                German: "Ebene 4",
-                SimplifiedChinese: "4 级",
-                TraditionalChinese: "4 級",
-                English: "Level 4",
-                Español: "Nivel 4",
-                French: "Niveau 4",
-                Italian: "Livello 4",
-                Japanese: "レベル 4",
-                Nederlands: "Niveau 4",
-                BrazilianPortuguese: "Nível 4",
-                Russian: "Уровень 4"
+                German: "0",
+                SimplifiedChinese: "0",
+                TraditionalChinese: "0",
+                English: "0",
+                Español: "0",
+                French: "0",
+                Italian: "0",
+                Japanese: "0",
+                Nederlands: "0",
+                BrazilianPortuguese: "0",
+                Russian: "0"
             }
         },
         {
             ...JSON.parse(JSON.stringify(DefaultNodesEnum)),
-            key: "Level5",
-            selected: "Level 5",
-            result: "Level 5",
+            key: "+ 1",
+            selected: "+ 1",
+            result: "+ 1",
             livePreview: true,
             parents: this.key,
             mode: ModeType.radio,
             language: {
-                German: "Ebene 5",
-                SimplifiedChinese: "5 级",
-                TraditionalChinese: "5 級",
-                English: "Level 5",
-                Español: "Nivel 5",
-                French: "Niveau 5",
-                Italian: "Livello 5",
-                Japanese: "レベル 5",
-                Nederlands: "Niveau 5",
-                BrazilianPortuguese: "Nível 5",
-                Russian: "Уровень 5"
+                German: "+ 1",
+                SimplifiedChinese: "+ 1",
+                TraditionalChinese: "+ 1",
+                English: "+ 1",
+                Español: "+ 1",
+                French: "+ 1",
+                Italian: "+ 1",
+                Japanese: "+ 1",
+                Nederlands: "+ 1",
+                BrazilianPortuguese: "+ 1",
+                Russian: "+ 1"
             }
         },
         {
             ...JSON.parse(JSON.stringify(DefaultNodesEnum)),
-            key: "Level6",
-            selected: "Level 6",
-            result: "Level 6",
+            key: "+ 2",
+            selected: "+ 2",
+            result: "+ 2",
             livePreview: true,
             parents: this.key,
             mode: ModeType.radio,
             language: {
-                German: "Ebene 6",
-                SimplifiedChinese: "6 级",
-                TraditionalChinese: "6 級",
-                English: "Level 6",
-                Español: "Nivel 6",
-                French: "Niveau 6",
-                Italian: "Livello 6",
-                Japanese: "レベル 6",
-                Nederlands: "Niveau 6",
-                BrazilianPortuguese: "Nível 6",
-                Russian: "Уровень 6"
+                German: "+ 2",
+                SimplifiedChinese: "+ 2",
+                TraditionalChinese: "+ 2",
+                English: "+ 2",
+                Español: "+ 2",
+                French: "+ 2",
+                Italian: "+ 2",
+                Japanese: "+ 2",
+                Nederlands: "+ 2",
+                BrazilianPortuguese: "+ 2",
+                Russian: "+ 2"
             }
         },
         {
             ...JSON.parse(JSON.stringify(DefaultNodesEnum)),
-            key: "Sharp",
-            selected: "Sharp",
-            result: "Sharp",
+            key: "+ 3",
+            selected: "+ 3",
+            result: "+ 3",
             livePreview: true,
             parents: this.key,
             mode: ModeType.radio,
             language: {
-                German: "Scharf",
-                SimplifiedChinese: "清晰",
-                TraditionalChinese: "銳利",
-                English: "Sharp",
-                Español: "Nítido",
-                French: "Dur",
-                Italian: "Bene a fuoco",
-                Japanese: "シャープ",
-                Nederlands: "Scherp",
-                BrazilianPortuguese: "Nítido",
-                Russian: "Резкое"
+                German: "+ 3",
+                SimplifiedChinese: "+ 3",
+                TraditionalChinese: "+ 3",
+                English: "+ 3",
+                Español: "+ 3",
+                French: "+ 3",
+                Italian: "+ 3",
+                Japanese: "+ 3",
+                Nederlands: "+ 3",
+                BrazilianPortuguese: "+ 3",
+                Russian: "+ 3"
             }
         },
         // 上一步
         {
-            ...JSON.parse(JSON.stringify(DefaultNodesEnum)),
+            ...JSON.parse(JSON.stringify(BackNodesEnum)),
             parents: this.key,
         }
     ];

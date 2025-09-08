@@ -197,8 +197,8 @@ const menus = computed(() => {
         mode: ModeType.button,
         nodes: [
             store.$state.gaming,
-            store.$state.color,
             store.$state.image,
+            store.$state.color,
             store.$state.input,
             store.$state.power,
             store.$state.menu,

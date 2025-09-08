@@ -17,7 +17,7 @@ export default class CrosshairNodes extends DefaultNodes implements Nodes {
     result = OffNodesEnum.result;
     displayValue = true;
     size = 8;
-    mode = ModeType.radio;
+    mode = ModeType.button;
     language = {
         German: "Fadenkreuz",
         SimplifiedChinese: "十字线",
