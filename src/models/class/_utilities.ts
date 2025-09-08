@@ -20,7 +20,7 @@ export class DefaultNodes implements Nodes {
     horizontalRangeFocus = false;
     rangeMaxIcon = null;
     rangeMinIcon = null;
-    only = ["DisplayPort", "HDMI", "VGA"];
+    only = ["DisplayPort", "HDMI1", "HDMI2"];
     mergeGrid = false;
     language: Language = {
         German: "",

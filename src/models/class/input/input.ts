@@ -1,17 +1,13 @@
-// 輸入
-
 import type { Nodes } from '@/types';
 import { ModeType } from '@/types';
+import { DefaultNodes, ResetNodes, BackNodes, ExitNodes, OnNodes, OffNodes } from '../_utilities';
 import AutoSwitchInputNodes from './_auto-switch-input-nodes';
 import DPHotPlugDetectionNodes from './_dp-hot-plug-detection-nodes';
 import DisplayPortModeNodes from './_ display-port-mode-nodes';
-import AudioNodes from './audio/audio-nodes';
-import { DefaultNodes, ResetNodes, BackNodes, ExitNodes, OnNodes, OffNodes } from '../_utilities';
 
 let AutoSwitchInputNodesEnum = new AutoSwitchInputNodes(); 
 let DPHotPlugDetectionNodesEnum = new DPHotPlugDetectionNodes(); 
 let DisplayPortModeNodesEnum = new DisplayPortModeNodes(); 
-let AudioNodesEnum = new AudioNodes(); 
 let DefaultNodesEnum = new DefaultNodes(); 
 let ResetNodesEnum = new ResetNodes(); 
 let BackNodesEnum = new BackNodes();
@@ -23,8 +19,7 @@ export default class Input extends DefaultNodes implements Nodes {
     key = "Input";
     selected = "HDMI";
     result = "HDMI";
-    size = 10;
-    page = 1;
+    size = 9;
     mode = ModeType.button;
     language = {
         German: "Eingabe",
@@ -40,7 +35,6 @@ export default class Input extends DefaultNodes implements Nodes {
         Russian: "Входы",
     };
     nodes =  [
-        // DisplayPort
         {
             ...JSON.parse(JSON.stringify(DefaultNodesEnum)),
             key: "DisplayPort",
@@ -62,78 +56,65 @@ export default class Input extends DefaultNodes implements Nodes {
                 Russian: "DisplayPort"
             }
         },
-        // HDMI
         {
             ...JSON.parse(JSON.stringify(DefaultNodesEnum)),
-            key: "HDMI",
-            selected: "HDMI",
-            result: "HDMI",
+            key: "HDMI1",
+            selected: "HDMI 1",
+            result: "HDMI 1",
             parents: this.key,
             mode: ModeType.radio,
             language: {
-                German: "HDMI",
-                SimplifiedChinese: "HDMI",
-                TraditionalChinese: "HDMI",
-                English: "HDMI",
-                Español: "HDMI",
-                French: "HDMI",
-                Italian: "HDMI",
-                Japanese: "HDMI",
-                Nederlands: "HDMI",
-                BrazilianPortuguese: "HDMI",
-                Russian: "HDMI"
+                German: "HDMI 1",
+                SimplifiedChinese: "HDMI 1",
+                TraditionalChinese: "HDMI 1",
+                English: "HDMI 1",
+                Español: "HDMI 1",
+                French: "HDMI 1",
+                Italian: "HDMI 1",
+                Japanese: "HDMI 1",
+                Nederlands: "HDMI 1",
+                BrazilianPortuguese: "HDMI 1",
+                Russian: "HDMI 1"
             }
         },
-        // VGA
         {
             ...JSON.parse(JSON.stringify(DefaultNodesEnum)),
-            key: "VGA",
-            selected: "VGA",
-            result: "VGA",
+            key: "HDMI2",
+            selected: "HDMI 2",
+            result: "HDMI 2",
             parents: this.key,
             mode: ModeType.radio,
             language: {
-                German: "VGA",
-                SimplifiedChinese: "VGA",
-                TraditionalChinese: "VGA",
-                English: "VGA",
-                Español: "VGA",
-                French: "VGA",
-                Italian: "VGA",
-                Japanese: "VGA",
-                Nederlands: "VGA",
-                BrazilianPortuguese: "VGA",
-                Russian: "VGA"
+                German: "HDMI 2",
+                SimplifiedChinese: "HDMI 2",
+                TraditionalChinese: "HDMI 2",
+                English: "HDMI 2",
+                Español: "HDMI 2",
+                French: "HDMI 2",
+                Italian: "HDMI 2",
+                Japanese: "HDMI 2",
+                Nederlands: "HDMI 2",
+                BrazilianPortuguese: "HDMI 2",
+                Russian: "HDMI 2"
             }
         },
-        // 自動切換輸入
         {
             ...JSON.parse(JSON.stringify(AutoSwitchInputNodesEnum)),
             parents: this.key
         },
-        // Audio
-        {
-            ...JSON.parse(JSON.stringify(AudioNodesEnum)),
-            parents: this.key
-        },
-        // DP Hot-Plug Detection
         {
             ...JSON.parse(JSON.stringify(DPHotPlugDetectionNodesEnum)),
             parents: this.key
         },
-        // DisplayPort Mode
         {
             ...JSON.parse(JSON.stringify(DisplayPortModeNodesEnum)),
             parents: this.key
         },
-        // 重置
         {
             ...JSON.parse(JSON.stringify(ResetNodesEnum)),
             parents: this.key,
             mergeGrid: true
-
         },
-        // 返回
         {
             ...JSON.parse(JSON.stringify(BackNodesEnum)),
             parents: this.key,
