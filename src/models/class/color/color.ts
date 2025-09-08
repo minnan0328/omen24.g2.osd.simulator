@@ -1,30 +1,33 @@
 import type { Nodes } from "@/types";
 import { ModeType } from "@/types";
 import { DefaultNodes, ResetNodes, BackNodes, ExitNodes } from '../_utilities';
-import WarmNodes from './_warm-nodes';
-import NeutralNodes from './_neutral-nodes';
-import CoolNodes from './_cool-nodes';
+import FPSNodes from './_fps-nodes';
+import RPGNodes from './_rpg-nodes';
+import RTSNodes from './_rts-nodes';
+import sRGBNodes from './_sRGB-nodes';
 import NativeNodes from './_native-nodes';
+import CinemaNodes from './_cinema-nodes';
 import NightNodes from './_night-nodes';
 import HPEnhancePlusNodes from './_HP-enhance-plus-nodes';
-import CustomRGBNodes from './_custom-RGB-nodes';
+import RGBGainAdjustNodes from './_RGB-gain-adjust-nodes';
 
 const ResetNodesEnum = new ResetNodes(); 
 const BackNodesEnum = new BackNodes();
 const ExitNodesEnum = new ExitNodes();
-const WarmNodesEnum = new WarmNodes();
-const NeutralNodesEnum = new NeutralNodes();
-const CoolNodesEnum = new CoolNodes();
+const FPSNodesEnum = new FPSNodes();
+const RPGNodesEnum = new RPGNodes();
+const RTSNodesEnum = new RTSNodes();
+const sRGBNodesEnum = new sRGBNodes();
 const NativeNodesEnum = new NativeNodes();
+const CinemaNodesEnum = new CinemaNodes();
 const NightNodesEnum = new NightNodes();
 const HPEnhancePlusNodesEnum = new HPEnhancePlusNodes();
-const CustomRGBNodesEnum = new CustomRGBNodes();
+const RGBGainAdjustNodesEnum = new RGBGainAdjustNodes();
 export default class Color extends DefaultNodes implements Nodes {
     key = "Color";
-    selected = NeutralNodesEnum.selected;
-    result = NeutralNodesEnum.result;
-    size = 10;
-    page = 1;
+    selected = FPSNodesEnum.selected;
+    result = FPSNodesEnum.result;
+    size = 12;
     mode = ModeType.button;
     language = {
         German: "Farbe",
@@ -40,48 +43,48 @@ export default class Color extends DefaultNodes implements Nodes {
         Russian: "Цвет"
     };
     nodes = [
-        // 暖色 Warm
         {
-            ...WarmNodesEnum,
+            //Set to Native color space - 220 nits (lower green gain to 215 in RGB Gain Adjust setting)
+            ...JSON.parse(JSON.stringify(FPSNodesEnum)),
             parents: this.key
         },
-        // 中性色 Neutral
         {
-            ...NeutralNodesEnum,
+            ...JSON.parse(JSON.stringify(RPGNodesEnum)),
             parents: this.key
         },
-        // 冷色 Cool
         {
-            ...CoolNodesEnum,
+            ...JSON.parse(JSON.stringify(RTSNodesEnum)),
             parents: this.key
         },
-        // 原生 Native
         {
-            ...NativeNodesEnum,
+            ...JSON.parse(JSON.stringify(sRGBNodesEnum)),
             parents: this.key
         },
-        // 夜間
         {
-            ...NightNodesEnum,
+            ...JSON.parse(JSON.stringify(NativeNodesEnum)),
             parents: this.key
         },
-        // HP Enhance+
+        {
+            ...JSON.parse(JSON.stringify(CinemaNodesEnum)),
+            parents: this.key
+        },
+        {
+            ...JSON.parse(JSON.stringify(NightNodesEnum)),
+            parents: this.key
+        },
         {
             ...JSON.parse(JSON.stringify(HPEnhancePlusNodesEnum)),
             parents: this.key
         },
-        // 自訂 RBG
         {
-            ...JSON.parse(JSON.stringify(CustomRGBNodesEnum)),
+            ...JSON.parse(JSON.stringify(RGBGainAdjustNodesEnum)),
             parents: this.key
         },
-        // 重置
         {
             ...JSON.parse(JSON.stringify(ResetNodesEnum)),
             parents: this.key,
             mergeGrid: true 
         },
-        // 上一步
         {
             ...JSON.parse(JSON.stringify(BackNodesEnum)),
             parents: this.key,

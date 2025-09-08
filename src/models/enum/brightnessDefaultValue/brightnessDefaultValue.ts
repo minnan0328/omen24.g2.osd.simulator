@@ -6,20 +6,24 @@ const OffNodesEnum = new OffNodes();
 
 
 export const BrightnessDefaultValueEnum = {
-    // 暖色 Warm
-    [store.$state.color.nodes[0].result as string]: 26,
-    // 中性色 Neutral
-    [store.$state.color.nodes[1].result as string]: 76,
-    // 冷色 Cool
-    [store.$state.color.nodes[2].result as string]: 50,
-    // 原生 Native
-    [store.$state.color.nodes[3].result as string]: 100,
-    // 夜間 Night
-    [store.$state.color.nodes[4].result as string]: 16,
+    // FPS
+    [store.$state.color.nodes[0].result as string]: 68,
+    // RPG
+    [store.$state.color.nodes[1].result as string]: 52,
+    // RTS
+    [store.$state.color.nodes[2].result as string]: 68,
+    // sRGB
+    [store.$state.color.nodes[3].result as string]: 52,
+    // Native
+    [store.$state.color.nodes[4].result as string]: 100,
+    // Cinema
+    [store.$state.color.nodes[5].result as string]: 20,
+    // Night
+    [store.$state.color.nodes[6].result as string]: 52,
     // HP Enhance+
-    [store.$state.color.nodes[5].result as string]: 76,
-    // 自訂 RGB
-    [store.$state.color.nodes[6].result as string]: 100,
+    [store.$state.color.nodes[7].result as string]: 68,
+    // RGB Gain Adjust
+    [store.$state.color.nodes[8].result as string]: 100,
 };
 
 export function setBrightnessDefaultValue() {

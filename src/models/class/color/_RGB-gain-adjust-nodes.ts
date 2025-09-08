@@ -7,25 +7,25 @@ import { DefaultNodes } from '../_utilities';
 const DefaultNodesEnum = new DefaultNodes();
 
 export default class CustomRGBNodes extends DefaultNodes implements Nodes {
-    key = "CustomRGB";
-    selected = "Custom RGB";
-    result = "Custom RGB";
+    key = "RGBGainAdjust";
+    selected = "RGB Gain Adjust";
+    result = "RGB Gain Adjust";
     livePreview = true;
     size = 3;
     page = 1;
     mode = ModeType.radio;
     language = {
-        German: "Benutzerdefiniert RGB",
-        SimplifiedChinese: "自定义 RGB",
-        TraditionalChinese: "自訂 RGB",
-        English: "Custom RGB",
-        Español: "RGB Personalizado",
-        French: "Personnalisé RGB",
-        Italian: "Personalizzato RGB",
-        Japanese: "カスタム RGB",
-        Nederlands: "Aangepast RGB",
-        BrazilianPortuguese: "RGB Personalizado",
-        Russian: "Пользовательские настройки RGB"
+        German: "RGB-Gain-Einstellung",
+        SimplifiedChinese: "RGB 增益调整",
+        TraditionalChinese: "RGB 增益調整",
+        English: "RGB Gain Adjust",
+        Español: "Ajuste de la ganancia RGB",
+        French: "Réglage du gain RGB",
+        Italian: "Regolazione guadagno RGB",
+        Japanese: "RGBゲイン調整",
+        Nederlands: "RGB-versterking aanpassen",
+        BrazilianPortuguese: "Ajuste do ganho RGB",
+        Russian: "Регулировка усиления RGB"
     };
     nodes = [
         // RGB range (0~255)
