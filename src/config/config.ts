@@ -1,7 +1,6 @@
 const config = {
-    company: "HP",
-    screenModel: "327pe",
-    
+    company: "",
+    screenModel: "OMEN 24 G2",
 }
 
 export default config;

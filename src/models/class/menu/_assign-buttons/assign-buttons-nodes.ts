@@ -161,8 +161,8 @@ export default class AssignButtonsNodes extends DefaultNodes implements Nodes {
         {   
             ...JSON.parse(JSON.stringify(DefaultNodesEnum)),
             key: "AssignButton4",
-            selected: AssignNextActiveInputNodesEnum.selected,
-            result: AssignNextActiveInputNodesEnum.result,
+            selected: AssignDisplayInformationNodesEnum.selected,
+            result: AssignDisplayInformationNodesEnum.result,
             displayValue: true,
             displayState: true,
             size: assignButtonNodes.length,

@@ -9,7 +9,7 @@
             <div class="body">
                 <div class="sidebar">
                     <div class="hp-logo">
-                        <img src="@/assets/images/hp-old-logo.svg" alt="">
+                        <img src="@/assets/images/hp-logo.svg" alt="">
                     </div>
                     <div class="options">
                         <template  v-for="menu in menus.nodes" v-text="toLanguageText(menu.language)">
@@ -63,11 +63,23 @@
 
         <!-- 控制選單按鈕 -->
         <div :class="['controller-menus', { 'accessibility': menuStateResult.accessibility }]" v-if="openControllerMenus">
-            <template v-for="currentButton in handleControllerButtonList">
-                <div class="menu-item" v-if="currentButton.image">
+            <template v-for="(currentButton, index) in handleControllerButtonList">
+                <div :class="['menu-item', {
+                    'menu-item-center': index == 0,
+                    'menu-item-bottom': index == 1,
+                    'menu-item-top': index == 2,
+                    'menu-item-right': index == 3,
+                    'menu-item-left': index == 4
+                }]" v-if="currentButton.image">
                     <img :src="currentButton?.image" alt="">
                 </div>
-                <div class="menu-item" v-else></div>
+                <div :class="['menu-item', {
+                    'menu-item-center': index == 0,
+                    'menu-item-bottom': index == 1,
+                    'menu-item-top': index == 2,
+                    'menu-item-right': index == 3,
+                    'menu-item-left': index == 4
+                }]" v-else></div>
             </template>
         </div>
         <!-- 控制選單按鈕 -->
@@ -75,25 +87,37 @@
         <!-- 控制選單按鈕-點擊範圍 -->
         <div class="controller">
             <template v-if="openMonitor && showScreen && !openControllerMenus">
-                <button :class="['controller-btn', { 'show-guide':  showMonitorStatus}]" @click="handlerControllerMenus"></button>
-                <button :class="['controller-btn', { 'show-guide':  showMonitorStatus}]" @click="handlerControllerMenus"></button>
-                <button :class="['controller-btn', { 'show-guide':  showMonitorStatus}]" @click="handlerControllerMenus"></button>
-                <button :class="['controller-btn', { 'show-guide':  showMonitorStatus}]" @click="handlerControllerMenus"></button>
+                <button :class="['controller-btn controller-btn-center', { 'show-guide':  showMonitorStatus}]" @click="handlerControllerMenus"></button>
+                <button :class="['controller-btn controller-btn-right', { 'show-guide':  showMonitorStatus}]" @click="handlerControllerMenus"></button>
+                <button :class="['controller-btn controller-btn-bottom', { 'show-guide':  showMonitorStatus}]" @click="handlerControllerMenus"></button>
+                <button :class="['controller-btn controller-btn-left', { 'show-guide':  showMonitorStatus}]" @click="handlerControllerMenus"></button>
+                <button :class="['controller-btn controller-btn-top', { 'show-guide':  showMonitorStatus}]" @click="handlerControllerMenus"></button>
             </template>
-            <template v-else v-for="currentButton in handleControllerButtonList">
-                <button v-if="currentButton.type == 'Button'" class="controller-btn" @click="currentButton.event"></button>
-                <button v-if="currentButton.type == 'eventButton'" class="controller-btn"
-                @mousedown="currentButton.event"
-                @mouseup="currentButton.stopEvent"
-                @mouseleave="currentButton.stopEvent"
-                @touchstart.passive="currentButton.event"
-                @touchend.passive="currentButton.stopEvent">
+
+            <template v-else v-for="(currentButton, index) in handleControllerButtonList">
+                <button v-if="currentButton.type == 'Button'" :class="['controller-btn', {
+                    'controller-btn-center': index == 0,
+                    'controller-btn-bottom': index == 1,
+                    'controller-btn-top': index == 2,
+                    'controller-btn-right': index == 3,
+                    'controller-btn-left': index == 4
+                }]" @click="currentButton.event"></button>
+                
+                <button v-if="currentButton.type == 'eventButton'" :class="['controller-btn', {
+                    'controller-btn-center': index == 0,
+                    'controller-btn-bottom': index == 1,
+                    'controller-btn-top': index == 2,
+                    'controller-btn-right': index == 3,
+                    'controller-btn-left': index == 4
+                }]"
+                    @mousedown="currentButton.event"
+                    @mouseup="currentButton.stopEvent"
+                    @mouseleave="currentButton.stopEvent"
+                    @touchstart.passive="currentButton.event"
+                    @touchend.passive="currentButton.stopEvent">
                 </button>
             </template>
             <slot name="openMonitor"></slot> 
-
-            <div class="power-guide" v-if="!openMonitor">Power Button</div>
-            <div class="menu-buttons-guide" v-if="showMonitorStatus">Menu Buttons</div>
         </div>
         <!-- 控制選單按鈕-點擊範圍 -->
     </div>
@@ -144,6 +168,8 @@ import PowerConfirmChangeNodes from '@/models/class/power/message/confirm-change
 
 import { DefaultNodes, BackNodes, ResetNodes, ExitNodes, OnNodes, OffNodes, YesNodes, NoNodes } from '@/models/class/_utilities';
 import { BrightnessDefaultValueEnum, setBrightnessDefaultValue } from '@/models/enum/brightnessDefaultValue/brightnessDefaultValue';
+
+const debugMode = ref(true);
 
 const MenusDefaultEnum = new MenusDefaultModel();
 
@@ -290,15 +316,6 @@ const assignMenus = computed(() => {
     }
 });
 
-// 取得自訂選單項目
-const getAssignButton = computed(() => {
-    return [
-        assignMenus.value[`Assign${(store.$state.menu.nodes[6].nodes![0].result as string).replace(/\s/g, '')}`],
-        assignMenus.value[`Assign${(store.$state.menu.nodes[6].nodes![1].result as string).replace(/\s/g, '')}`],
-        assignMenus.value[`Assign${(store.$state.menu.nodes[6].nodes![2].result as string).replace(/\s/g, '')}`]
-    ]
-});
-
 // 小選單項目順序
 const assignPanelOrder = reactive([
     AssignBrightnessNodesEnum.key, AssignColorNodesEnum.key,
@@ -354,7 +371,6 @@ function handleAssignButton(key: string) {
     }
 
     if(key == AssignNextActiveInputNodesEnum.key) {
-        handlerClose();
         openAllMenu.value = true;
         selectedMenuPanel(assignMenus.value[key]!.node as Nodes);
         handlerNextPanel();
@@ -409,6 +425,20 @@ const ControllerTypes: Record<string, ControllerButtonList> = reactive({
     confirmClose: { image: iconClose, event: handlerCloseConfirmAction, stopEvent: () => {}, type: "Button" }
 });
 
+// 取得自訂選單項目
+const getAssignButton = computed(() => {
+    return [
+        // AssignButton1 default is AssignBrightness
+        assignMenus.value[`Assign${(store.$state.menu.nodes[6].nodes![0].result as string).replace(/\s/g, '')}`],
+        // AssignButton2 default is AssignColor
+        assignMenus.value[`Assign${(store.$state.menu.nodes[6].nodes![1].result as string).replace(/\s/g, '')}`],
+        // AssignButton3 default is AssignNextActiveInput
+        assignMenus.value[`Assign${(store.$state.menu.nodes[6].nodes![2].result as string).replace(/\s/g, '')}`],
+        // AssignButton4 default is AssignDisplayInformation
+        assignMenus.value[`Assign${(store.$state.menu.nodes[6].nodes![3].result as string).replace(/\s/g, '')}`]
+    ]
+});
+
 const confirmButtonList:ControllerButtonList[] = [ ControllerTypes.checkSave!, ControllerTypes.arrowLeft!, ControllerTypes.arrowRight!, ControllerTypes.confirmClose! ];
 
 const handleControllerButtonList = computed<ControllerButtonList[] | null>(() => {
@@ -417,9 +447,15 @@ const handleControllerButtonList = computed<ControllerButtonList[] | null>(() =>
     if(isControllerMenusButton.value) {
         // 開啟螢幕及開啟全部選單列表時候的組合
         return [
+            // center
             { image: iconAllMenu, event: handlerOpenAllMenu, stopEvent: () => {}, type: "Button" },
+            // bottom
+            { image: getAssignButton.value[3]!.icon, event: () => handleAssignButton(getAssignButton.value[3]!.key), stopEvent: () => {}, type: "Button" },
+            // top
             { image: getAssignButton.value[2]!.icon, event: () => handleAssignButton(getAssignButton.value[2]!.key), stopEvent: () => {}, type: "Button"},
+            // right
             { image: getAssignButton.value[1]!.icon, event: () => handleAssignButton(getAssignButton.value[1]!.key), stopEvent: () => {}, type: "Button" },
+            // left
             { image: getAssignButton.value[0]!.icon, event:() => handleAssignButton(getAssignButton.value[0]!.key), stopEvent: () => {}, type: "Button" }
         ]
     } 
@@ -1054,16 +1090,6 @@ function saveNodesValue(nodes: Nodes, previousNodes: Nodes) {
         // 上下一頁 目前只處理 secondaryNodesPagination(第三層畫面)
         NextPageButtons: () => handlerNavigation("down"),
         PreviousPageButtons: () => handlerNavigation("up"),
-        // // 自動調整
-        // AutoAdjustment: () => {
-        //     handlerClose();
-        //     homeEvent.autoAdjustment();
-        // },
-        // // 測試喇叭
-        // InternalSpeakerSelfTest: () => {
-        //     handlerClose();
-        //     homeEvent.speakerSelfTest();
-        // }
     };
 
     const previousNodesActions: { [key: string]: () => void } = {
@@ -1308,6 +1334,11 @@ function undoTheStaging() {
 // 關閉全部選單，包含清除目前狀態
 function handlerClose() {
 
+    // 當啟動 debug 模式時，就不關閉選單
+    if(debugMode.value) {
+        return
+    }
+
     undoTheStaging();
     
     openControllerMenus.value = false;
@@ -1335,7 +1366,6 @@ function handlerClose() {
 
     setBrightnessDefaultValue();
     returnToDefaultValue();
-
 };
 
 // 特殊邏輯
@@ -1465,7 +1495,7 @@ function handlerMenuTimeout() {
 				align-items: center;
 
                 img {
-                    width: 44px;
+                    width: 60%;
                 }
 			}
 		}
@@ -1553,39 +1583,124 @@ function handlerMenuTimeout() {
 .controller-menus {
 	position: absolute;
 	display: flex;
-	bottom: 0px;
-	right: 84px;
+    background-color: $black-28;
+    border: 0.8px solid $black;
+    width: 84px;
+    height: 84px;
+	bottom: 8px;
+	right: 8px;
 
     &.accessibility {
         transform: scale(1.1);
         right: 94px;
     }
 
+    $menuitem-icon-width: 18px;
+    $menuitem-icon-height: 18px;
+
 	.menu-item {
 		display: flex;
 		justify-content: center;
 		align-items: center;
-		width: 28px;
-		height: 16px;
-		background-color: $black-28;
-		border: 0.8px solid $black;
+		width: $menuitem-icon-width;
+		height: $menuitem-icon-height;
 
 		img {
             width: 16px;
             transform:  rotate(v-bind("menuStateResult.menuRotation"));
 		}
+
+        &.menu-item-center {
+            position: absolute;
+            top: calc(50% - #{$menuitem-icon-height} / 2);
+            left: calc(50% - #{$menuitem-icon-width} / 2);
+        }
+
+        &.menu-item-top {
+            position: absolute;
+            left: calc(50% - #{$menuitem-icon-width} / 2);
+
+            &::before {
+                position: absolute;
+                content: "";
+                width: 100%;
+                height: 100%;
+                background-image: url('@/assets/icons/menu-arrow/menu-arrow-top.svg');
+                background-size: 19px 19px;
+                background-repeat: no-repeat;
+                top: $menuitem-icon-height;
+            }
+        }
+
+        &.menu-item-right {
+            position: absolute;
+            top: calc(50% - #{$menuitem-icon-height} / 2);
+            right: 0px;
+            
+            &::before {
+                position: absolute;
+                content: "";
+                width: 100%;
+                height: 100%;
+                background-image: url('@/assets/icons/menu-arrow/menu-arrow-right.svg');
+                background-size: 19px 19px;
+                background-repeat: no-repeat;
+                right: $menuitem-icon-width;
+            }
+        }
+
+        &.menu-item-left {
+            position: absolute;
+            top: calc(50% - #{$menuitem-icon-height} / 2);
+            left: 0px;
+
+            &::before {
+                position: absolute;
+                content: "";
+                width: 100%;
+                height: 100%;
+                background-image: url('@/assets/icons/menu-arrow/menu-arrow-left.svg');
+                background-size: 19px 19px;
+                background-repeat: no-repeat;
+                left: $menuitem-icon-width;
+            }
+        }
+
+        &.menu-item-bottom {
+            position: absolute;
+            left: calc(50% - #{$menuitem-icon-width} / 2);
+            bottom: 0px;
+
+            &::before {
+                position: absolute;
+                content: "";
+                width: 100%;
+                height: 100%;
+                background-image: url('@/assets/icons/menu-arrow/menu-arrow-bottom.svg');
+                background-size: 19px 19px;
+                background-repeat: no-repeat;
+                bottom: $menuitem-icon-height;
+            }
+        }
 	}
 }
 
 .controller {
 	position: absolute;
-	bottom: -108px;
-	right: 16px;
+	bottom: -148px;
+	right: 30px;
 
 	.controller-btn,
 	:deep(.controller-btn) {
+        position: absolute;
 		width: 46px;
 		height: 46px;
+        bottom: 24px;
+        right: 0px;
+        border: 1px dashed $white;
+        border-radius: 50%;
+        background-color: rgba(255, 255, 255, .15);
+    
 
         &:hover,
         &.show-guide {
@@ -1593,34 +1708,36 @@ function handlerMenuTimeout() {
             border-radius: 50%;
             background-color: rgba(255, 255, 255, .15);
         }
-	}
-
-    .power-guide {
-        position: absolute;
-        bottom: -36px;
-        right: -28px;
-        white-space: nowrap;
-
-        &::before {
-            position: absolute;
-            content: "";
-            width: 0;
-            height: 0;
-            left: calc((100% - 10px) / 2);
-            bottom: 20px;
-            border-style: solid;
-            border-width: 0 5px 10px 5px;
-            border-color: transparent transparent $white transparent;
+        
+        &.controller-btn-center,
+        &.controller-btn-top,
+        &.controller-btn-right,
+        &.controller-btn-left,
+        &.controller-btn-bottom {
+            width: 32px;
+            height: 32px;
         }
-    }
 
-    .menu-buttons-guide {
-        position: absolute;
-        white-space: nowrap;
-        content: "";
-        bottom: -20px;
-        right: 0;
-        width: 184px;
-    }
+        &.controller-btn-center {
+            right: 93px;
+            bottom: 32px;
+        }
+        &.controller-btn-top {
+            right: 93px;
+            bottom: 65px;
+        }
+        &.controller-btn-right {
+            right: 60px;
+            bottom: 32px;
+        }
+        &.controller-btn-left {
+            right: 126px;
+            bottom: 32px;
+        }
+        &.controller-btn-bottom {
+            right: 93px;
+            bottom: 0px;
+        }
+	}
 }
 </style>

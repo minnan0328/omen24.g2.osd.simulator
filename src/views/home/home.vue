@@ -37,9 +37,10 @@
                                 :message="toastObj.message" :images="toastObj.images">
                             </toast>
 
-                            <div class="menu-buttons">
-                                <img src="@/assets/images/menu-buttons.png" alt="">
-                                <div class="power-light menu-btn" v-if="openMonitor && monitorResult.powerLED"></div>
+                            <div class="menu-buttons-image">
+                                <img src="@/assets/images/menu-buttons.svg" alt="">
+                                <div class="power-guide" v-if="!openMonitor">Power Button</div>
+                                <div class="menu-buttons-guide" v-if="showMonitorStatus">Menu Buttons</div>
                             </div>
     
                             <menus v-model:openMonitor="openMonitor"
@@ -74,7 +75,6 @@ import toast from '@/views/home/_toast/toast.vue';
 import iconWarn from '@/assets/icons/icon-warn.svg';
 import iconSound from '@/assets/icons/icon-sound.svg';
 
-import hp227peSound from '@/assets/sound/hp-227pe-sound.m4a';
 
 const store = useStore();
 
@@ -248,8 +248,8 @@ provide<HomeEvent>("homeEvent", {
 
         .power-light {
             position: absolute;
-            bottom: -26px;
-            right: 74px;
+            bottom: -24px;
+            right: 34px;
             width: 4px;
             height: 4px;
             background-color: $white;
@@ -257,20 +257,40 @@ provide<HomeEvent>("homeEvent", {
             box-shadow: 0px 0px 10px 2px rgba($white, 0.9);
         }
 
-        .menu-buttons {
+        .menu-buttons-image {
             position: absolute;
-            bottom: -98px;
-            right: 30px;
+            bottom: -150px;
+            right: 22px;
 
             img {
                 width: 115%;
             }
 
-            > .power-light.menu-btn {
+            .power-guide {
                 position: absolute;
-                bottom: 16px;
-                right: 32px;
+                bottom: -36px;
+                right: -24px;
+                white-space: nowrap;
 
+                &::before {
+                    position: absolute;
+                    content: "";
+                    width: 0;
+                    height: 0;
+                    left: calc((100% - 10px) / 2);
+                    bottom: 20px;
+                    border-style: solid;
+                    border-width: 0 5px 10px 5px;
+                    border-color: transparent transparent $white transparent;
+                }
+            }
+
+            .menu-buttons-guide {
+                position: absolute;
+                white-space: nowrap;
+                content: "";
+                bottom: -36px;
+                right: 18px;
             }
         }
     }

@@ -125,7 +125,7 @@
         </template>
         <template v-if="mainSectionNodes && mainSectionNodes.mode == ModeType.exit">
             <div class="full-image">
-                <img src="@/assets/images/hp-old-logo.svg" alt="">
+                <img src="@/assets/images/hp-logo-color.svg" alt="">
             </div>
         </template>
     </div>

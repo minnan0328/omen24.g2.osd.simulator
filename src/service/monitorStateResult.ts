@@ -65,7 +65,7 @@ export const monitorScreenResult = computed(() => {
 // 選單狀態設定
 export const menuStateResult = computed(() => {
     // 選單 100% 時的 x 座標 - 預設百分比的 x 座標 - 8
-    const maxDecrease = 76;
+    const maxDecrease = 98; // 經過計算後的最大遞減值
     const increaseThreshold = 98;
     const decreaseThreshold = 100;
     // 計算遞增係數
@@ -74,13 +74,14 @@ export const menuStateResult = computed(() => {
     const decrease = maxDecrease / (decreaseThreshold - increaseThreshold);
     // 計算 deviation 的值
     let deviation: number;
-    // 選單水平位置大於等於 86% 時(實體螢幕預設水平百分比)遞增
+
     if (menu.value.nodes[1].nodes![0].result as number <= increaseThreshold) {
         // 遞增值 * 目前選單百分比
-        deviation = increase * menu.value.nodes[1].nodes![0].result as number;
-    } else { // 當小於 86% 時遞減
-        // 最大遞減基準值 - 遞減值 * 目前選單水平百分比 - 預設版分比
-        deviation = maxDecrease - decrease * (menu.value.nodes[1].nodes![0].result as number - increaseThreshold);
+        deviation = (increase * menu.value.nodes[1].nodes![0].result as number) ;
+        console.log(`${(menu.value.nodes[1].nodes![0].result as number / 100) * ((monitorWidth) - menuWidth) - (deviation)}`)
+    } else { 
+        // 最大遞減基準值 - 遞減值 * 100 - 預設版分比
+        deviation = (maxDecrease - decrease) * (100 - increaseThreshold);
     }
 
     // 取得選單旋轉角度
@@ -97,7 +98,7 @@ export const menuStateResult = computed(() => {
             // 水平
             x: getMenuRotation == 90 || getMenuRotation ==  270 ? "530px" : `${(menu.value.nodes[1].nodes![0].result as number / 100) * ((monitorWidth) - menuWidth) - (deviation)}px`,
             // 垂直
-            y: getMenuRotation == 90 || getMenuRotation ==  270 ? "90px" : `${(menu.value.nodes[1].nodes![1].result as number / 100) * ((monitorHeight - menuHeight) - 18) + 18}px`
+            y: getMenuRotation == 90 || getMenuRotation ==  270 ? "90px" : `${(menu.value.nodes[1].nodes![1].result as number / 100) * ((monitorHeight - menuHeight) - 5) + 5}px`
         },
         // 選單透明度
         menuTransparency: ((10 - (menu.value.nodes[2].result as number)) / 10) + 0.2,
