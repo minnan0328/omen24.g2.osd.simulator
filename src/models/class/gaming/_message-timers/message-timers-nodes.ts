@@ -2,14 +2,17 @@ import type { Nodes } from "@/types";
 import { ModeType } from "@/types";
 import { DefaultNodes, BackNodes, ResetNodes, OnNodes, OffNodes } from '../../_utilities';
 import SpeedrunTimerNodes from './_speedrun-timer-nodes';
+import CountdownTimerNodes from './_countdown-timer-nodes';
 import MessageNodes from './_message-nodes';
 import ColorNodes from '../_color/color-nodes';
 import LocationNodes from '../_location/location-nodes';
 const DefaultNodesEnum = new DefaultNodes();
 const BackNodesEnum = new BackNodes();
+const OnNodesEnum = new OnNodes();
 const OffNodesEnum = new OffNodes();
 const ResetNodesEnum = new ResetNodes();
 const SpeedrunTimerNodesEnum = new SpeedrunTimerNodes();
+const CountdownTimerNodesEnum = new CountdownTimerNodes();
 const MessageNodesEnum = new MessageNodes();
 const ColorNodesEnum = new ColorNodes();
 const LocationNodesEnum = new LocationNodes();
@@ -36,6 +39,10 @@ export default class MessageTimersNodes extends DefaultNodes implements Nodes {
     };
     nodes = [
         {
+            ...JSON.parse(JSON.stringify(OnNodesEnum)),
+            parents: this.key
+        },
+        {
             ...JSON.parse(JSON.stringify(OffNodesEnum)),
             parents: this.key
         },
@@ -44,25 +51,8 @@ export default class MessageTimersNodes extends DefaultNodes implements Nodes {
             parents: this.key
         },
         {
-            ...JSON.parse(JSON.stringify(DefaultNodesEnum)),
-            key: "CountdownTimer",
-            selected: SpeedrunTimerNodesEnum.selected,
-            result: SpeedrunTimerNodesEnum.result,
-            parents: this.key,
-            mode: ModeType.verticalRange,
-            language: {
-                German: "Countdown",
-                SimplifiedChinese: "倒计时计时器",
-                TraditionalChinese: "倒數計時器",
-                English: "Countdown Timer",
-                Español: "Temporizador de cuenta atrás",
-                French: "Compte à rebours",
-                Italian: "Timer conto alla rovescia",
-                Japanese: "カウントダウン タイマー",
-                Nederlands: "Afteltimer",
-                BrazilianPortuguese: "Temporizador decrescente",
-                Russian: "Таймер обратного отсчета"
-            }
+            ...JSON.parse(JSON.stringify(CountdownTimerNodesEnum)),
+            parents: this.key
         },
         {
             ...JSON.parse(JSON.stringify(DefaultNodesEnum)),
@@ -70,6 +60,7 @@ export default class MessageTimersNodes extends DefaultNodes implements Nodes {
             selected: "Start / Stop",
             result: "Start / Stop",
             parents: this.key,
+            assignDisplay: false,
             mode: ModeType.button,
             language: {
                 German: "Start / Stop",
@@ -91,6 +82,7 @@ export default class MessageTimersNodes extends DefaultNodes implements Nodes {
             selected: "Reset Timer",
             result: "Reset Timer",
             parents: this.key,
+            assignDisplay: false,
             mode: ModeType.button,
             language: {
                 German: "Timer zurücksetzen",

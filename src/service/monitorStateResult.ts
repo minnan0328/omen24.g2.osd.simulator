@@ -95,9 +95,9 @@ export const menuStateResult = computed(() => {
         // 選單座標位置，旋轉角度的座標位置為 demo 使用，當返回上一步時，就會復原原本選單角度
         menuPosition: {
             // 水平
-            x: getMenuRotation == 90 || getMenuRotation ==  270 ? "530px" : `${(menu.value.nodes[1].nodes![0].result as number / 100) * ((monitorWidth) - menuWidth) - (deviation)}px`,
+            x: getMenuRotation == 90 || getMenuRotation ==  270 ? "440px" : `${(menu.value.nodes[1].nodes![0].result as number / 100) * ((monitorWidth) - menuWidth) - (deviation)}px`,
             // 垂直
-            y: getMenuRotation == 90 || getMenuRotation ==  270 ? "90px" : `${(menu.value.nodes[1].nodes![1].result as number / 100) * ((monitorHeight - menuHeight) - 5) + 5}px`
+            y: getMenuRotation == 90 || getMenuRotation ==  270 ? "70px" : `${(menu.value.nodes[1].nodes![1].result as number / 100) * ((monitorHeight - menuHeight) - 5) + 5}px`
         },
         // 選單透明度
         menuTransparency: ((10 - (menu.value.nodes[2].result as number)) / 10) + 0.2,
@@ -163,9 +163,9 @@ export const monitorResult = computed(() => {
 const toImageColor = computed(() => {
     // 自訂 RGB，RGB 轉換
     const RGB = {
-        r: (color.value.result == "Custom RGB" && color.value.nodes[6].nodes) ? color.value.nodes[6].nodes[0].result as number : 255,
-        g:(color.value.result == "Custom RGB" && color.value.nodes[6].nodes) ? color.value.nodes[6].nodes[1].result as number : 255,
-        b: (color.value.result == "Custom RGB" && color.value.nodes[6].nodes) ? color.value.nodes[6].nodes[2].result as number : 255
+        r: (color.value.result == "RGB Gain Adjust" && color.value.nodes[8].nodes) ? color.value.nodes[8].nodes[0].result as number : 255,
+        g:(color.value.result == "RGB Gain Adjust" && color.value.nodes[8].nodes) ? color.value.nodes[8].nodes[1].result as number : 255,
+        b: (color.value.result == "RGB Gain Adjust" && color.value.nodes[8].nodes) ? color.value.nodes[8].nodes[2].result as number : 255
     }
 
     const combinedHue = (RGB.r + RGB.g + RGB.b) / -2.125;

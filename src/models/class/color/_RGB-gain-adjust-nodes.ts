@@ -10,9 +10,10 @@ export default class CustomRGBNodes extends DefaultNodes implements Nodes {
     key = "RGBGainAdjust";
     selected = "RGB Gain Adjust";
     result = "RGB Gain Adjust";
+    assignDisplay = false;
     livePreview = true;
     size = 3;
-    mode = ModeType.radio;
+    mode = ModeType.button;
     language = {
         German: "RGB-Gain-Einstellung",
         SimplifiedChinese: "RGB 增益调整",

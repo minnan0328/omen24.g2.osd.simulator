@@ -43,6 +43,9 @@ import type { PropType } from 'vue';
 import type { Nodes } from '@/types';
 import { ModeType } from '@/types';
 import { isEnableNode ,toLanguageText, getIconSrc } from '@/service/service';
+import RGBGainAdjustNodes from '@/models/class/color/_RGB-gain-adjust-nodes';
+
+const rgbGainAdjustNodesEnum = new RGBGainAdjustNodes();
 
 const props = defineProps({
     currentNode: {
@@ -56,7 +59,7 @@ const props = defineProps({
     }
 });
 
-const isColor = computed(() => props.nodes && props.nodes?.key == "CustomRGB")
+const isColor = computed(() => props.nodes && props.nodes?.key == rgbGainAdjustNodesEnum.key);
 
 const currentValue = computed(() => {
     let showValue = convertRange(props.currentNode.selected as number, props.currentNode.rangeMin as number, props.currentNode.rangeMax as number);

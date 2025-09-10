@@ -9,6 +9,7 @@ export default class ConfigureNodes extends DefaultNodes implements Nodes {
     key = "Configure";
     selected = ["option 1 bmp", "option 2 bmp", "option 3 bmp"];
     result = ["option 1 bmp", "option 2 bmp", "option 3 bmp"];
+    assignDisplay = false;
     size = 6;
     mode = ModeType.checkBox;
     language = {

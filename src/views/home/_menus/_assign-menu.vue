@@ -81,8 +81,8 @@ const props = defineProps({
     position: absolute;
 	background-color: $black-09;
     transform: rotate(v-bind("menuStateResult.menuRotation"));
-	bottom: 34px;
-	right: 44px;
+	bottom: 12px;
+	right: 100px;
     background-color: $black-16;
     width: 200px;
 	height: 304px;

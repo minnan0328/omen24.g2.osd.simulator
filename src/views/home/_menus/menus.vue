@@ -36,7 +36,7 @@
 
         <!-- 控制選單按鈕 -->
         <menuControllerItem v-if="openControllerMenus"
-                            v-model:handleControllerButtonList="handleControllerButtonList"
+                            v-model:handleControllerButtonList="handleControllerButtonList!"
         ></menuControllerItem>
         <!-- 控制選單按鈕 -->
 
@@ -44,27 +44,27 @@
         <div class="menu-controller-btn">
             <template v-if="openMonitor && showScreen && !openControllerMenus">
                 <button :class="['controller-btn controller-btn-center', { 'show-guide':  showMonitorStatus}]" @click="handlerControllerMenus"></button>
-                <button :class="['controller-btn controller-btn-right', { 'show-guide':  showMonitorStatus}]" @click="handlerControllerMenus"></button>
+                <button :class="['controller-btn controller-btn-top', { 'show-guide':  showMonitorStatus}]" @click="handlerControllerMenus"></button>
                 <button :class="['controller-btn controller-btn-bottom', { 'show-guide':  showMonitorStatus}]" @click="handlerControllerMenus"></button>
                 <button :class="['controller-btn controller-btn-left', { 'show-guide':  showMonitorStatus}]" @click="handlerControllerMenus"></button>
-                <button :class="['controller-btn controller-btn-top', { 'show-guide':  showMonitorStatus}]" @click="handlerControllerMenus"></button>
+                <button :class="['controller-btn controller-btn-right', { 'show-guide':  showMonitorStatus}]" @click="handlerControllerMenus"></button>
             </template>
 
             <template v-else v-for="(currentButton, index) in handleControllerButtonList">
                 <button v-if="currentButton.type == 'Button'" :class="['controller-btn', {
                     'controller-btn-center': index == 0,
-                    'controller-btn-bottom': index == 1,
-                    'controller-btn-top': index == 2,
-                    'controller-btn-right': index == 3,
-                    'controller-btn-left': index == 4
+                    'controller-btn-top': index == 1,
+                    'controller-btn-bottom': index == 2,
+                    'controller-btn-left': index == 3,
+                    'controller-btn-right': index == 4
                 }]" @click="currentButton.event"></button>
                 
                 <button v-if="currentButton.type == 'eventButton'" :class="['controller-btn', {
                     'controller-btn-center': index == 0,
-                    'controller-btn-bottom': index == 1,
-                    'controller-btn-top': index == 2,
-                    'controller-btn-right': index == 3,
-                    'controller-btn-left': index == 4
+                    'controller-btn-top': index == 1,
+                    'controller-btn-bottom': index == 2,
+                    'controller-btn-left': index == 3,
+                    'controller-btn-right': index == 4
                 }]"
                     @mousedown="currentButton.event"
                     @mouseup="currentButton.stopEvent"
@@ -103,6 +103,7 @@ import iconColor from '@/assets/icons/icon-color.svg';
 import iconInput from '@/assets/icons/icon-input.svg';
 import iconNext from '@/assets/icons/icon-next.svg';
 import iconNextRight from '@/assets/icons/icon-next-right.svg';
+import iconNextLeft from '@/assets/icons/icon-next-left.svg';
 import iconArrowBottom from '@/assets/icons/icon-arrow-bottom.svg';
 import iconArrowUp from '@/assets/icons/icon-arrow-up.svg';
 import iconArrowLeft from '@/assets/icons/icon-arrow-left.svg';
@@ -126,7 +127,7 @@ import PowerConfirmChangeNodes from '@/models/class/power/message/confirm-change
 import { DefaultNodes, BackNodes, ResetNodes, ExitNodes, OnNodes, OffNodes, YesNodes, NoNodes } from '@/models/class/_utilities';
 import { BrightnessDefaultValueEnum, setBrightnessDefaultValue } from '@/models/enum/brightnessDefaultValue/brightnessDefaultValue';
 
-const debugMode = ref(true);
+const debugMode = ref(false);
 
 const MenusDefaultEnum = new MenusDefaultModel();
 
@@ -275,7 +276,7 @@ const assignMenus = computed(() => {
         [AssignCrosshairNodesEnum.key]: {
             key: AssignCrosshairNodesEnum.key,
             icon: "",
-            node: store.$state.input.nodes[3]
+            node: store.$state.gaming.nodes[3]
         },
         [AssignEmptyNodesEnum.key]: {
             key: AssignEmptyNodesEnum.key,
@@ -386,9 +387,11 @@ const MenuControllerTypes: Record<string, ControllerButtonList> = reactive({
     arrowRight: { image: iconArrowRight, event: () => { handlerNavigation('up') }, stopEvent: () => {}, type: "Button" },
     arrowLeft: { image: iconArrowLeft, event: () => { handlerNavigation('down') }, stopEvent: () => {}, type: "Button" },
     previous: { image: iconPrevious, event: handlePrevious, stopEvent: () => {}, type: "Button" },
+    checkNext: { image: iconCheck, event: handlerNextPanel, stopEvent: () => {}, type: "Button" },
     next: { image: iconNext, event: handlerNextPanel, stopEvent: () => {}, type: "Button" },
     nextRight: { image: iconNextRight, event: () => handlerNavigation('down'), stopEvent: () => {}, type: "Button" },
     nextAssignRight: { image: iconNextRight, event: handlerAssignNextPanel, stopEvent: () => {}, type: "Button" },
+    nextAssignLeft: { image: iconNextLeft, event: handlerAssignPreviousPanel, stopEvent: () => {}, type: "Button" },
     rangeSubtract: { image: iconSubtract, event: handlerRangeSubtract, stopEvent: stopRangeValueTrigger, type: "eventButton" },
     rangeAdd: { image: iconAdd, event: handlerRangeAdd, stopEvent: stopRangeValueTrigger, type: "eventButton" },
     confirmClose: { image: iconClose, event: handlerCloseConfirmAction, stopEvent: () => {}, type: "Button" }
@@ -418,14 +421,14 @@ const handleControllerButtonList = computed<ControllerButtonList[] | null>(() =>
         return [
             // center
             { image: iconAllMenu, event: handlerOpenAllMenu, stopEvent: () => {}, type: "Button" },
-            // bottom
-            { image: getAssignButton.value[3]!.icon, event: () => handleAssignButton(getAssignButton.value[3]!.key), stopEvent: () => {}, type: "Button" },
             // top
             { image: getAssignButton.value[2]!.icon, event: () => handleAssignButton(getAssignButton.value[2]!.key), stopEvent: () => {}, type: "Button"},
-            // right
-            { image: getAssignButton.value[1]!.icon, event: () => handleAssignButton(getAssignButton.value[1]!.key), stopEvent: () => {}, type: "Button" },
+            // bottom
+            { image: getAssignButton.value[3]!.icon, event: () => handleAssignButton(getAssignButton.value[3]!.key), stopEvent: () => {}, type: "Button" },
             // left
-            { image: getAssignButton.value[0]!.icon, event:() => handleAssignButton(getAssignButton.value[0]!.key), stopEvent: () => {}, type: "Button" }
+            { image: getAssignButton.value[0]!.icon, event:() => handleAssignButton(getAssignButton.value[0]!.key), stopEvent: () => {}, type: "Button" },
+            // right
+            { image: getAssignButton.value[1]!.icon, event: () => handleAssignButton(getAssignButton.value[1]!.key), stopEvent: () => {}, type: "Button" }
         ]
     } 
     
@@ -459,11 +462,12 @@ function createMenuButtonList(): ControllerButtonList[] {
 }
 
 function createFirstLayerButtonList(): ControllerButtonList[] {
+    // 順序為 center, bottom, top, left, right
     const mode = menuState.menuPanel?.mode as string;
     const buttonMap: Record<string, ControllerButtonList[]> = {
-        [ModeType.info]: [MenuControllerTypes.empty!, MenuControllerTypes.arrowBottom!, MenuControllerTypes.arrowUp!, MenuControllerTypes.close!],
-        [ModeType.exit]: [MenuControllerTypes.checkClose!, MenuControllerTypes.arrowBottom!, MenuControllerTypes.arrowUp!, MenuControllerTypes.close!],
-        default: [MenuControllerTypes.next!, MenuControllerTypes.arrowBottom!, MenuControllerTypes.arrowUp!, MenuControllerTypes.close!],
+        [ModeType.info]: [MenuControllerTypes.empty!, MenuControllerTypes.arrowUp!, MenuControllerTypes.arrowBottom!, MenuControllerTypes.close!, MenuControllerTypes.empty!],
+        [ModeType.exit]: [MenuControllerTypes.checkClose!, MenuControllerTypes.arrowUp!, MenuControllerTypes.arrowBottom!, MenuControllerTypes.close!, MenuControllerTypes.empty!],
+        default: [MenuControllerTypes.checkNext!, MenuControllerTypes.arrowUp!, MenuControllerTypes.arrowBottom!, MenuControllerTypes.close!, MenuControllerTypes.next!]
     };
 
     return buttonMap[mode] !== undefined ? buttonMap[mode] : buttonMap.default!;
@@ -471,33 +475,33 @@ function createFirstLayerButtonList(): ControllerButtonList[] {
 
 function handlerModeControllerButtonList(nodes: Nodes, previousNodes: Nodes) {
     // 當下一層有節點時候的組合
-    const nextButtonList: ControllerButtonList[] = [ MenuControllerTypes.next!, MenuControllerTypes.arrowBottom!, MenuControllerTypes.arrowUp!, MenuControllerTypes.previous! ];
+    const nextButtonList: ControllerButtonList[] = [ MenuControllerTypes.checkNext!, MenuControllerTypes.arrowUp!, MenuControllerTypes.arrowBottom!, MenuControllerTypes.previous!, MenuControllerTypes.next! ];
 
     // 選單不同旋轉角度組合
     type MenuRotationValue = 0 | 90 | 180 | 270;
     const confirmedButtonListObj: Record<MenuRotationValue, ControllerButtonList[]> = {
-        0: [ MenuControllerTypes.checkSave!, MenuControllerTypes.arrowBottom!, MenuControllerTypes.arrowUp!, MenuControllerTypes.previous! ],
-        90: [ MenuControllerTypes.previous!, MenuControllerTypes.arrowUp!, MenuControllerTypes.arrowBottom!, MenuControllerTypes.checkSave! ],
-        180: [ MenuControllerTypes.previous!, MenuControllerTypes.arrowBottom!, MenuControllerTypes.arrowUp!, MenuControllerTypes.checkSave! ],
-        270: [ MenuControllerTypes.checkSave!, MenuControllerTypes.arrowBottom!, MenuControllerTypes.arrowUp!, MenuControllerTypes.previous! ]
+        0: [ MenuControllerTypes.checkSave!, MenuControllerTypes.arrowUp!, MenuControllerTypes.arrowBottom!, MenuControllerTypes.previous!, MenuControllerTypes.empty! ],
+        90: [ MenuControllerTypes.checkSave!, MenuControllerTypes.empty!, MenuControllerTypes.previous!, MenuControllerTypes.arrowUp!, MenuControllerTypes.arrowBottom! ],
+        180: [ MenuControllerTypes.checkSave!,  MenuControllerTypes.arrowBottom!, MenuControllerTypes.arrowUp!,  MenuControllerTypes.empty!, MenuControllerTypes.previous!],
+        270: [ MenuControllerTypes.checkSave!, MenuControllerTypes.previous!, MenuControllerTypes.empty!, MenuControllerTypes.arrowBottom!, MenuControllerTypes.arrowUp!]
     };
 
     // 確認選擇的按鈕組合
     const confirmedButtonList: ControllerButtonList[] = confirmedButtonListObj[menuStateResult.value.menuRotationValue as MenuRotationValue];
     // range value 組合
-    const rangeButtonList: ControllerButtonList[] = [ MenuControllerTypes.checkSave!,  MenuControllerTypes.rangeSubtract!,  MenuControllerTypes.rangeAdd!, MenuControllerTypes.previous! ];
+    const rangeButtonList: ControllerButtonList[] = [ MenuControllerTypes.checkSave!,  MenuControllerTypes.rangeAdd!, MenuControllerTypes.rangeSubtract!, MenuControllerTypes.previous!, MenuControllerTypes.empty! ];
     // 多個 range value 組合
-    const rangeNextButtonList: ControllerButtonList[] = [ MenuControllerTypes.nextRight!, MenuControllerTypes.rangeSubtract!, MenuControllerTypes.rangeAdd!, MenuControllerTypes.previous! ];
+    const rangeNextButtonList: ControllerButtonList[] = [ MenuControllerTypes.empty!, MenuControllerTypes.previous!, MenuControllerTypes.nextRight!, MenuControllerTypes.rangeSubtract!, MenuControllerTypes.rangeAdd! ];
     // 多個直向 range value 組合，且最後一個時候
-    const rangeNextButtonListLast: ControllerButtonList[] = [ MenuControllerTypes.empty!, MenuControllerTypes.rangeSubtract!, MenuControllerTypes.rangeAdd!, MenuControllerTypes.previous! ];
+    const rangeNextButtonListLast: ControllerButtonList[] = [ MenuControllerTypes.empty!, MenuControllerTypes.rangeSubtract!, MenuControllerTypes.rangeAdd!,  MenuControllerTypes.previous!, MenuControllerTypes.next! ];
     // 多個縱向 range value 組合 unfocus
-    const rangeNextButtonListUnfocus: ControllerButtonList[] = [ MenuControllerTypes.nextSave!, MenuControllerTypes.arrowBottom!, MenuControllerTypes.arrowUp!, MenuControllerTypes.previous! ];
+    const rangeNextButtonListUnfocus: ControllerButtonList[] = [ MenuControllerTypes.checkSave!, MenuControllerTypes.arrowUp!, MenuControllerTypes.arrowBottom!, MenuControllerTypes.previous!, MenuControllerTypes.nextSave! ];
     // assign button 確認選擇的按鈕組合
-    const confirmedAssignButtonList: ControllerButtonList[] = [ MenuControllerTypes.checkSave!, MenuControllerTypes.arrowBottom!, MenuControllerTypes.arrowUp!, MenuControllerTypes.nextAssignRight! ];
+    const confirmedAssignButtonList: ControllerButtonList[] = [ MenuControllerTypes.checkSave!, MenuControllerTypes.arrowUp!, MenuControllerTypes.arrowBottom!, MenuControllerTypes.nextAssignLeft!, MenuControllerTypes.nextAssignRight! ];
     // assign button range value 組合
-    const rangeAssignButtonList: ControllerButtonList[] = [ MenuControllerTypes.close!, MenuControllerTypes.rangeSubtract!, MenuControllerTypes.rangeAdd!, MenuControllerTypes.nextAssignRight! ];
+    const rangeAssignButtonList: ControllerButtonList[] = [ MenuControllerTypes.close!, MenuControllerTypes.rangeAdd!, MenuControllerTypes.rangeSubtract!, MenuControllerTypes.nextAssignLeft!, MenuControllerTypes.nextAssignRight! ];
     // assign button info 組合
-    const infoAssignButtonList: ControllerButtonList[] = [ MenuControllerTypes.checkSave!, MenuControllerTypes.empty!, MenuControllerTypes.empty!, MenuControllerTypes.nextAssignRight! ];
+    const infoAssignButtonList: ControllerButtonList[] = [ MenuControllerTypes.checkSave!, MenuControllerTypes.empty!, MenuControllerTypes.empty!, MenuControllerTypes.nextAssignLeft!, MenuControllerTypes.nextAssignRight! ];
 
     // 當為 reset and back, button 下一層沒有節點的時候
     const isLastNode = nodes.key == ResetNodesEnum.key || nodes.key == BackNodesEnum.key
@@ -579,6 +583,33 @@ function handlerAssignNextPanel() {
     handlerNextPanel();
     handlerMenuTimeout();
 };
+
+// 返回上一個自訂選單 assign button previous panel
+function handlerAssignPreviousPanel() {
+    if(menuState.temporaryStorage) {
+        menuState.menuPanel!.result = menuState.temporaryStorage.result;
+        menuState.temporaryStorage = null;
+        setBrightnessDefaultValue();
+    };
+
+    menuState.menuPanel = null;
+    menuState.secondPanel = null;
+    menuState.menuPanelIndex = 0;
+    menuState.secondPanelIndex = 0;
+    menuState.assignPanelOrderIndex -= 1;
+    menuState.assignPanelOrderIndex = menuState.assignPanelOrderIndex < 0 ? assignPanelOrder.length - 1 : menuState.assignPanelOrderIndex;
+    const key = assignPanelOrder[menuState.assignPanelOrderIndex] as string;
+
+    if(!isEnableNode(assignMenus.value[key]!.node)) {
+        handlerAssignPreviousPanel();
+        return;
+    }    
+
+    selectedMenuPanel(assignMenus.value[key]!.node as Nodes);
+    handlerNextPanel();
+    handlerMenuTimeout();
+};
+
 /* 控制上下一個自訂選單 assign button next panel */
 
 /* 選擇下一層(Panel) */
@@ -1027,7 +1058,7 @@ function handlerRangeAdd() {
 
 
 // 儲存選擇節點的 value
-function handlerSave(currentPanelNumber: number = 0) {
+function handlerSave(currentPanelNumber = 0) {
     currentPanelNumber = currentPanelNumber > 0 ? currentPanelNumber : menuState.currentPanelNumber;
     if(openAllMenu.value || openAssignButton.value) {
         switch(currentPanelNumber) {

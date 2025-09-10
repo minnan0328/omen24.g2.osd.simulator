@@ -4,7 +4,8 @@ import { onMounted } from 'vue';
 import config from '@/config/config';
 
 onMounted(() => {
-	document.title = `${config.company}_${config.screenModel}`;
+	const company = config.company ? `${config.company}_` : "";
+	document.title = `${company}${config.screenModel}`;
 });
 </script>
 

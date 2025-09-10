@@ -162,9 +162,7 @@ function restartScreen() {
 
 
 provide<HomeEvent>("homeEvent", {
-    restartScreen,
-    // autoAdjustment,
-    // speakerSelfTest
+    restartScreen
 });
 
 

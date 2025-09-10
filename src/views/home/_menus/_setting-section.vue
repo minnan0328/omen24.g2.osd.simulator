@@ -61,7 +61,7 @@
                 </template>
             </div>
             <div v-if="mainSectionNodes && secondarySectionNodes && secondarySectionNodes.nodes" 
-                :class="['secondary-section', { 'customRGB-range-section': secondarySectionNodes.key == 'CustomRGB' }]">
+                :class="['secondary-section', { 'customRGB-range-section': secondarySectionNodes.key == rgbGainAdjustNodesEnum.key }]">
 
                 <template v-for="(thirdNodes, thirdNodesIdx) in secondarySectionNodes.nodes">
                     <div :class="['setting-item unset-grid', thirdNodes.key]"
@@ -145,6 +145,9 @@ import customizeCheckbox from './_components/_customize-checkbox.vue';
 import customizeRadio from './_components/_customize-radio.vue';
 import previousPageButtons from './_components/_previous-page-buttons.vue';
 import nextPageButtons from './_components/_next-page-button.vue';
+import RGBGainAdjustNodes from '@/models/class/color/_RGB-gain-adjust-nodes';
+
+const rgbGainAdjustNodesEnum = new RGBGainAdjustNodes();
 
 const props = defineProps({
     mainSectionNodes: {

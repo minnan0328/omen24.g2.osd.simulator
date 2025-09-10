@@ -5,10 +5,11 @@ const DefaultNodesEnum = new DefaultNodes();
 
 export default class SpeedrunTimerNodes extends DefaultNodes implements Nodes {
     key = "SpeedrunTimer";
+    assignDisplay = false;
     displayValue = true;
     selected = 20;
     result = 20;
-    mode = ModeType.timer;
+    mode = ModeType.radio;
     language = {
         German: "Speedrun Timer",
         SimplifiedChinese: "竞速计时器",
@@ -22,15 +23,4 @@ export default class SpeedrunTimerNodes extends DefaultNodes implements Nodes {
         BrazilianPortuguese: "Temporizador de speedrun",
         Russian: "Таймер скоростн. прохождения"
     }
-    nodes = [
-        {
-            ...JSON.parse(JSON.stringify(DefaultNodesEnum)),
-            key: "SpeedrunTimer",
-            selected: this.selected,
-            result: this.result,
-            parents: this.key,
-            mode: ModeType.timer,
-            language: this.language
-        }
-    ]
 };

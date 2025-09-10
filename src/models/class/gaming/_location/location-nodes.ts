@@ -16,9 +16,10 @@ export default class LocationNodes extends DefaultNodes implements Nodes {
     key = "Location";
     selected = TopRightNodesEnum.selected;
     result = TopRightNodesEnum.result;
+    assignDisplay = false;
     displayValue = true;
     size = 5;
-    mode = ModeType.radio;
+    mode = ModeType.button;
     language = {
         German: "Speicherort",
         SimplifiedChinese: "位置",

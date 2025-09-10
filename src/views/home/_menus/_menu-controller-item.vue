@@ -3,19 +3,19 @@
         <template v-for="(currentButton, index) in handleControllerButtonList">
             <div :class="['controller-item', {
                 'controller-item-center': index == 0,
-                'controller-item-bottom': index == 1,
-                'controller-item-top': index == 2,
-                'controller-item-right': index == 3,
-                'controller-item-left': index == 4
+                'controller-item-top': index == 1,
+                'controller-item-bottom': index == 2,
+                'controller-item-left': index == 3,
+                'controller-item-right': index == 4
             }]" v-if="currentButton?.image">
                 <img :src="currentButton?.image" alt="">
             </div>
             <div :class="['controller-item', {
                 'controller-item-center': index == 0,
-                'controller-item-bottom': index == 1,
-                'controller-item-top': index == 2,
-                'controller-item-right': index == 3,
-                'controller-item-left': index == 4
+                'controller-item-top': index == 1,
+                'controller-item-bottom': index == 2,
+                'controller-item-left': index == 3,
+                'controller-item-right': index == 4
             }]" v-else></div>
         </template>
     </div>
