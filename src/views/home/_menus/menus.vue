@@ -2,23 +2,11 @@
     <div class="menu-wrapper">
         <!-- 全部的選單 -->
         <div :class="['menus', { 'accessibility': menuStateResult.accessibility }]" v-if="openAllMenu && menuState.menuPanel">
-            <div class="header">
-                <p>{{config.company}} {{config.screenModel}}</p>
-            </div>
-    
+            
+            <headerSection></headerSection>
+
             <div class="body">
-                <div class="sidebar">
-                    <div class="hp-logo">
-                        <img src="@/assets/images/hp-logo.svg" alt="">
-                    </div>
-                    <div class="options">
-                        <template  v-for="menu in menus.nodes" v-text="toLanguageText(menu.language)">
-                            <div :class="['option', { selected: menuState.menuPanel?.key == menu.key, focus: menuState.menuPanel?.key == menu.key && menuState.secondPanel }]"
-                                v-if="isEnableNode(menu)" v-text="toLanguageText(menu.language)">
-                            </div>
-                        </template>
-                    </div>
-                </div>
+                <sidebarSection v-model:menus="menus" v-model:menuState="menuState"></sidebarSection>
     
                 <settingSection v-model:mainSectionNodes="displayCurrentNodes.mainSectionNodes"
                                 v-model:secondarySectionNodes="displayCurrentNodes.secondarySectionNodes"
@@ -27,65 +15,33 @@
                 </settingSection>
             </div>
     
-            <div class="footer">
-                <div class="current-mode">
-                    {{ toLanguageText(menuStateResult.information.currentMode.language) }}: {{ menuStateResult.information.currentMode.selected }}
-                </div>
-                <div class="current-input">
-                    {{ toLanguageText(menuStateResult.input.language) }}: {{ menuStateResult.input.selected }}
-                </div>
-            </div>
+            <footerSection></footerSection>
         </div>
         <!-- 全部的選單 -->
 
         <!-- 自訂的小選單 -->
-        <div :class="['menu assign-menu', menuState.menuPanel.key, { 'accessibility': menuStateResult.accessibility }]"
-            v-if="openAssignButton && menuState.menuPanel">
-            <div class="header">
-                <p>{{ toLanguageText(menuState.menuPanel.language!) }}</p>
-            </div>
-            <div class="body">
-                <assignMenu
+        <assignMenu v-if="openAssignButton && menuState.menuPanel"
                     v-model:mainSectionNodes="menuState.menuPanel"
                     v-model:secondarySectionNodes="menuState.secondPanel">
-                </assignMenu>
-            </div>
-        </div>
+        </assignMenu>
         <!-- 自訂的小選單 -->
         
         <!-- 原廠設定改變的 conform -->
         <confirm v-if="confirmState.openConfirm"
-            v-model:mainSectionNodes="confirmState.confirmMainPanel"
-            v-model:secondarySectionNodes="confirmState.confirmSecondPanel"
-            v-model:thirdSectionNodes="confirmState.confirmThirdPanel">
+                v-model:mainSectionNodes="confirmState.confirmMainPanel"
+                v-model:secondarySectionNodes="confirmState.confirmSecondPanel"
+                v-model:thirdSectionNodes="confirmState.confirmThirdPanel">
         </confirm>
         <!-- 原廠設定改變的 conform -->
 
         <!-- 控制選單按鈕 -->
-        <div :class="['controller-menus', { 'accessibility': menuStateResult.accessibility }]" v-if="openControllerMenus">
-            <template v-for="(currentButton, index) in handleControllerButtonList">
-                <div :class="['menu-item', {
-                    'menu-item-center': index == 0,
-                    'menu-item-bottom': index == 1,
-                    'menu-item-top': index == 2,
-                    'menu-item-right': index == 3,
-                    'menu-item-left': index == 4
-                }]" v-if="currentButton.image">
-                    <img :src="currentButton?.image" alt="">
-                </div>
-                <div :class="['menu-item', {
-                    'menu-item-center': index == 0,
-                    'menu-item-bottom': index == 1,
-                    'menu-item-top': index == 2,
-                    'menu-item-right': index == 3,
-                    'menu-item-left': index == 4
-                }]" v-else></div>
-            </template>
-        </div>
+        <menuControllerItem v-if="openControllerMenus"
+                            v-model:handleControllerButtonList="handleControllerButtonList"
+        ></menuControllerItem>
         <!-- 控制選單按鈕 -->
 
         <!-- 控制選單按鈕-點擊範圍 -->
-        <div class="controller">
+        <div class="menu-controller-btn">
             <template v-if="openMonitor && showScreen && !openControllerMenus">
                 <button :class="['controller-btn controller-btn-center', { 'show-guide':  showMonitorStatus}]" @click="handlerControllerMenus"></button>
                 <button :class="['controller-btn controller-btn-right', { 'show-guide':  showMonitorStatus}]" @click="handlerControllerMenus"></button>
@@ -131,12 +87,15 @@ import { ModeType } from '@/types';
 import { isEnableNode, toLanguageText, toLowerCaseFirstChar } from '@/service/service';
 import { menuStateResult } from '@/service/monitorStateResult';
 
-import config from '@/config/config';
 
 // components
+import headerSection from './_header-section.vue';
+import sidebarSection from './_sidebar-section.vue';
+import footerSection from './_footer-section.vue';
 import settingSection from './_setting-section.vue';
 import assignMenu from './_assign-menu.vue';
 import confirm from '@/views/home/_confirm/confirm.vue';
+import menuControllerItem from './_menu-controller-item.vue';
 // svg
 import iconAllMenu from '@/assets/icons/icon-menu.svg';
 import iconBrightness from '@/assets/icons/icon-brightness.svg';
@@ -154,8 +113,6 @@ import iconSubtract from '@/assets/icons/icon-subtract.svg';
 import iconAdd from '@/assets/icons/icon-add.svg';
 import iconPrevious from '@/assets/icons/icon-previous.svg';
 import iconInformation from '@/assets/icons/icon-information.svg';
-import iconAutoAdjustment from '@/assets/icons/icon-auto-adjustment.svg';
-import iconSoundVolume from '@/assets/icons/icon-sound-volume.svg';
 
 import { 
     AssignBrightnessNodes,
@@ -236,12 +193,24 @@ const menus = computed(() => {
 });
 
 // selected menuState and node
-const menuState = reactive({
-    menuPanel: null as Nodes | null,
-    secondPanel: null as Nodes | null,
-    thirdPanel: null as Nodes | null,
-    fourthPanel: null as Nodes | null,
-    temporaryStorage: null as Nodes | null, // node 的 livePreview 為 true 時才使用，紀錄上一次的設定值
+const menuState = reactive<{
+    menuPanel: Nodes | null,
+    secondPanel: Nodes | null,
+    thirdPanel: Nodes | null,
+    fourthPanel: Nodes | null,
+    temporaryStorage: Nodes | null, // node 的 livePreview 為 true 時才使用，紀錄上一次的設定值
+    currentPanelNumber: number,
+    menuPanelIndex: number,
+    secondPanelIndex: number,
+    thirdPanelIndex: number,
+    fourthPanelIndex: number
+    assignPanelOrderIndex: number
+}>({
+    menuPanel: null,
+    secondPanel: null,
+    thirdPanel: null,
+    fourthPanel: null,
+    temporaryStorage: null,
     currentPanelNumber: 0,
     menuPanelIndex: 0,
     secondPanelIndex: 0,
@@ -403,9 +372,9 @@ function selectedMenuPanel(nodes: Nodes) {
 
 /* 控制選單按鈕組合列表 */
 // 是否啟用選單控制按鈕
-const isControllerMenusButton = computed(() => openControllerMenus.value && !openAllMenu.value && !openAssignButton.value && !confirmState.openConfirm);
+const isMenuControllerButton = computed(() => openControllerMenus.value && !openAllMenu.value && !openAssignButton.value && !confirmState.openConfirm);
 
-const ControllerTypes: Record<string, ControllerButtonList> = reactive({
+const MenuControllerTypes: Record<string, ControllerButtonList> = reactive({
     empty: { image: null, event: () => {}, stopEvent: () => {}, type: "Button" },
     close: { image: iconClose, event: handlerClose, stopEvent: () => {}, type: "Button" },
     checkClose: { image: iconCheck, event: handlerClose, stopEvent: () => {}, type: "Button" },
@@ -439,12 +408,12 @@ const getAssignButton = computed(() => {
     ]
 });
 
-const confirmButtonList:ControllerButtonList[] = [ ControllerTypes.checkSave!, ControllerTypes.arrowLeft!, ControllerTypes.arrowRight!, ControllerTypes.confirmClose! ];
+const confirmButtonList:ControllerButtonList[] = [ MenuControllerTypes.checkSave!, MenuControllerTypes.arrowLeft!, MenuControllerTypes.arrowRight!, MenuControllerTypes.confirmClose! ];
 
 const handleControllerButtonList = computed<ControllerButtonList[] | null>(() => {
     if(!props.openMonitor) return[];
 
-    if(isControllerMenusButton.value) {
+    if(isMenuControllerButton.value) {
         // 開啟螢幕及開啟全部選單列表時候的組合
         return [
             // center
@@ -492,9 +461,9 @@ function createMenuButtonList(): ControllerButtonList[] {
 function createFirstLayerButtonList(): ControllerButtonList[] {
     const mode = menuState.menuPanel?.mode as string;
     const buttonMap: Record<string, ControllerButtonList[]> = {
-        [ModeType.info]: [ControllerTypes.empty!, ControllerTypes.arrowBottom!, ControllerTypes.arrowUp!, ControllerTypes.close!],
-        [ModeType.exit]: [ControllerTypes.checkClose!, ControllerTypes.arrowBottom!, ControllerTypes.arrowUp!, ControllerTypes.close!],
-        default: [ControllerTypes.next!, ControllerTypes.arrowBottom!, ControllerTypes.arrowUp!, ControllerTypes.close!],
+        [ModeType.info]: [MenuControllerTypes.empty!, MenuControllerTypes.arrowBottom!, MenuControllerTypes.arrowUp!, MenuControllerTypes.close!],
+        [ModeType.exit]: [MenuControllerTypes.checkClose!, MenuControllerTypes.arrowBottom!, MenuControllerTypes.arrowUp!, MenuControllerTypes.close!],
+        default: [MenuControllerTypes.next!, MenuControllerTypes.arrowBottom!, MenuControllerTypes.arrowUp!, MenuControllerTypes.close!],
     };
 
     return buttonMap[mode] !== undefined ? buttonMap[mode] : buttonMap.default!;
@@ -502,33 +471,33 @@ function createFirstLayerButtonList(): ControllerButtonList[] {
 
 function handlerModeControllerButtonList(nodes: Nodes, previousNodes: Nodes) {
     // 當下一層有節點時候的組合
-    const nextButtonList: ControllerButtonList[] = [ ControllerTypes.next!, ControllerTypes.arrowBottom!, ControllerTypes.arrowUp!, ControllerTypes.previous! ];
+    const nextButtonList: ControllerButtonList[] = [ MenuControllerTypes.next!, MenuControllerTypes.arrowBottom!, MenuControllerTypes.arrowUp!, MenuControllerTypes.previous! ];
 
     // 選單不同旋轉角度組合
     type MenuRotationValue = 0 | 90 | 180 | 270;
     const confirmedButtonListObj: Record<MenuRotationValue, ControllerButtonList[]> = {
-        0: [ ControllerTypes.checkSave!, ControllerTypes.arrowBottom!, ControllerTypes.arrowUp!, ControllerTypes.previous! ],
-        90: [ ControllerTypes.previous!, ControllerTypes.arrowUp!, ControllerTypes.arrowBottom!, ControllerTypes.checkSave! ],
-        180: [ ControllerTypes.previous!, ControllerTypes.arrowBottom!, ControllerTypes.arrowUp!, ControllerTypes.checkSave! ],
-        270: [ ControllerTypes.checkSave!, ControllerTypes.arrowBottom!, ControllerTypes.arrowUp!, ControllerTypes.previous! ]
+        0: [ MenuControllerTypes.checkSave!, MenuControllerTypes.arrowBottom!, MenuControllerTypes.arrowUp!, MenuControllerTypes.previous! ],
+        90: [ MenuControllerTypes.previous!, MenuControllerTypes.arrowUp!, MenuControllerTypes.arrowBottom!, MenuControllerTypes.checkSave! ],
+        180: [ MenuControllerTypes.previous!, MenuControllerTypes.arrowBottom!, MenuControllerTypes.arrowUp!, MenuControllerTypes.checkSave! ],
+        270: [ MenuControllerTypes.checkSave!, MenuControllerTypes.arrowBottom!, MenuControllerTypes.arrowUp!, MenuControllerTypes.previous! ]
     };
 
     // 確認選擇的按鈕組合
     const confirmedButtonList: ControllerButtonList[] = confirmedButtonListObj[menuStateResult.value.menuRotationValue as MenuRotationValue];
     // range value 組合
-    const rangeButtonList: ControllerButtonList[] = [ ControllerTypes.checkSave!,  ControllerTypes.rangeSubtract!,  ControllerTypes.rangeAdd!, ControllerTypes.previous! ];
+    const rangeButtonList: ControllerButtonList[] = [ MenuControllerTypes.checkSave!,  MenuControllerTypes.rangeSubtract!,  MenuControllerTypes.rangeAdd!, MenuControllerTypes.previous! ];
     // 多個 range value 組合
-    const rangeNextButtonList: ControllerButtonList[] = [ ControllerTypes.nextRight!, ControllerTypes.rangeSubtract!, ControllerTypes.rangeAdd!, ControllerTypes.previous! ];
+    const rangeNextButtonList: ControllerButtonList[] = [ MenuControllerTypes.nextRight!, MenuControllerTypes.rangeSubtract!, MenuControllerTypes.rangeAdd!, MenuControllerTypes.previous! ];
     // 多個直向 range value 組合，且最後一個時候
-    const rangeNextButtonListLast: ControllerButtonList[] = [ ControllerTypes.empty!, ControllerTypes.rangeSubtract!, ControllerTypes.rangeAdd!, ControllerTypes.previous! ];
+    const rangeNextButtonListLast: ControllerButtonList[] = [ MenuControllerTypes.empty!, MenuControllerTypes.rangeSubtract!, MenuControllerTypes.rangeAdd!, MenuControllerTypes.previous! ];
     // 多個縱向 range value 組合 unfocus
-    const rangeNextButtonListUnfocus: ControllerButtonList[] = [ ControllerTypes.nextSave!, ControllerTypes.arrowBottom!, ControllerTypes.arrowUp!, ControllerTypes.previous! ];
+    const rangeNextButtonListUnfocus: ControllerButtonList[] = [ MenuControllerTypes.nextSave!, MenuControllerTypes.arrowBottom!, MenuControllerTypes.arrowUp!, MenuControllerTypes.previous! ];
     // assign button 確認選擇的按鈕組合
-    const confirmedAssignButtonList: ControllerButtonList[] = [ ControllerTypes.checkSave!, ControllerTypes.arrowBottom!, ControllerTypes.arrowUp!, ControllerTypes.nextAssignRight! ];
+    const confirmedAssignButtonList: ControllerButtonList[] = [ MenuControllerTypes.checkSave!, MenuControllerTypes.arrowBottom!, MenuControllerTypes.arrowUp!, MenuControllerTypes.nextAssignRight! ];
     // assign button range value 組合
-    const rangeAssignButtonList: ControllerButtonList[] = [ ControllerTypes.close!, ControllerTypes.rangeSubtract!, ControllerTypes.rangeAdd!, ControllerTypes.nextAssignRight! ];
+    const rangeAssignButtonList: ControllerButtonList[] = [ MenuControllerTypes.close!, MenuControllerTypes.rangeSubtract!, MenuControllerTypes.rangeAdd!, MenuControllerTypes.nextAssignRight! ];
     // assign button info 組合
-    const infoAssignButtonList: ControllerButtonList[] = [ ControllerTypes.checkSave!, ControllerTypes.empty!, ControllerTypes.empty!, ControllerTypes.nextAssignRight! ];
+    const infoAssignButtonList: ControllerButtonList[] = [ MenuControllerTypes.checkSave!, MenuControllerTypes.empty!, MenuControllerTypes.empty!, MenuControllerTypes.nextAssignRight! ];
 
     // 當為 reset and back, button 下一層沒有節點的時候
     const isLastNode = nodes.key == ResetNodesEnum.key || nodes.key == BackNodesEnum.key
@@ -1451,8 +1420,7 @@ function handlerMenuTimeout() {
     height: $screen-height;
 }
 
-.menus,
-.assign-menu {
+.menus {
 	position: absolute;
 	bottom: v-bind("menuStateResult.menuPosition.y");
 	left: v-bind("menuStateResult.menuPosition.x");
@@ -1462,79 +1430,11 @@ function handlerMenuTimeout() {
     z-index: 2;
     transform: rotate(v-bind("menuStateResult.menuRotation"));
 
-	.header,
-	.footer {
-		padding: 6px 12px;
-		color: $white;
-		font-size: 10px;
-	}
-
-	.footer {
-		position: absolute;
-		bottom: 0;
-		width: calc(100% - 24px);
-		display: flex;
-		justify-content: space-between;
-	}
-
 	.body {
 		height: calc(100% - 44px);
 		display: flex;
 		color: $light-grey;
 		font-size: 10px;
-
-		.sidebar {
-			width: 120px;
-			height: 100%;
-			background-color: $black-1C;
-
-			.hp-logo {
-				padding: 8px 0;
-				display: flex;
-				justify-content: center;
-				align-items: center;
-
-                img {
-                    width: 60%;
-                }
-			}
-		}
-
-        .options {
-            .option {
-                height: 26px;
-                display: flex;
-                align-items: center;
-                padding: 0 10px;
-                border: 1px solid transparent;
-
-                &.disabled {
-                    color: $black-50;
-                }
-
-                &.selected:not(.disabled) {
-                    background-color: $black;
-                    border: 1px solid $blue;
-                    color: $white;
-
-                    &.focus {
-                        border: 1px solid transparent;
-                        position: relative;
-
-                        &::before {
-                            position: absolute;
-                            content: "";
-                            right: 4px;
-                            width: 0;
-                            height: 0;
-                            border-style: solid;
-                            border-width: 5px 0 5px 10px;
-                            border-color: transparent transparent transparent $white;
-                        }
-                    }
-                }
-            }
-        }
 	}
 }
 
@@ -1549,143 +1449,7 @@ function handlerMenuTimeout() {
     }
 }
 
-.assign-menu {
-    position: absolute;
-    top: unset;
-    left: unset;
-	bottom: 34px;
-	right: 44px;
-    background-color: $black-16;
-    width: 200px;
-	height: 304px;
-
-    &.accessibility {
-        transform: scale(1.2);
-        bottom: 100px;
-        right: 120px;
-    }
-
-    &.Information {
-        width: 300px;
-    }
-
-    .header {
-        padding: 6px 12px;
-		color: $white;
-		font-size: 10px;
-        background-color: $black-09;
-    }
-    .body {
-        height: calc(100% - 22px);
-    }
-}
-
-.controller-menus {
-	position: absolute;
-	display: flex;
-    background-color: $black-28;
-    border: 0.8px solid $black;
-    width: 84px;
-    height: 84px;
-	bottom: 8px;
-	right: 8px;
-
-    &.accessibility {
-        transform: scale(1.1);
-        right: 94px;
-    }
-
-    $menuitem-icon-width: 18px;
-    $menuitem-icon-height: 18px;
-
-	.menu-item {
-		display: flex;
-		justify-content: center;
-		align-items: center;
-		width: $menuitem-icon-width;
-		height: $menuitem-icon-height;
-
-		img {
-            width: 16px;
-            transform:  rotate(v-bind("menuStateResult.menuRotation"));
-		}
-
-        &.menu-item-center {
-            position: absolute;
-            top: calc(50% - #{$menuitem-icon-height} / 2);
-            left: calc(50% - #{$menuitem-icon-width} / 2);
-        }
-
-        &.menu-item-top {
-            position: absolute;
-            left: calc(50% - #{$menuitem-icon-width} / 2);
-
-            &::before {
-                position: absolute;
-                content: "";
-                width: 100%;
-                height: 100%;
-                background-image: url('@/assets/icons/menu-arrow/menu-arrow-top.svg');
-                background-size: 19px 19px;
-                background-repeat: no-repeat;
-                top: $menuitem-icon-height;
-            }
-        }
-
-        &.menu-item-right {
-            position: absolute;
-            top: calc(50% - #{$menuitem-icon-height} / 2);
-            right: 0px;
-            
-            &::before {
-                position: absolute;
-                content: "";
-                width: 100%;
-                height: 100%;
-                background-image: url('@/assets/icons/menu-arrow/menu-arrow-right.svg');
-                background-size: 19px 19px;
-                background-repeat: no-repeat;
-                right: $menuitem-icon-width;
-            }
-        }
-
-        &.menu-item-left {
-            position: absolute;
-            top: calc(50% - #{$menuitem-icon-height} / 2);
-            left: 0px;
-
-            &::before {
-                position: absolute;
-                content: "";
-                width: 100%;
-                height: 100%;
-                background-image: url('@/assets/icons/menu-arrow/menu-arrow-left.svg');
-                background-size: 19px 19px;
-                background-repeat: no-repeat;
-                left: $menuitem-icon-width;
-            }
-        }
-
-        &.menu-item-bottom {
-            position: absolute;
-            left: calc(50% - #{$menuitem-icon-width} / 2);
-            bottom: 0px;
-
-            &::before {
-                position: absolute;
-                content: "";
-                width: 100%;
-                height: 100%;
-                background-image: url('@/assets/icons/menu-arrow/menu-arrow-bottom.svg');
-                background-size: 19px 19px;
-                background-repeat: no-repeat;
-                bottom: $menuitem-icon-height;
-            }
-        }
-	}
-}
-
-.controller {
+.menu-controller-btn {
 	position: absolute;
 	bottom: -148px;
 	right: 30px;

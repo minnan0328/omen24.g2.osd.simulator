@@ -137,14 +137,14 @@ import type { Nodes } from '@/types';
 import { ModeType } from '@/types';
 import { isEnableNode, toLanguageText, toDisplayValueLanguageText } from '@/service/service';
 // components
-import info from './_info.vue';
-import buttonItem from './_button-item.vue';
-import verticalRange from './_vertical-range.vue';
-import horizontalRange from './_horizontal-range.vue';
-import customizeCheckbox from './_customize-checkbox.vue';
-import customizeRadio from './_customize-radio.vue';
-import previousPageButtons from './_previous-page-buttons.vue';
-import nextPageButtons from './_next-page-button.vue';
+import info from './_components/_info.vue';
+import buttonItem from './_components/_button-item.vue';
+import verticalRange from './_components/_vertical-range.vue';
+import horizontalRange from './_components/_horizontal-range.vue';
+import customizeCheckbox from './_components/_customize-checkbox.vue';
+import customizeRadio from './_components/_customize-radio.vue';
+import previousPageButtons from './_components/_previous-page-buttons.vue';
+import nextPageButtons from './_components/_next-page-button.vue';
 
 const props = defineProps({
     mainSectionNodes: {

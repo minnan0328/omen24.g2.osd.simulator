@@ -10,7 +10,6 @@
 </template>
 <script setup lang="ts">
 import type { PropType } from 'vue';
-import { onMounted } from 'vue';
 import type { Language } from '@/types/index';
 import { toLanguageText } from '@/service/toDisplayLanguageText';
 

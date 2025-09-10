@@ -62,7 +62,7 @@
 </template>
 
 <script lang="ts" setup>
-import { ref, reactive, computed, provide } from 'vue';
+import { ref, reactive, provide } from 'vue';
 import { useStore } from '@/stores/index';
 import type { Nodes, HomeEvent, Language } from '@/types';
 import ribbon from '@/views/home/_ribbon/ribbon.vue';
@@ -71,9 +71,6 @@ import menus from '@/views/home/_menus/menus.vue';
 import { monitorResult } from '@/service/monitorStateResult';
 import config from '@/config/config';
 import toast from '@/views/home/_toast/toast.vue';
-
-import iconWarn from '@/assets/icons/icon-warn.svg';
-import iconSound from '@/assets/icons/icon-sound.svg';
 
 
 const store = useStore();
