@@ -78,7 +78,6 @@ export const menuStateResult = computed(() => {
     if (menu.value.nodes[1].nodes![0].result as number <= increaseThreshold) {
         // 遞增值 * 目前選單百分比
         deviation = (increase * menu.value.nodes[1].nodes![0].result as number) ;
-        console.log(`${(menu.value.nodes[1].nodes![0].result as number / 100) * ((monitorWidth) - menuWidth) - (deviation)}`)
     } else { 
         // 最大遞減基準值 - 遞減值 * 100 - 預設版分比
         deviation = (maxDecrease - decrease) * (100 - increaseThreshold);
