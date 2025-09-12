@@ -11,7 +11,7 @@ export default class DPHotPlugDetectionNodes extends DefaultNodes implements Nod
     key = "DPHotPlugDetection";
     selected = "Always Active";
     result = "Always Active";
-    assignDisplay = false;
+    assignItemDisplay = false;
     displayValue = true;
     size = 3;
     mode = ModeType.button;

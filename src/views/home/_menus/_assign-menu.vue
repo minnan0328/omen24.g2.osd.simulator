@@ -12,7 +12,7 @@
                         && secondNodes.key != ResetNodesEnum.key
                         && isEnableNode(secondNodes) && secondNodes.key != BackNodesEnum.key
                         && isEnableNode(secondNodes) && secondNodes.mode != ModeType.verticalRange
-                        && secondNodes.assignDisplay">
+                        && secondNodes.assignItemDisplay">
                         
                         <info :currentNode="secondNodes"></info>
         

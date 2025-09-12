@@ -716,9 +716,9 @@ function selectEnabledNode(node: Nodes, startIndex: number, setValue: (node: Nod
         do {
             // 檢查節點是否可用且未被禁用
             if (
-                isEnableNode(node.nodes[index]!) && !node.nodes[index]!.disabled && openAllMenu.value
+                openAllMenu.value && isEnableNode(node.nodes[index]!) && !node.nodes[index]!.disabled && node.nodes[index]!.menuItemDisplay
                 || (openAssignButton.value && node.nodes[index]!.mode !== ModeType.info)
-                || (openAssignButton.value && node.nodes[index]!.mode == ModeType.button && !node.nodes[index]!.assignDisplay)
+                || (openAssignButton.value && node.nodes[index]!.mode == ModeType.button && !node.nodes[index]!.assignItemDisplay)
             ) {
                 let selectedIndex = (node.selected || node.selected === 0) ? node.nodes.findIndex(n => n.selected === node.selected) : index;
                 index = selectedIndex >= 0 ? selectedIndex : index;
@@ -928,7 +928,7 @@ function updatePanelIndex(node: Nodes, nodeIndex: number, step: number, send: (p
             || openAllMenu.value && node.nodes[index]!.key == ExitNodesEnum.key && node.nodes[index]!.mode != ModeType.exit
             || openAssignButton.value && node.nodes[index]!.key == ResetNodesEnum.key
             || openAssignButton.value && node.nodes[index]!.key == BackNodesEnum.key
-            || openAssignButton.value && node.nodes[index]!.mode == ModeType.button && !node.nodes[index]!.assignDisplay
+            || openAssignButton.value && node.nodes[index]!.mode == ModeType.button && !node.nodes[index]!.assignItemDisplay
         ) {
             updatePanelIndex(node, index ,step, send);
         } else {

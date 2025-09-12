@@ -31,7 +31,8 @@ export interface Nodes {
     key: string;
     selected: number | string | string[] | boolean | null;
     result: number | string | string[] | boolean | null;
-    assignDisplay: Boolean;
+    assignItemDisplay: Boolean;
+    menuItemDisplay: Boolean;
     disabled: Boolean;
     displayValue: boolean;
     displayState: boolean;

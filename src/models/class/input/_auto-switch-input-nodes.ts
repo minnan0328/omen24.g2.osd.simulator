@@ -12,7 +12,7 @@ export default class AutoSwitchInputNodes extends DefaultNodes implements Nodes 
     key = "AutoSwitchInput";
     selected = OnNodesEnum.selected;
     result = OnNodesEnum.result;
-    assignDisplay = false;
+    assignItemDisplay = false;
     displayValue = true;
     size = 3;
     mode = ModeType.button;

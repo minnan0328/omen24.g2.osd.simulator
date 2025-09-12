@@ -11,7 +11,7 @@ export default class DisplayPortModeNodes extends DefaultNodes implements Nodes 
     key = "DisplayPortMode";
     selected = "DisplayPort 1.2";
     result = "DisplayPort 1.2";
-    assignDisplay = false;
+    assignItemDisplay = false;
     displayValue = true;
     size = 3;
     mode = ModeType.button;

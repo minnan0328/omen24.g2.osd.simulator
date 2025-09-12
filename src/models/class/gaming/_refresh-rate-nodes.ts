@@ -1,12 +1,13 @@
 import type { Nodes } from "@/types";
 import { ModeType } from "@/types";
-import { DefaultNodes, BackNodes, ResetNodes, OnNodes, OffNodes } from '../_utilities';
+import { DefaultNodes, BackNodes, ResetNodes, OnNodes, OffNodes, ExitNodes } from '../_utilities';
 import ColorNodes from './_color/color-nodes';
 import LocationNodes from './_location/location-nodes';
 const BackNodesEnum = new BackNodes();
 const OnNodesEnum = new OnNodes();
 const OffNodesEnum = new OffNodes();
 const ResetNodesEnum = new ResetNodes();
+const ExitNodesEnum = new ExitNodes();
 const ColorNodesEnum = new ColorNodes();
 const LocationNodesEnum = new LocationNodes();
 
@@ -15,7 +16,7 @@ export default class RefreshRateNodes extends DefaultNodes implements Nodes {
     selected = OnNodesEnum.selected;
     result = OnNodesEnum.result;
     displayValue = true;
-    size = 3;
+    size = 7;
     mode = ModeType.button;
     language = {
         German: "Bildwiederholungsrate",
@@ -54,6 +55,11 @@ export default class RefreshRateNodes extends DefaultNodes implements Nodes {
         {
             ...JSON.parse(JSON.stringify(BackNodesEnum)),
             parents: this.key
+        },
+        {
+            ...ExitNodesEnum,
+            ...JSON.parse(JSON.stringify(ExitNodesEnum)),
+            parents: this.key,
         }
     ];
 }

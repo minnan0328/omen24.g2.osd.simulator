@@ -24,7 +24,7 @@ export default class ColorNodes extends DefaultNodes implements Nodes {
     key = "Color";
     selected = WhileNodesEnum.selected;
     result = WhileNodesEnum.result;
-    assignDisplay = false;
+    assignItemDisplay = false;
     displayValue = true;
     size = 9;
     mode = ModeType.button;

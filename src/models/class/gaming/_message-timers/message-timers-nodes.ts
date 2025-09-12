@@ -1,6 +1,6 @@
 import type { Nodes } from "@/types";
 import { ModeType } from "@/types";
-import { DefaultNodes, BackNodes, ResetNodes, OnNodes, OffNodes } from '../../_utilities';
+import { DefaultNodes, BackNodes, ResetNodes, OnNodes, OffNodes, ExitNodes } from '../../_utilities';
 import SpeedrunTimerNodes from './_speedrun-timer-nodes';
 import CountdownTimerNodes from './_countdown-timer-nodes';
 import MessageNodes from './_message-nodes';
@@ -11,6 +11,7 @@ const BackNodesEnum = new BackNodes();
 const OnNodesEnum = new OnNodes();
 const OffNodesEnum = new OffNodes();
 const ResetNodesEnum = new ResetNodes();
+const ExitNodesEnum = new ExitNodes();
 const SpeedrunTimerNodesEnum = new SpeedrunTimerNodes();
 const CountdownTimerNodesEnum = new CountdownTimerNodes();
 const MessageNodesEnum = new MessageNodes();
@@ -22,7 +23,7 @@ export default class MessageTimersNodes extends DefaultNodes implements Nodes {
     selected = OffNodesEnum.selected;
     result = OffNodesEnum.result;
     displayValue = true;
-    size = 10;
+    size = 12;
     mode = ModeType.button;
     language = {
         German: "Nachricht-Zeitgeber",
@@ -40,6 +41,7 @@ export default class MessageTimersNodes extends DefaultNodes implements Nodes {
     nodes = [
         {
             ...JSON.parse(JSON.stringify(OnNodesEnum)),
+            menuItemDisplay: false,
             parents: this.key
         },
         {
@@ -60,7 +62,7 @@ export default class MessageTimersNodes extends DefaultNodes implements Nodes {
             selected: "Start / Stop",
             result: "Start / Stop",
             parents: this.key,
-            assignDisplay: false,
+            assignItemDisplay: false,
             mode: ModeType.button,
             language: {
                 German: "Start / Stop",
@@ -82,7 +84,7 @@ export default class MessageTimersNodes extends DefaultNodes implements Nodes {
             selected: "Reset Timer",
             result: "Reset Timer",
             parents: this.key,
-            assignDisplay: false,
+            assignItemDisplay: false,
             mode: ModeType.button,
             language: {
                 German: "Timer zurücksetzen",
@@ -117,6 +119,11 @@ export default class MessageTimersNodes extends DefaultNodes implements Nodes {
         {
             ...JSON.parse(JSON.stringify(BackNodesEnum)),
             parents: this.key
+        },
+        {
+            ...ExitNodesEnum,
+            ...JSON.parse(JSON.stringify(ExitNodesEnum)),
+            parents: this.key,
         }
     ];
 };

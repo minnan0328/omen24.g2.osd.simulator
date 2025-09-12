@@ -1,6 +1,6 @@
 import { ModeType } from "@/types";
 import type { Nodes } from "@/types";
-import { DefaultNodes, BackNodes, ResetNodes, OnNodes, OffNodes } from '../../_utilities';
+import { DefaultNodes, BackNodes, ResetNodes, OnNodes, OffNodes, ExitNodes } from '../../_utilities';
 import ConfigureNodes from './_configure-nodes';
 import ColorNodes from '../_color/color-nodes';
 
@@ -8,6 +8,7 @@ const OnNodesEnum = new OnNodes();
 const OffNodesEnum = new OffNodes();
 const ResetNodesEnum = new ResetNodes(); 
 const BackNodesEnum = new BackNodes();
+const ExitNodesEnum = new ExitNodes();
 const ConfigureNodesEnum = new ConfigureNodes();
 const ColorNodesEnum = new ColorNodes();
 
@@ -55,6 +56,11 @@ export default class CrosshairNodes extends DefaultNodes implements Nodes {
         {
             ...JSON.parse(JSON.stringify(BackNodesEnum)),
             parents: this.key
+        },
+        {
+            ...ExitNodesEnum,
+            ...JSON.parse(JSON.stringify(ExitNodesEnum)),
+            parents: this.key,
         }
     ];
 }

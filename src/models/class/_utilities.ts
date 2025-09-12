@@ -6,11 +6,12 @@ export class DefaultNodes implements Nodes {
     key = "";
     selected!: number | string | string[] | boolean | null;
     result!: number | string | string[] | boolean | null;
-    assignDisplay = true; // 顯示在快捷 menu 上面
+    assignItemDisplay = true; // 顯示在快捷 menu 上面
+    menuItemDisplay = true; // 顯示在 menu 上面
     disabled = false; // 是否禁用該選項
     displayValue = false; // 顯示選擇的結果在下一層 menu 上面
     displayState = false; // 顯示選擇的結果在該層 menu 上面
-    livePreview = false;
+    livePreview = false; // 是否即時預覽
     size = 0;
     page = 1;
     parents = null;

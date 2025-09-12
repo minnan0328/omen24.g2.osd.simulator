@@ -8,7 +8,10 @@
                 </div>
 
                 <template v-for="(secondNodes, secondNodesIdx) in mainSectionNodes.nodes">
-                    <div v-if="isEnableNode(secondNodes) && mainSectionNodes.mode && handlePagination(mainSectionNodes, secondNodesIdx) && secondNodes.key != 'Exit'" 
+                    <div v-if="isEnableNode(secondNodes)
+                        && secondNodes.menuItemDisplay && mainSectionNodes.mode
+                        && handlePagination(mainSectionNodes, secondNodesIdx)
+                        && secondNodes.key != 'Exit'" 
                         :class="['setting-item', secondNodes.key, { 'unset-grid': isTwoColumns }]">
 
                         <previousPageButtons
@@ -65,8 +68,9 @@
 
                 <template v-for="(thirdNodes, thirdNodesIdx) in secondarySectionNodes.nodes">
                     <div :class="['setting-item unset-grid', thirdNodes.key]"
-                        v-if="isEnableNode(thirdNodes) && thirdNodes.mode != ModeType.verticalRange
-                            && isEnableNode(thirdNodes) && thirdNodes.mode != ModeType.horizontalRange
+                        v-if="isEnableNode(thirdNodes) && thirdNodes.menuItemDisplay
+                            && thirdNodes.mode != ModeType.verticalRange
+                            && thirdNodes.mode != ModeType.horizontalRange
                             && handlePagination(secondarySectionNodes, thirdNodesIdx)">
                         
                         <previousPageButtons

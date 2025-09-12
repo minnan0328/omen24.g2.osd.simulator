@@ -8,7 +8,7 @@ export default class MessageNodes extends DefaultNodes implements Nodes {
     key = "Message";
     selected = "Your Gaming Timer has Expired !";
     result = "Your Gaming Timer has Expired !";
-    assignDisplay = false;
+    assignItemDisplay = false;
     displayValue = true;
     size = 5;
     mode = ModeType.button;
