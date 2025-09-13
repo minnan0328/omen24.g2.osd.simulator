@@ -71,10 +71,9 @@
                         v-if="isEnableNode(thirdNodes) && thirdNodes.menuItemDisplay
                             && thirdNodes.mode != ModeType.verticalRange
                             && thirdNodes.mode != ModeType.horizontalRange
+                            && thirdNodes.key != 'Exit'
                             && handlePagination(secondarySectionNodes, thirdNodesIdx)">
                         
-                        
-
                         <previousPageButtons
                             :currentNodes="thirdNodes"
                             :nodes="thirdSectionNodes"

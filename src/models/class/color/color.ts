@@ -91,7 +91,6 @@ export default class Color extends DefaultNodes implements Nodes {
             mergeGrid: true 
         },
         {
-            ...ExitNodesEnum,
             ...JSON.parse(JSON.stringify(ExitNodesEnum)),
             parents: this.key,
         }
