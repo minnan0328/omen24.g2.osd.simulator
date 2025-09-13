@@ -114,6 +114,9 @@ import iconSubtract from '@/assets/icons/icon-subtract.svg';
 import iconAdd from '@/assets/icons/icon-add.svg';
 import iconPrevious from '@/assets/icons/icon-previous.svg';
 import iconInformation from '@/assets/icons/icon-information.svg';
+import iconClock from '@/assets/icons/icon-clock.svg';
+import iconCrosshair from '@/assets/icons/icon-crosshair.svg';
+import iconFps from '@/assets/icons/icon-fps.svg';
 
 import { 
     AssignBrightnessNodes,
@@ -265,17 +268,17 @@ const assignMenus = computed(() => {
         },
         [AssignMessageTimersNodesEnum.key]: {
             key: AssignMessageTimersNodesEnum.key,
-            icon: "",
+            icon: iconClock,
             node: store.$state.gaming.nodes[4]
         },
         [AssignRefreshRateNodesEnum.key]: {
             key: AssignRefreshRateNodesEnum.key,
-            icon: "",
+            icon: iconFps,
             node: store.$state.gaming.nodes[2]
         },
         [AssignCrosshairNodesEnum.key]: {
             key: AssignCrosshairNodesEnum.key,
-            icon: "",
+            icon: iconCrosshair,
             node: store.$state.gaming.nodes[3]
         },
         [AssignEmptyNodesEnum.key]: {
