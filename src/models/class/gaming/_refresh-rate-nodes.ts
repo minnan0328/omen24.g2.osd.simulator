@@ -13,8 +13,8 @@ const LocationNodesEnum = new LocationNodes();
 
 export default class RefreshRateNodes extends DefaultNodes implements Nodes {
     key = "RefreshRate";
-    selected = OnNodesEnum.selected;
-    result = OnNodesEnum.result;
+    selected = OffNodesEnum.selected;
+    result = OffNodesEnum.result;
     displayValue = true;
     size = 7;
     mode = ModeType.button;
