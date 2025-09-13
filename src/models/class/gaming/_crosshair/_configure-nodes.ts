@@ -11,7 +11,7 @@ export default class ConfigureNodes extends DefaultNodes implements Nodes {
     result = ["option 1 bmp", "option 2 bmp", "option 3 bmp"];
     assignItemDisplay = false;
     size = 6;
-    mode = ModeType.checkBox;
+    mode = ModeType.button;
     language = {
         German: "Konfigurieren",
         SimplifiedChinese: "配置",  

@@ -73,6 +73,8 @@
                             && thirdNodes.mode != ModeType.horizontalRange
                             && handlePagination(secondarySectionNodes, thirdNodesIdx)">
                         
+                        
+
                         <previousPageButtons
                             :currentNodes="thirdNodes"
                             :nodes="thirdSectionNodes"
@@ -86,17 +88,17 @@
                             :nodes="thirdSectionNodes"
                             :previousNodes="secondarySectionNodes"
                             :currentPanelNumber="currentPanelNumber"
-                            :bottomLine="thirdNodes.key == 'Volume'">
+                            :bottomLine="enabledBottomLine(thirdNodes)">
                         </buttonItem>
                         
                         <customizeRadio
                             :currentNode="thirdNodes" :nodes="thirdSectionNodes"
-                            :previousNodes="secondarySectionNodes" :bottomLine="secondarySectionNodes.key == 'Audio'">
+                            :previousNodes="secondarySectionNodes" :bottomLine="enabledBottomLine(secondarySectionNodes)">
                         </customizeRadio>
                         
                         <customizeCheckbox
                             :currentNode="thirdNodes" :nodes="thirdSectionNodes"
-                            :previousNodes="secondarySectionNodes" :bottomLine="secondarySectionNodes.key != 'Audio'">
+                            :previousNodes="secondarySectionNodes" :bottomLine="enabledBottomLine(secondarySectionNodes)">
                         </customizeCheckbox>
 
                         <!-- 設定狀態 -->
@@ -181,6 +183,18 @@ function isShowValue(Nodes: Nodes, previousNodes: Nodes) {
 const isTwoColumns = computed(() => {
     return props.secondarySectionNodes?.nodes && props.secondarySectionNodes?.nodes!.length! > 0;
 });
+
+function enabledRadioBottomLine(node: Nodes) {
+    const enabledNodes = ["Crosshair", "RefreshRate", "MessageTimers"];
+
+    return enabledNodes.includes(node.key) && isEnableNode(node);
+}
+
+function enabledBottomLine(node: Nodes) {
+    const enabledNodes = ["ResetTimer", "Location", "MessageTimers", "Crosshair", "RefreshRate", "MultiMonitorAlign", "OSDMessages"];
+
+    return enabledNodes.includes(node.key) && isEnableNode(node);
+}
 
 
 function handlePagination(node: Nodes, index: number) {
