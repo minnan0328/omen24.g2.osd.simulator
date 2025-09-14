@@ -10,20 +10,26 @@
         :showMonitorStatus="showMonitorStatus">
     </monitorStatus>
 
-    <div :class="['screen', monitorScreenResult.imageScaling]" v-if="showScreen && !monitorScreenResult.diagnosticPatterns.start">
+    <div :class="['screen', monitorScreenResult.imageScaling]" v-if="showScreen && !monitorScreenResult.diagnosticPatterns.enabled">
         <img :src="monitorScreenResult.image" alt="">
+
+        <span :class="['setting-info-value',
+                monitorScreenResult.refFreshRate.key, 
+                monitorScreenResult.refFreshRate.color,
+                monitorScreenResult.refFreshRate.location
+            ]"
+            v-if="!showMonitorStatus && monitorScreenResult.refFreshRate.enabled"
+            v-text="monitorScreenResult.refFreshRate.rate">
+        </span>
     </div>
-    <div v-else-if="monitorScreenResult.diagnosticPatterns.start" :key="monitorScreenResult.diagnosticPatterns.patterns"
-        :class="['screen diagnostic-patterns', monitorScreenResult.diagnosticPatterns.patterns]">
+    <div v-else-if="monitorScreenResult.diagnosticPatterns.enabled" :key="monitorScreenResult.diagnosticPatterns.color"
+        :class="['screen diagnostic-patterns', monitorScreenResult.diagnosticPatterns.color]">
     </div>
 </template>
 <script lang="ts" setup>
 import { onMounted } from 'vue';
-import { useStore } from '@/stores/index';
 import monitorStatus from '@/views/home/_monitor-status/monitor-status.vue';
 import { menuStateResult, monitorScreenResult } from '@/service/monitorStateResult';
-
-const store = useStore();
 
 const props = defineProps({
     openMonitor: {
@@ -128,7 +134,21 @@ onMounted(() => {
     }
 
     &.diagnostic-patterns {
-        background-color: v-bind("monitorScreenResult.diagnosticPatterns.patterns");
+        background-color: v-bind("monitorScreenResult.diagnosticPatterns.color");
+    }
+
+    .setting-info-value {
+        position: absolute;
+        top: 16px;
+        bottom: 0px;
+        right: 16px;
+        padding: 2px 6px;
+        font-size: 12px;
+        font-size: 32px;
+        font-weight: bold;
+
+        @include gaming-setting-text-color;
+        @include gaming-setting-text-location;
     }
 }
 

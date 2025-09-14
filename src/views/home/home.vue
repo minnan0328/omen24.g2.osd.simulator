@@ -7,7 +7,7 @@
                 <div class="inner">
                     <div class="left">
                         <div class="input">
-                            <div :class="['tab', { 'selected-tab': store.$state.input.result == tab.result }]" v-for="tab in tabs"
+                            <div :class="['tab', { 'selected-tab': menuStore.$state.input.result == tab.result }]" v-for="tab in tabs"
                                 v-text="tab.selected" @click="selectInput(tab)"></div>
                         </div>
                         <div class="card">
@@ -63,7 +63,7 @@
 
 <script lang="ts" setup>
 import { ref, reactive, provide } from 'vue';
-import { useStore } from '@/stores/index';
+import { useMenuStore } from '@/stores/index';
 import type { Nodes, HomeEvent, Language } from '@/types';
 import ribbon from '@/views/home/_ribbon/ribbon.vue';
 import monitorScreen from '@/views/home/_monitor-screen/monitor-screen.vue';
@@ -72,13 +72,12 @@ import { monitorResult } from '@/service/monitorStateResult';
 import config from '@/config/config';
 import toast from '@/views/home/_toast/toast.vue';
 
-
-const store = useStore();
+const menuStore = useMenuStore();
 
 const tabs = reactive([
-    store.$state.input.nodes[0],
-    store.$state.input.nodes[1],
-    store.$state.input.nodes[2]
+    menuStore.$state.input.nodes[0],
+    menuStore.$state.input.nodes[1],
+    menuStore.$state.input.nodes[2]
 ]);
 
 const selectedTab = ref<Nodes | null>(tabs[0] as Nodes | null);
@@ -93,16 +92,16 @@ const toastObj = ref({
 function selectInput(tab: Nodes) {
     if(screenInitial.value == false) {
 
-        if(openMonitor.value && tab.result != store.$state.input.result) {
+        if(openMonitor.value && tab.result != menuStore.$state.input.result) {
             restartScreen();
         };
 
         selectedTab.value = tab;
-        store.$state.input.selected = selectedTab.value.selected as string;
-        store.$state.input.result = selectedTab.value.result as string;
+        menuStore.$state.input.selected = selectedTab.value.selected as string;
+        menuStore.$state.input.result = selectedTab.value.result as string;
 
-        store.$state.input.nodes[4].nodes[1].selected = `${store.$state.input.selected} ${store.$state.input.nodes[4].key}`;
-        store.$state.input.nodes[4].nodes[1].result = `${store.$state.input.result} ${store.$state.input.nodes[4].key}`;
+        menuStore.$state.input.nodes[4].nodes[1].selected = `${menuStore.$state.input.selected} ${menuStore.$state.input.nodes[4].key}`;
+        menuStore.$state.input.nodes[4].nodes[1].result = `${menuStore.$state.input.result} ${menuStore.$state.input.nodes[4].key}`;
     }
 };
 

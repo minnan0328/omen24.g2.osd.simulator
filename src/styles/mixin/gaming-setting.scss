@@ -1,0 +1,69 @@
+@use "../var" as *;
+
+@mixin gaming-setting-text-color {
+    &.White {
+        color: $white;
+    }
+
+    &.Red {
+        color: $text-red;
+    }
+
+    &.Green {
+        color: $text-green;
+    }
+
+    &.Blue {
+        color: $text-blue;
+    }
+
+    &.Yellow {
+        color: $text-yellow;
+    }
+
+    &.Purple {
+        color: $text-purple;
+    }
+
+    &.Light-Blue {
+        color: $text-light-blue
+    }
+
+    &.Orange {
+        color: $text-orange
+    }
+
+    &.Black {
+        color: $text-black
+    }
+}
+
+@mixin gaming-setting-text-location {
+    &.Top-Left {
+        top: 16px;
+        left: 16px;
+        bottom: initial;
+        right: initial;
+    }
+
+    &.Top-Right {
+        top: 16px;
+        right: 16px;
+        bottom: unset;
+        left: unset;
+    }
+
+    &.Bottom-Left {
+        bottom: 16px;
+        left: 16px;
+        top: initial;
+        right: initial;
+    }
+
+    &.Bottom-Right {
+        bottom: 16px;
+        right: 16px;
+        top: initial;
+        left: initial;
+    }
+}

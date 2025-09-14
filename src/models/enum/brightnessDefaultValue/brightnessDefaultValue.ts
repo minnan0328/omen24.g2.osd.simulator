@@ -1,47 +1,45 @@
-import { useStore } from '@/stores/index';
+import { useMenuStore } from '@/stores/index';
 import { OffNodes } from '@/models/class/_utilities';
 
-const store = useStore();
+const menuStore = useMenuStore();
 const OffNodesEnum = new OffNodes();
 
 
 export const BrightnessDefaultValueEnum = {
     // FPS
-    [store.$state.color.nodes[0].result as string]: 68,
+    [menuStore.$state.color.nodes[0].result as string]: 68,
     // RPG
-    [store.$state.color.nodes[1].result as string]: 52,
+    [menuStore.$state.color.nodes[1].result as string]: 52,
     // RTS
-    [store.$state.color.nodes[2].result as string]: 68,
+    [menuStore.$state.color.nodes[2].result as string]: 68,
     // sRGB
-    [store.$state.color.nodes[3].result as string]: 52,
+    [menuStore.$state.color.nodes[3].result as string]: 52,
     // Native
-    [store.$state.color.nodes[4].result as string]: 100,
+    [menuStore.$state.color.nodes[4].result as string]: 100,
     // Cinema
-    [store.$state.color.nodes[5].result as string]: 20,
+    [menuStore.$state.color.nodes[5].result as string]: 20,
     // Night
-    [store.$state.color.nodes[6].result as string]: 52,
+    [menuStore.$state.color.nodes[6].result as string]: 52,
     // HP Enhance+
-    [store.$state.color.nodes[7].result as string]: 68,
+    [menuStore.$state.color.nodes[7].result as string]: 68,
     // RGB Gain Adjust
-    [store.$state.color.nodes[8].result as string]: 100,
+    [menuStore.$state.color.nodes[8].result as string]: 100,
 };
 
 export function setBrightnessDefaultValue() {
-    store.$state.information.nodes[2].selected = store.$state.color.selected;
-    store.$state.information.nodes[2].result = store.$state.color.result;
-    
-    store.$state.image.nodes[0].selected = BrightnessDefaultValueEnum[store.$state.color.selected];
-    store.$state.image.nodes[0].result = BrightnessDefaultValueEnum[store.$state.color.result];
-    store.$state.image.nodes[0].nodes![0].selected = BrightnessDefaultValueEnum[store.$state.color.selected];
-    store.$state.image.nodes[0].nodes![0].result = BrightnessDefaultValueEnum[store.$state.color.result];
+    menuStore.$state.information.nodes[2].selected = menuStore.$state.color.selected;
+    menuStore.$state.information.nodes[2].result = menuStore.$state.color.result;
+
+    menuStore.$state.image.nodes[0].selected = BrightnessDefaultValueEnum[menuStore.$state.color.selected];
+    menuStore.$state.image.nodes[0].result = BrightnessDefaultValueEnum[menuStore.$state.color.result];
+    menuStore.$state.image.nodes[0].nodes![0].selected = BrightnessDefaultValueEnum[menuStore.$state.color.selected];
+    menuStore.$state.image.nodes[0].nodes![0].result = BrightnessDefaultValueEnum[menuStore.$state.color.result];
 
 
     // 當 color 是 HP Enhance+ 時 brightness 的 dynamic contrast 為 disable 並且關閉
-    if(store.$state.color.result == store.$state.color.nodes[5].result) {
-        
-        // 動態對比設定 Dynamic Contrast
-        store.$state.image.nodes[2].disabled = true;
-        store.$state.image.nodes[2].result = OffNodesEnum.result;
-        store.$state.image.nodes[2].selected = OffNodesEnum.selected;
+    if(menuStore.$state.color.result == menuStore.$state.color.nodes[5].result) {
+        menuStore.$state.image.nodes[2].disabled = true;
+        menuStore.$state.image.nodes[2].result = OffNodesEnum.result;
+        menuStore.$state.image.nodes[2].selected = OffNodesEnum.selected;
     }
 };

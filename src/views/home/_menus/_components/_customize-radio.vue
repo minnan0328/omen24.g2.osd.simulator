@@ -14,9 +14,9 @@ import type { PropType } from 'vue';
 import type { Nodes } from '@/types';
 import { ModeType } from '@/types';
 import { toLanguageText } from '@/service/service';
-import { useStore } from '@/stores/index';
+import { useMenuStore } from '@/stores/index';
 
-const store = useStore();
+const menuStore = useMenuStore();
 
 const props = defineProps({
     currentNode: {
@@ -41,8 +41,8 @@ const props = defineProps({
 
 function isSelected(node: Nodes, previousNodes: (Nodes | null)) {
     // Audio Follows Video 因為 UI 切版關係，不在自己的 child currentNode 裡面
-    if(previousNodes?.key == store.$state.input.nodes[4].key) {
-        return store.$state.input.nodes[4].nodes[1].selected == node.selected;
+    if(previousNodes?.key == menuStore.$state.input.nodes[4].key) {
+        return menuStore.$state.input.nodes[4].nodes[1].selected == node.selected;
     } else {
         return previousNodes!.selected == node.selected;
     }

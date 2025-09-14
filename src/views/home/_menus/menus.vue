@@ -80,7 +80,7 @@
 </template>
 <script lang="ts" setup>
 import { ref, reactive, watch, computed, inject } from 'vue';
-import { useStore, MenusDefaultModel } from '@/stores/index';
+import { useMenuStore, MenusDefaultModel, useDiagnosticPatternsStore } from '@/stores/index';
 import type { StoreState } from '@/stores/index';
 import type { Nodes, ControllerButtonList, HomeEvent } from '@/types';
 import { ModeType } from '@/types';
@@ -154,7 +154,8 @@ const AssignEmptyNodesEnum = new AssignEmptyNodes();
 
 const PowerConfirmChangeNodesEnum = new PowerConfirmChangeNodes();
 
-const store = useStore();
+const menuStore = useMenuStore();
+const diagnosticPatternsStore = useDiagnosticPatternsStore();
 
 const homeEvent = inject("homeEvent") as HomeEvent;
 
@@ -183,15 +184,15 @@ const menus = computed(() => {
         page: 1,
         mode: ModeType.button,
         nodes: [
-            store.$state.gaming,
-            store.$state.image,
-            store.$state.color,
-            store.$state.input,
-            store.$state.power,
-            store.$state.menu,
-            store.$state.management,
-            store.$state.information,
-            store.$state.exit
+            menuStore.$state.gaming,
+            menuStore.$state.image,
+            menuStore.$state.color,
+            menuStore.$state.input,
+            menuStore.$state.power,
+            menuStore.$state.menu,
+            menuStore.$state.management,
+            menuStore.$state.information,
+            menuStore.$state.exit
         ]
     }
 });
@@ -249,37 +250,37 @@ const assignMenus = computed(() => {
         [AssignBrightnessNodesEnum.key]: {
             key: AssignBrightnessNodesEnum.key,
             icon: iconBrightness,
-            node: store.$state.image.nodes[0]
+            node: menuStore.$state.image.nodes[0]
         }, 
         [AssignColorNodesEnum.key]: {
             key: AssignColorNodesEnum.key,
             icon: iconColor,
-            node: store.$state.color
+            node: menuStore.$state.color
         },
         [AssignDisplayInformationNodesEnum.key]: {
             key: AssignDisplayInformationNodesEnum.key,
             icon: iconInformation,
-            node: store.$state.information
+            node: menuStore.$state.information
         },
         [AssignNextActiveInputNodesEnum.key]: {
             key: AssignNextActiveInputNodesEnum.key,
             icon: iconInput,
-            node: store.$state.input
+            node: menuStore.$state.input
         },
         [AssignMessageTimersNodesEnum.key]: {
             key: AssignMessageTimersNodesEnum.key,
             icon: iconClock,
-            node: store.$state.gaming.nodes[4]
+            node: menuStore.$state.gaming.nodes[4]
         },
         [AssignRefreshRateNodesEnum.key]: {
             key: AssignRefreshRateNodesEnum.key,
             icon: iconFps,
-            node: store.$state.gaming.nodes[2]
+            node: menuStore.$state.gaming.nodes[2]
         },
         [AssignCrosshairNodesEnum.key]: {
             key: AssignCrosshairNodesEnum.key,
             icon: iconCrosshair,
-            node: store.$state.gaming.nodes[3]
+            node: menuStore.$state.gaming.nodes[3]
         },
         [AssignEmptyNodesEnum.key]: {
             key: AssignEmptyNodesEnum.key,
@@ -307,7 +308,7 @@ const confirmState = reactive({
 });
 
 // 是否開啟OSD Message，當是原廠設定時，且 OSD Message 是啟用時
-const isOpenOSDMessage = computed(() => factorySettings.value && store.$state.menu.nodes[5].result.includes(store.$state.menu.nodes[5].nodes[2].result))
+const isOpenOSDMessage = computed(() => factorySettings.value && menuStore.$state.menu.nodes[5].result.includes(menuStore.$state.menu.nodes[5].nodes[2].result))
 
 // 當關閉螢幕時，關閉所有狀態
 watch(() => props.openMonitor, (newVal, oldVal) => {
@@ -404,13 +405,13 @@ const MenuControllerTypes: Record<string, ControllerButtonList> = reactive({
 const getAssignButton = computed(() => {
     return [
         // AssignButton1 default is AssignBrightness
-        assignMenus.value[`Assign${(store.$state.menu.nodes[6].nodes![0].result as string).replace(/\s/g, '')}`],
+        assignMenus.value[`Assign${(menuStore.$state.menu.nodes[6].nodes![0].result as string).replace(/\s/g, '')}`],
         // AssignButton2 default is AssignColor
-        assignMenus.value[`Assign${(store.$state.menu.nodes[6].nodes![1].result as string).replace(/\s/g, '')}`],
+        assignMenus.value[`Assign${(menuStore.$state.menu.nodes[6].nodes![1].result as string).replace(/\s/g, '')}`],
         // AssignButton3 default is AssignNextActiveInput
-        assignMenus.value[`Assign${(store.$state.menu.nodes[6].nodes![2].result as string).replace(/\s/g, '')}`],
+        assignMenus.value[`Assign${(menuStore.$state.menu.nodes[6].nodes![2].result as string).replace(/\s/g, '')}`],
         // AssignButton4 default is AssignDisplayInformation
-        assignMenus.value[`Assign${(store.$state.menu.nodes[6].nodes![3].result as string).replace(/\s/g, '')}`]
+        assignMenus.value[`Assign${(menuStore.$state.menu.nodes[6].nodes![3].result as string).replace(/\s/g, '')}`]
     ]
 });
 
@@ -676,7 +677,7 @@ function handlerNextPanel() {
 
                 // 當為診斷模式時
                 if(menuState.thirdPanel.parents == "DiagnosticPatterns") {
-                    store.$state.isDiagnosticPatterns = true;
+                    diagnosticPatternsStore.$state.diagnosticPatterns.enabled = true;
                 }
             });
         } else if(menuState.secondPanel!.nodes && menuState.thirdPanel && menuState.thirdPanel.nodes && !menuState.fourthPanel) {
@@ -1169,8 +1170,8 @@ function saveNodesValue(nodes: Nodes, previousNodes: Nodes) {
             Color: () => setBrightnessDefaultValue(),
             VideoLevel: () => restartScreenPreview(),
             Accessibility: () => {
-                store.$state.menu.nodes[0].disabled = previousNodes.result == OnNodesEnum.result;
-                store.$state.menu.nodes[1].disabled = previousNodes.result == OnNodesEnum.result;
+                menuStore.$state.menu.nodes[0].disabled = previousNodes.result == OnNodesEnum.result;
+                menuStore.$state.menu.nodes[1].disabled = previousNodes.result == OnNodesEnum.result;
 
                 reopenMenu();
             },
@@ -1211,7 +1212,7 @@ function restartScreenPreview() {
 // 重置動作
 function handleResetAction(previousNodes: Nodes) {
     const key = toLowerCaseFirstChar(menuState.menuPanel!.key) as keyof StoreState;
-    store.$patch({ [key]: { ...JSON.parse(JSON.stringify(MenusDefaultEnum[key])) } });
+    menuStore.$patch({ [key]: { ...JSON.parse(JSON.stringify(MenusDefaultEnum[key])) } });
 
     if (previousNodes.key === "Color") setBrightnessDefaultValue();
 };
@@ -1220,7 +1221,7 @@ function handleResetAction(previousNodes: Nodes) {
 function handleFactoryResetAction(nodes: Nodes, previousNodes: Nodes) {
     if (nodes.key == YesNodesEnum.key) {
         factorySettings.value = true;
-        store.$resetAll();
+        menuStore.$resetAll();
         handlerClose();
         emit("update:showScreen", false);
 
@@ -1376,19 +1377,19 @@ function handlerClose() {
 function returnToDefaultValue() {
 
     // 關閉診斷模式
-    store.$state.isDiagnosticPatterns = false;
+    diagnosticPatternsStore.$reset();
     // 恢復英文且回到第一頁
-    store.$state.menu.nodes[0].selected = "English";
-    store.$state.menu.nodes[0].result = "English";
-    store.$state.menu.nodes[0].page = 1;
+    menuStore.$state.menu.nodes[0].selected = "English";
+    menuStore.$state.menu.nodes[0].result = "English";
+    menuStore.$state.menu.nodes[0].page = 1;
 
     //取消無障礙模式
-    store.$state.management.nodes[3].selected = OffNodesEnum.selected;
-    store.$state.management.nodes[3].result = OffNodesEnum.result;
+    menuStore.$state.management.nodes[3].selected = OffNodesEnum.selected;
+    menuStore.$state.management.nodes[3].result = OffNodesEnum.result;
 
     // 選單旋轉角度恢復
-    store.$state.menu.nodes[4].selected = "Landscape (0°)";
-    store.$state.menu.nodes[4].result = "Landscape (0°)";
+    menuStore.$state.menu.nodes[4].selected = "Landscape (0°)";
+    menuStore.$state.menu.nodes[4].result = "Landscape (0°)";
 }
 
 
@@ -1401,10 +1402,10 @@ function handlerMenuTimeout() {
     menuTimeOutIntervalId.value = null;
 
     // 當為診斷模式時關閉倒數關閉
-    if (menuTimeOutIntervalId.value != null && store.$state.isDiagnosticPatterns) {
+    if (menuTimeOutIntervalId.value != null && diagnosticPatternsStore.$state.diagnosticPatterns.enabled) {
         clearInterval(menuTimeOutIntervalId.value!);
         menuTimeOutIntervalId.value = null;
-    } else if(menuTimeOutIntervalId.value == null && store.$state.isDiagnosticPatterns == false) {
+    } else if(menuTimeOutIntervalId.value == null && diagnosticPatternsStore.$state.diagnosticPatterns.enabled == false) {
         menuTimeOutIntervalId.value = setTimeout(() => {
             if(openAssignButton.value) {
                 handlerClose();

@@ -1,11 +1,11 @@
 import { computed } from 'vue';
-import { useStore } from '@/stores/index';
+import { useMenuStore } from '@/stores/index';
 import type { Nodes, Language } from '@/types';
 import { ModeType } from '@/types';
-const store = useStore();
+const menuStore = useMenuStore();
 
 const currentLanguage = computed(() => {
-    let language = store.$state.menu.nodes.find(n => n.key == 'Language');
+    let language = menuStore.$state.menu.nodes.find(n => n.key == 'Language');
     return language?.selected ? language?.selected : "English";
 });
 

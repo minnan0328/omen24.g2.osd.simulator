@@ -1,10 +1,10 @@
-import { useStore } from '@/stores/index';
+import { useMenuStore } from '@/stores/index';
 import type { Nodes } from '@/types';
 import { toLanguageText, toDisplayValueLanguageText } from './toDisplayLanguageText';
-const store = useStore();
+const menuStore = useMenuStore();
 
 export function isEnableNode(nodes: Nodes): boolean {
-    return nodes.only?.includes(store.$state.input.selected) ? true : false;
+    return nodes.only?.includes(menuStore.$state.input.selected) ? true : false;
 };
 
 export function getIconSrc (icon: string) {

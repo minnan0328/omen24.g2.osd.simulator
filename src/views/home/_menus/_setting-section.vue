@@ -66,6 +66,18 @@
             <div v-if="mainSectionNodes && secondarySectionNodes && secondarySectionNodes.nodes" 
                 :class="['secondary-section', { 'customRGB-range-section': secondarySectionNodes.key == rgbGainAdjustNodesEnum.key }]">
 
+                <div class="setting-info-menu-left"
+                    v-if="secondarySectionNodes.key == refreshRateNodesEnum.key
+                    || secondarySectionNodes.key == messageTimersNodesEnum.key">
+
+                    <span :class="['setting-info-value', refreshRateNodesEnum.key]"
+                        v-if="secondarySectionNodes.key == refreshRateNodesEnum.key
+                        && secondarySectionNodes.result == OnNodesEnum.result"
+                        v-text="monitorScreenResult.refFreshRate.rate">
+                    </span>
+
+                </div>
+
                 <template v-for="(thirdNodes, thirdNodesIdx) in secondarySectionNodes.nodes">
                     <div :class="['setting-item unset-grid', thirdNodes.key]"
                         v-if="isEnableNode(thirdNodes) && thirdNodes.menuItemDisplay
@@ -116,11 +128,11 @@
                     <horizontalRange :currentNode="thirdNodes" :nodes="thirdSectionNodes"></horizontalRange>
                 </template>
 
-                <div class="setting-item factory-reset-image" v-if="secondarySectionNodes.key == 'FactoryReset'">
+                <div class="setting-item factory-reset-image" v-if="secondarySectionNodes.key == factoryResetNodesEnum.key">
                     <img src="@/assets/images/energy-star.jpg" alt="">
                 </div>
 
-                <div class="setting-item image-scaling" v-if="secondarySectionNodes.key == 'ImageScaling'">
+                <div class="setting-item image-scaling" v-if="secondarySectionNodes.key == imageScalingNodesEnum.key">
                     <p>The “Image Scaling” OSD menu for this product is disabled for all 16:9 aspect ratio resolutions.</p>
                     <br/>
                     <p>But for this OSD training simulation, the menu will remain active for the simulated 1920x1080 resolution.</p>
@@ -141,6 +153,9 @@ import type { PropType } from 'vue';
 import type { Nodes } from '@/types';
 import { ModeType } from '@/types';
 import { isEnableNode, toLanguageText, toDisplayValueLanguageText } from '@/service/service';
+import { OnNodes } from '@/models/class/_utilities';
+import { monitorScreenResult } from '@/service/monitorStateResult';
+
 // components
 import info from './_components/_info.vue';
 import buttonItem from './_components/_button-item.vue';
@@ -150,9 +165,19 @@ import customizeCheckbox from './_components/_customize-checkbox.vue';
 import customizeRadio from './_components/_customize-radio.vue';
 import previousPageButtons from './_components/_previous-page-buttons.vue';
 import nextPageButtons from './_components/_next-page-button.vue';
-import RGBGainAdjustNodes from '@/models/class/color/_RGB-gain-adjust-nodes';
 
+import FactoryResetNodes from '@/models/class/management/_factory-reset-nodes';
+import ImageScalingNodes from '@/models/class/image/_image-scaling-nodes';
+import RGBGainAdjustNodes from '@/models/class/color/_RGB-gain-adjust-nodes';
+import RefreshRateNodes from '@/models/class/gaming/_refresh-rate-nodes';
+import MessageTimersNodes from '@/models/class/gaming/_message-timers/message-timers-nodes';
+
+const factoryResetNodesEnum = new FactoryResetNodes();
+const imageScalingNodesEnum = new ImageScalingNodes();
 const rgbGainAdjustNodesEnum = new RGBGainAdjustNodes();
+const refreshRateNodesEnum = new RefreshRateNodes();
+const messageTimersNodesEnum = new MessageTimersNodes();
+const OnNodesEnum = new OnNodes();
 
 const props = defineProps({
     mainSectionNodes: {

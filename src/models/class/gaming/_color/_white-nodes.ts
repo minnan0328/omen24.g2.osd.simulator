@@ -4,7 +4,7 @@ import { DefaultNodes } from '../../_utilities';
 
 export default class WhiteNodes extends DefaultNodes implements Nodes {
     key = "White";
-    selected =  "White";
+    selected = "White";
     result = "White";
     livePreview = true;
     mode = ModeType.radio;

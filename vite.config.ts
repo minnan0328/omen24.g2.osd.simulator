@@ -27,7 +27,7 @@ export default defineConfig(({ command, mode, isSsrBuild, isPreview }) => {
 			},
 			preprocessorOptions: {
 				scss: {
-					additionalData: `@use "@/styles/var.scss" as *;`
+					additionalData: `@use "@/styles/var.scss" as *; @use "@/styles/mixin/mixin.scss" as *;`
 				}
 			}
 		},

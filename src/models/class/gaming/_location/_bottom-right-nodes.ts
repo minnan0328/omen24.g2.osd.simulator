@@ -4,9 +4,8 @@ import { DefaultNodes, BackNodes } from '../../_utilities';
 
 export default class BottomRightNodes extends DefaultNodes implements Nodes {
     key = "BottomRight";
-    selected = "Bottom Right";
-    result = "Bottom Right";
-    displayValue = true;
+    selected = "Bottom-Right";
+    result = "Bottom-Right";
     size = 3;
     mode = ModeType.radio;
     language = {
@@ -22,5 +21,4 @@ export default class BottomRightNodes extends DefaultNodes implements Nodes {
         BrazilianPortuguese: "Canto inferior direito",
         Russian: "Внизу справа"
     };
-    nodes = [];
 }

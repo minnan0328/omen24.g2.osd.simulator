@@ -4,8 +4,8 @@ import { DefaultNodes } from '../../_utilities';
 
 export default class LightBlueNodes extends DefaultNodes implements Nodes {
     key = "Light Blue";
-    selected = "Light Blue";
-    result = "Light Blue";
+    selected = "Light-Blue";
+    result = "Light-Blue";
     livePreview = true;
     mode = ModeType.radio;
     language = {

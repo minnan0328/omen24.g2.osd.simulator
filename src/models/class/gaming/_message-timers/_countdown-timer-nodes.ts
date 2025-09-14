@@ -7,8 +7,8 @@ export default class CountdownTimerNodes extends DefaultNodes implements Nodes {
     key = "CountdownTimer";
     assignItemDisplay = false;
     displayValue = true;
-    selected = 20;
-    result = 20;
+    selected = "Countdown Timer";
+    result = "Countdown Timer";
     mode = ModeType.radio;
     language = {
         German: "Countdown",
@@ -27,10 +27,10 @@ export default class CountdownTimerNodes extends DefaultNodes implements Nodes {
         {
             ...JSON.parse(JSON.stringify(DefaultNodesEnum)),
             key: "CountdownTimerSet",
-            selected: this.selected,
-            result: this.result,
+            selected: 20,
+            result: 20,
             parents: this.key,
-            mode: ModeType.timer,
+            mode: ModeType.verticalRange,
             language: this.language
         }
     ]

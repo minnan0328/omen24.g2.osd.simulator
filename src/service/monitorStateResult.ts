@@ -1,13 +1,15 @@
 import { ref, computed } from 'vue';
 import type { Nodes } from '@/types';
-import { useStore } from '@/stores/index';
+import { useMenuStore, useDiagnosticPatternsStore, useMessageTimersStore } from '@/stores/index';
 import { OnNodes, OffNodes, TopNodes, MediumNodes, BottomNodes, LowNodes, HighNodes } from '@/models/class/_utilities';
 import screenOff from '@/assets/images/screen-off.jpg';
 import screenLow from '@/assets/images/screen-low.jpg';
 import screenMedium from '@/assets/images/screen-medium.jpg';
 import screenHigh from '@/assets/images/screen-high.jpg';
 
-const store = useStore();
+const menuStore = useMenuStore();
+const diagnosticPatternsStore = useDiagnosticPatternsStore();
+const messageTimersStore = useMessageTimersStore();
 const OnNodesEnum = new OnNodes();
 const OffNodesEnum = new OffNodes();
 const TopNodesEnum = new TopNodes();
@@ -16,14 +18,15 @@ const LowNodesEnum = new LowNodes();
 const MediumNodesEnum = new MediumNodes();
 const HighNodesEnum = new HighNodes();
 
-const brightness = computed(()=> store.$state.image.nodes[0]);
-const color = computed(()=> store.$state.color);
-const image = computed(()=> store.$state.image);
-const input = computed(()=> store.$state.input);
-const power = computed(()=> store.$state.power);
-const menu = computed(()=> store.$state.menu);
-const management = computed(()=> store.$state.management);
-const information = computed(()=> store.$state.information);
+const brightness = computed(()=> menuStore.$state.image.nodes[0]);
+const gaming = computed(()=> menuStore.$state.gaming);
+const color = computed(()=> menuStore.$state.color);
+const image = computed(()=> menuStore.$state.image);
+const input = computed(()=> menuStore.$state.input);
+const power = computed(()=> menuStore.$state.power);
+const menu = computed(()=> menuStore.$state.menu);
+const management = computed(()=> menuStore.$state.management);
+const information = computed(()=> menuStore.$state.information);
 
 const monitorWidth = 960;
 const monitorHeight = 526;
@@ -46,10 +49,8 @@ export const monitorScreenResult = computed(() => {
         RGB: toImageColor.value,
         // 取得銳利度
         sharpness: getSharpness.value,
-        diagnosticPatterns: {
-            start: store.$state.isDiagnosticPatterns,
-            patterns:  store.$state.currentDiagnosticPatterns
-        },
+        // 取得診斷模式顏色
+        diagnosticPatterns: diagnosticPatternsStore.$state.diagnosticPatterns,
         // 取得影像位置座標 Image Position
         imagePosition: {
             // x 座標
@@ -59,6 +60,16 @@ export const monitorScreenResult = computed(() => {
         },
         // 取得影像縮放設定 Image Scaling
         imageScaling: image.value.nodes[5].result.replace(/\s+/g, ''),
+        // 當前更新率
+        refFreshRate: {
+            key: gaming.value.nodes[2].key,
+            enabled: gaming.value.nodes[2].result == OnNodesEnum.result,
+            color: gaming.value.nodes[2].nodes[2].result,
+            location: gaming.value.nodes[2].nodes[3].result,
+            rate: 120
+        },
+        // 取得訊息顯示時間
+        messageTimers: messageTimersStore.$state.messageTimers
     }
 });
 
@@ -205,7 +216,6 @@ function extractStringFromParentheses(input: string): number {
     return 0;
 }
 
-
 // 函數表達式
 const removeAndLowercase = (str: string): string => {
     // 移除指定的子字符串
@@ -215,7 +225,7 @@ const removeAndLowercase = (str: string): string => {
 };
 
 // 取得診斷模式
-const intervalId = ref<number | null>(null);
+const diagnosticPatternsIntervalId = ref<number | null>(null);
 const patternsIndex = ref(0);
 const patterns = ref([
     removeAndLowercase(management.value.nodes[2].nodes![1].result as string),
@@ -225,35 +235,56 @@ const patterns = ref([
     removeAndLowercase(management.value.nodes[2].nodes![5].result as string)
 ]);
 
-store.$subscribe((mutation, state) => {
+diagnosticPatternsStore.$subscribe((mutation, state) => {
     // 診斷模式需要透過監聽 store
-    if(state.isDiagnosticPatterns) {
+    if(state.diagnosticPatterns.enabled) {
         const resultIndex = management.value.nodes[2].nodes!.findIndex((node: Nodes) => node.result === management.value.nodes[2].result);
         
-        if(resultIndex == 0 && intervalId.value == null) {
-            if(intervalId.value) {
+        if(resultIndex == 0 && diagnosticPatternsIntervalId.value == null) {
+            if(diagnosticPatternsIntervalId.value) {
                 return
             }
             patternsIndex.value = resultIndex;
-            state.currentDiagnosticPatterns = patterns.value[patternsIndex.value]!;
-            intervalId.value = setInterval(() => {
+            state.diagnosticPatterns.color = patterns.value[patternsIndex.value]!;
+            diagnosticPatternsIntervalId.value = setInterval(() => {
                 patternsIndex.value = (patternsIndex.value + 1) % patterns.value.length;
-                state.currentDiagnosticPatterns = patterns.value[patternsIndex.value]!;
+                state.diagnosticPatterns.color = patterns.value[patternsIndex.value]!;
             }, 3000);
 
         } else if(resultIndex >= 1) {
-            if (intervalId.value !== null) {
-                clearInterval(intervalId.value);
-                intervalId.value = null;
+            if (diagnosticPatternsIntervalId.value !== null) {
+                clearInterval(diagnosticPatternsIntervalId.value);
+                diagnosticPatternsIntervalId.value = null;
             };
             patternsIndex.value = resultIndex - 1;
-            state.currentDiagnosticPatterns = patterns.value[patternsIndex.value]!;
+            state.diagnosticPatterns.color = patterns.value[patternsIndex.value]!;
         }
     } else {
-        if (intervalId.value !== null) {
-            clearInterval(intervalId.value);
-            intervalId.value = null;
+        if (diagnosticPatternsIntervalId.value !== null) {
+            clearInterval(diagnosticPatternsIntervalId.value);
+            diagnosticPatternsIntervalId.value = null;
         }
     }
+    
 });
+
+// messageTimersStore.$subscribe((mutation, state) => {
+
+//     if(state.messageTimers.model != null) {
+//         let time = state.messageTimers.time;
+//         const model = state.messageTimers.model;
+
+//         const intervalId = setInterval(() => {
+//             time--;
+//             state.messageTimers.time = time;
+
+//             if(time <= 0) {
+//                 clearInterval(intervalId);
+//                 state.messageTimers.model = null;
+//                 state.messageTimers.time = 0;
+//             }
+//         }, 1000);
+//     }
+
+// });
 

@@ -19,26 +19,22 @@ export interface StoreState {
     management: Management;
     information: Information;
     exit: Exit;
-    isDiagnosticPatterns: boolean;
-    currentDiagnosticPatterns: string;
 }
 
 // 建立 Menus 預設值
 export class MenusDefaultModel implements StoreState  {
-    gaming = new Gaming()
-    color = new Color()
-    image = new Image()
-    input = new Input()
-    power = new Power()
-    menu = new Menu()
-    management = new Management()
-    information = new Information()
-    exit = new Exit()
-	isDiagnosticPatterns = false // 是否啟用診斷模式
-	currentDiagnosticPatterns = "black" // 當前診斷模式顏色
+    gaming = new Gaming();
+    color = new Color();
+    image = new Image();
+    input = new Input();
+    power = new Power();
+    menu = new Menu();
+    management = new Management();
+    information = new Information();
+    exit = new Exit();
 };
 
-export const useStore = defineStore('counter', () => {
+export const useMenuStore = defineStore('counter', () => {
     const state = reactive<StoreState>(new MenusDefaultModel());
 
     function $resetAll() {
@@ -56,5 +52,40 @@ export const useStore = defineStore('counter', () => {
     return {
         ...toRefs(state),
         $resetAll
+    };
+});
+
+export const useDiagnosticPatternsStore = defineStore('diagnosticPatterns', () => {
+    const state = reactive({
+        diagnosticPatterns: {
+            enabled: false, // 是否啟用診斷模式
+            color: 'black', // 當前診斷模式顏色
+        }
+    });
+    
+    return {
+        ...toRefs(state),
+        $reset: () => {
+            state.diagnosticPatterns.enabled = false;
+            state.diagnosticPatterns.color = 'black';
+        }
+    };
+});
+
+export const useMessageTimersStore = defineStore('messageTimers', () => {
+    const state = reactive({
+        messageTimers: {
+            time: 0,
+            model: null as string | null,
+            start: false
+        }
+    });
+
+    return {
+        ...toRefs(state),
+        $reset: () => {
+            state.messageTimers.time = 0;
+            state.messageTimers.model = null;
+        }
     };
 });
