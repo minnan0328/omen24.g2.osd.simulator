@@ -130,8 +130,6 @@ import PowerConfirmChangeNodes from '@/models/class/power/message/confirm-change
 import { DefaultNodes, BackNodes, ResetNodes, ExitNodes, OnNodes, OffNodes, YesNodes, NoNodes } from '@/models/class/_utilities';
 import { BrightnessDefaultValueEnum, setBrightnessDefaultValue } from '@/models/enum/brightnessDefaultValue/brightnessDefaultValue';
 
-const debugMode = ref(false);
-
 const MenusDefaultEnum = new MenusDefaultModel();
 
 const DefaultNodesEnum = new DefaultNodes();
@@ -164,10 +162,11 @@ const props = defineProps({
     startUpFinish: { type: Boolean, default: false },
     showScreen: { type: Boolean, default: false },
     showMonitorStatus: { type: Boolean, default: false },
-    openToast: { type: Boolean, default: false }
+    openToast: { type: Boolean, default: false },
+    showGamingSettingText: { type: Boolean, default: false }
 });
 
-const emit = defineEmits(['update:showScreen', 'update:showMonitorStatus', 'update:startUpFinish']);
+const emit = defineEmits(['update:showScreen', 'update:showMonitorStatus', 'update:startUpFinish', 'update:showGamingSettingText']);
 
 const menuTimeOutIntervalId = ref<number | null>(null);
 
@@ -323,8 +322,9 @@ function handlerControllerMenus() {
         emit("update:showMonitorStatus", false);
         emit("update:startUpFinish", true);
     }
-
+    
     if(props.openMonitor && props.startUpFinish) {
+        emit("update:showGamingSettingText", false);
         openControllerMenus.value = true;
     };
 };
@@ -1337,12 +1337,6 @@ function undoTheStaging() {
 
 // 關閉全部選單，包含清除目前狀態
 function handlerClose() {
-
-    // 當啟動 debug 模式時，就不關閉選單
-    if(debugMode.value) {
-        return
-    }
-
     undoTheStaging();
     
     openControllerMenus.value = false;
@@ -1410,6 +1404,9 @@ function handlerMenuTimeout() {
             if(openAssignButton.value) {
                 handlerClose();
             }
+
+            // 當關閉 menu 開啟
+            emit("update:showGamingSettingText", true);
     
             openAllMenu.value = false;
             openControllerMenus.value = false;

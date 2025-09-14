@@ -30,7 +30,8 @@
                                 v-model:screenInitial="screenInitial"
                                 v-model:showMonitorStatus="showMonitorStatus"
                                 v-model:showScreen="showScreen"
-                                v-model:startUpFinish="startUpFinish">
+                                v-model:startUpFinish="startUpFinish"
+                                v-model:showGamingSettingText="showGamingSettingText">
                             </monitorScreen>
 
                             <toast v-if="toastObj.open" v-model:open="toastObj.open"
@@ -48,6 +49,7 @@
                                 v-model:showScreen="showScreen"
                                 v-model:showMonitorStatus="showMonitorStatus"
                                 v-model:openToast="toastObj.open"
+                                v-model:showGamingSettingText="showGamingSettingText"
                                 ref="childMenusComponentRef">
                                 <template v-slot:openMonitor>
                                     <button class="controller-btn open-btn" @click="handleMonitor"></button>
@@ -113,6 +115,11 @@ const showMonitorStatus = ref(false);
 const showScreen = ref(false);
 const startUpFinish = ref(false);
 const childMenusComponentRef = ref(null);
+
+// 1. gaming 的 refFreshRate 及 messageTimers 啟用時候
+// 2. 1 啟用時，啟動 menu 不顯示
+// 3. 1 不啟用時，不顯示
+const showGamingSettingText = ref(true);
 
 function handleMonitor() {
     openMonitor.value = !openMonitor.value;

@@ -18,7 +18,7 @@
                 monitorScreenResult.refFreshRate.color,
                 monitorScreenResult.refFreshRate.location
             ]"
-            v-if="!showMonitorStatus && monitorScreenResult.refFreshRate.enabled"
+            v-if="!showMonitorStatus && showGamingSettingText && monitorScreenResult.refFreshRate.enabled"
             v-text="monitorScreenResult.refFreshRate.rate">
         </span>
     </div>
@@ -51,6 +51,10 @@ const props = defineProps({
     startUpFinish: {
         type: Boolean,
         default: false
+    },
+    showGamingSettingText: {
+        type: Boolean,
+        default: false  
     }
 });
 
