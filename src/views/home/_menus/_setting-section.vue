@@ -70,7 +70,10 @@
                     v-if="secondarySectionNodes.key == refreshRateNodesEnum.key
                     || secondarySectionNodes.key == messageTimersNodesEnum.key">
 
-                    <span :class="['setting-info-value', refreshRateNodesEnum.key]"
+                    <span :class="['setting-info-value',
+                            refreshRateNodesEnum.key,
+                            monitorScreenResult.refFreshRate.color
+                        ]"
                         v-if="secondarySectionNodes.key == refreshRateNodesEnum.key
                         && secondarySectionNodes.result == OnNodesEnum.result"
                         v-text="monitorScreenResult.refFreshRate.rate">

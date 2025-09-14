@@ -9,6 +9,7 @@ import YellowNodes from './_yellow-nodes';
 import PurpleNodes from './_purple-nodes';
 import LightBlue from './_light-blue-nodes';
 import OrangeNodes from './_orange-nodes';
+import BlackNodes from './_black-nodes';
 
 const WhileNodesEnum = new WhileNodes();
 const RedNodesEnum = new RedNodes();
@@ -18,15 +19,16 @@ const YellowNodesEnum = new YellowNodes();
 const PurpleNodesEnum = new PurpleNodes();
 const LightBlueNodesEnum = new LightBlue();
 const OrangeNodesEnum = new OrangeNodes();
+const BlackNodesEnum = new BlackNodes();
 const BackNodesEnum = new BackNodes();
 
 export default class ColorNodes extends DefaultNodes implements Nodes {
-    key = "Color";
+    key = "SettingTextColor";
     selected = WhileNodesEnum.selected;
     result = WhileNodesEnum.result;
     assignItemDisplay = false;
     displayValue = true;
-    size = 9;
+    size = 10;
     mode = ModeType.button;
     language = {
         German: "Farbe",
@@ -72,6 +74,10 @@ export default class ColorNodes extends DefaultNodes implements Nodes {
         },
         {
             ...JSON.parse(JSON.stringify(OrangeNodesEnum)),
+            parents: this.key
+        },
+        {
+            ...JSON.parse(JSON.stringify(BlackNodesEnum)),
             parents: this.key
         },
         {
