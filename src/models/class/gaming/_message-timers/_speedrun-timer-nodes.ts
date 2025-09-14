@@ -23,15 +23,4 @@ export default class SpeedrunTimerNodes extends DefaultNodes implements Nodes {
         BrazilianPortuguese: "Temporizador de speedrun",
         Russian: "Таймер скоростн. прохождения"
     }
-    nodes = [
-        {
-            ...JSON.parse(JSON.stringify(DefaultNodesEnum)),
-            key: "SpeedrunTimerSet",
-            selected: 0,
-            result: 0,
-            parents: this.key,
-            mode: ModeType.verticalRange,
-            language: this.language
-        }
-    ]
 };

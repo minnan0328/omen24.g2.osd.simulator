@@ -138,6 +138,8 @@ import AutoSleepModeNodes from '@/models/class/power/_auto-sleep-mode-nodes';
 
 import InputNodes from '@/models/class/input/input';
 
+import CountdownTimerNodes from '@/models/class/gaming/_message-timers/_countdown-timer-nodes';
+
 import {
     DefaultNodes, BackNodes, ResetNodes, ExitNodes,
     OnNodes, OffNodes, YesNodes, NoNodes,
@@ -171,6 +173,8 @@ const AccessibilityNodesEnum = new AccessibilityNodes();
 const AutoSleepModeNodesEnum = new AutoSleepModeNodes();
 
 const InputNodesEnum = new InputNodes();
+
+const CountdownTimerNodesEnum = new CountdownTimerNodes();
 
 const DefaultNodesEnum = new DefaultNodes();
 const BackNodesEnum = new BackNodes();
@@ -552,7 +556,7 @@ function handlerModeControllerButtonList(nodes: Nodes, previousNodes: Nodes) {
     // 當為 reset and back, button 下一層沒有節點的時候
     const isLastNode = nodes.key == ResetNodesEnum.key || nodes.key == BackNodesEnum.key
         || (nodes.mode == ModeType.radio || nodes.mode == ModeType.button || nodes.mode == ModeType.checkBox || nodes.mode == ModeType.paginationButton) && !nodes.nodes;
-
+    
     // 單個 range value node
     const isSingleRangeNode = (nodes.mode == ModeType.verticalRange || nodes.mode == ModeType.horizontalRange) && previousNodes.nodes?.length == 1;
     // 多個縱向 range value
@@ -662,6 +666,7 @@ function handlerAssignPreviousPanel() {
 // 選擇下一層目標
 function handlerNextPanel() {
     let isRadioNodes = false;
+    console.log("handlerNextPanel")
 
     if(menuState.menuPanel?.nodes) {
         if(!menuState.secondPanel) {
@@ -727,7 +732,6 @@ function handlerNextPanel() {
 
             if(isOpenOSDMessage.value && isRadioNodes) {
                 handlerSave(3);
-                return
             }
 
             // 第四層
@@ -1043,12 +1047,23 @@ function handlerRangeValue(step: string) {
     // 增減 range value
     function calculateValue(nodes: Nodes, previousNodes: Nodes){
         if(nodes.mode == ModeType.verticalRange || nodes.mode == ModeType.horizontalRange) {
+
+            if (
+                previousNodes.key == CountdownTimerNodesEnum.key &&
+                typeof nodes.result === "number" &&
+                nodes.result > 5
+            ) {
+                nodes.step = 5;
+            } else {
+                nodes.step = 1;
+            }
+
             if(step == "subtract" && (nodes.selected as number) > nodes.rangeMin && (nodes.selected as number) <= nodes.rangeMax) {
-                (nodes.selected as number) -= 1;
-                (nodes.result as number) -= 1;
+                (nodes.selected as number) -= nodes.step;
+                (nodes.result as number) -= nodes.step;
             } else if(step == "add" && (nodes.selected as number) >= nodes.rangeMin && (nodes.selected as number) < nodes.rangeMax) {
-                (nodes.selected as number) += 1;
-                (nodes.result as number) += 1;
+                (nodes.selected as number) += nodes.step;
+                (nodes.result as number) += nodes.step;
             }
 
             if(previousNodes.key != RGBGainAdjustNodesEnum.key && nodes.mode != ModeType.horizontalRange) {

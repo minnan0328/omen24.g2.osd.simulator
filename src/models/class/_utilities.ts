@@ -18,6 +18,7 @@ export class DefaultNodes implements Nodes {
     mode = ModeType.button;
     rangeMin = 0;
     rangeMax = 0;
+    step = 1;
     horizontalRangeFocus = false;
     rangeMaxIcon = null;
     rangeMinIcon = null;

@@ -29,6 +29,9 @@ export default class CountdownTimerNodes extends DefaultNodes implements Nodes {
             key: "CountdownTimerSet",
             selected: 20,
             result: 20,
+            rangeMin: 1,
+            rangeMax: 120,
+            step: 5,
             parents: this.key,
             mode: ModeType.verticalRange,
             language: this.language

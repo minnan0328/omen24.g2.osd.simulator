@@ -43,6 +43,7 @@ export interface Nodes {
     mode: string;
     rangeMin: number;
     rangeMax: number;
+    step: number;
     horizontalRangeFocus: boolean;
     rangeMaxIcon: string | null;
     rangeMinIcon: string | null;
