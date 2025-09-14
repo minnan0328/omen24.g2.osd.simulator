@@ -1514,8 +1514,8 @@ function handlerMenuTimeout() {
     
     &.accessibility {
         transform: scale(1.2) rotate(v-bind("menuStateResult.menuRotation"));
-        bottom: 74px;
-        left: 276px;
+        bottom: 40px;
+        left: 324px;
         margin: 0;
     }
 }

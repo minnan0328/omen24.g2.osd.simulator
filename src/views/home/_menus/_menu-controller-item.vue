@@ -45,7 +45,7 @@ const props = defineProps<{
 
     &.accessibility {
         transform: scale(1.1);
-        right: 94px;
+        right: 10px;
     }
 
     $menuitem-icon-width: 18px;
