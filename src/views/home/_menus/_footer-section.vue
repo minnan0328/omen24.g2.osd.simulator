@@ -1,10 +1,10 @@
 <template>
     <div class="footer">
         <div class="current-mode">
-            {{ toLanguageText(menuStateResult.information.currentMode.language) }}: {{ menuStateResult.information.currentMode.selected }}
+            {{ toLanguageText(menuStateResult.information.displayMode.result) }}: {{ menuStateResult.information.currentMode.result }}
         </div>
         <div class="current-input">
-            {{ toLanguageText(menuStateResult.input.language) }}: {{ menuStateResult.input.selected }}
+            {{ toLanguageText(menuStateResult.input.language) }}: {{ menuStateResult.input.result }}
         </div>
     </div>
 

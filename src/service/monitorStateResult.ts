@@ -152,7 +152,9 @@ export const menuStateResult = computed(() => {
             // 當前模式
             currentMode: information.value.nodes[0],
             // 最佳模式
-            optimalMode: information.value.nodes[1]
+            optimalMode: information.value.nodes[1],
+            // 顯示模式
+            displayMode: information.value.nodes[3]
         },
         // 螢幕診斷模式
         accessibility: management.value.nodes[3].result == OnNodesEnum.result
