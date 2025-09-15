@@ -9,6 +9,7 @@ export default class SpeedrunTimerNodes extends DefaultNodes implements Nodes {
     displayValue = true;
     selected = "Speedrun Timer";
     result = "Speedrun Timer";
+    timeUnit = "seconds";
     mode = ModeType.radio;
     language = {
         German: "Speedrun Timer",

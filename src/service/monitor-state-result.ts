@@ -2,7 +2,7 @@ import { ref, computed, reactive } from 'vue';
 import type { Nodes } from '@/types';
 import { useMenuStore, useDiagnosticPatternsStore, useMessageTimersStore } from '@/stores/index';
 import { OnNodes, OffNodes, TopNodes, MediumNodes, BottomNodes, LowNodes, HighNodes } from '@/models/class/_utilities';
-import { removeAndLowercase } from '@/service/format';
+import { removeAndLowercase } from '@/service/service';
 import screenOff from '@/assets/images/screen-off.jpg';
 import screenLow from '@/assets/images/screen-low.jpg';
 import screenMedium from '@/assets/images/screen-medium.jpg';
@@ -266,23 +266,23 @@ diagnosticPatternsStore.$subscribe((mutation, state) => {
     
 });
 
-// messageTimersStore.$subscribe((mutation, state) => {
+messageTimersStore.$subscribe((mutation, state) => {
+    // console.log(state.messageTimers);
+    // if(state.messageTimers.model != null) {
+    //     let time = state.messageTimers.time;
+    //     const model = state.messageTimers.model;
 
-//     if(state.messageTimers.model != null) {
-//         let time = state.messageTimers.time;
-//         const model = state.messageTimers.model;
+    //     const intervalId = setInterval(() => {
+    //         time--;
+    //         state.messageTimers.time = time;
 
-//         const intervalId = setInterval(() => {
-//             time--;
-//             state.messageTimers.time = time;
+    //         if(time <= 0) {
+    //             clearInterval(intervalId);
+    //             state.messageTimers.model = null;
+    //             state.messageTimers.time = 0;
+    //         }
+    //     }, 1000);
+    // }
 
-//             if(time <= 0) {
-//                 clearInterval(intervalId);
-//                 state.messageTimers.model = null;
-//                 state.messageTimers.time = 0;
-//             }
-//         }, 1000);
-//     }
-
-// });
+});
 

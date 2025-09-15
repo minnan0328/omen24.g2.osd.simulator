@@ -30,7 +30,6 @@ export default class HPEnhancePlusNode extends DefaultNodes implements Nodes {
         BrazilianPortuguese: "HP Enhance+",
         Russian: "HP Enhance+"
     };
-    unit = null;
     nodes = [
         // 低
         {

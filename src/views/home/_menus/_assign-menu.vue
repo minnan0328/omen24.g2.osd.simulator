@@ -58,7 +58,7 @@ import customizeRadio from './_components/_customize-radio.vue';
 
 import { BackNodes, ResetNodes } from '@/models/class/_utilities';
 
-import { menuStateResult } from '@/service/monitorStateResult';
+import { menuStateResult } from '@/service/monitor-state-result';
 
 const BackNodesEnum = new BackNodes();
 const ResetNodesEnum = new ResetNodes();

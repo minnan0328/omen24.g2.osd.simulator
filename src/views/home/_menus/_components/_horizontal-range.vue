@@ -13,7 +13,7 @@
 
             <div class="item range-max-value">
                 <span v-text="currentNode.selected"></span>
-                <span v-if="currentNode.unit" v-text="toLanguageText(currentNode.unit)"></span>
+                <span v-if="currentNode.unitText" v-text="toLanguageText(currentNode.unitText)"></span>
             </div>
         </div>
     </div>

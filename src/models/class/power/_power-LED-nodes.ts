@@ -28,7 +28,6 @@ export default class PowerLEDNodes extends DefaultNodes implements Nodes {
         BrazilianPortuguese: "LED de energia",
         Russian: "Индикатор питания"
     };
-    unit = null;
     nodes = [
         {
             ...JSON.parse(JSON.stringify(OnNodesEnum)),

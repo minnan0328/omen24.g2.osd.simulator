@@ -50,7 +50,8 @@ export interface Nodes {
     mergeGrid: boolean;
     only: string[];
     language: Language | null;
-    unit: Language | null;
+    unitText: Language | null;
+    timeUnit: string | null;
     nodes: Nodes[] | null;
 };
 

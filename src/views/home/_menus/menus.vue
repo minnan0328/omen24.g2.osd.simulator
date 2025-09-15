@@ -80,13 +80,12 @@
 </template>
 <script lang="ts" setup>
 import { ref, reactive, watch, computed, inject } from 'vue';
-import { useMenuStore, MenusDefaultModel, useDiagnosticPatternsStore } from '@/stores/index';
+import { useMenuStore, MenusDefaultModel, useDiagnosticPatternsStore, useMessageTimersStore } from '@/stores/index';
 import type { StoreState } from '@/stores/index';
 import type { Nodes, ControllerButtonList, HomeEvent } from '@/types';
 import { ModeType } from '@/types';
 import { isEnableNode, toLanguageText, toLowerCaseFirstChar } from '@/service/service';
-import { menuStateResult } from '@/service/monitorStateResult';
-
+import { menuStateResult } from '@/service/monitor-state-result';
 
 // components
 import headerSection from './_header-section.vue';
@@ -139,6 +138,8 @@ import AutoSleepModeNodes from '@/models/class/power/_auto-sleep-mode-nodes';
 
 import InputNodes from '@/models/class/input/input';
 
+import MessageTimersNodes from '@/models/class/gaming/_message-timers/message-timers-nodes';
+import SpeedrunTimerNodes from '@/models/class/gaming/_message-timers/_speedrun-timer-nodes';
 import CountdownTimerNodes from '@/models/class/gaming/_message-timers/_countdown-timer-nodes';
 
 import {
@@ -176,6 +177,8 @@ const AutoSleepModeNodesEnum = new AutoSleepModeNodes();
 
 const InputNodesEnum = new InputNodes();
 
+const MessageTimersNodesEnum = new MessageTimersNodes();
+const SpeedrunTimerNodesEnum = new SpeedrunTimerNodes();
 const CountdownTimerNodesEnum = new CountdownTimerNodes();
 
 const DefaultNodesEnum = new DefaultNodes();
@@ -202,6 +205,7 @@ const PowerConfirmChangeNodesEnum = new PowerConfirmChangeNodes();
 
 const menuStore = useMenuStore();
 const diagnosticPatternsStore = useDiagnosticPatternsStore();
+const messageTimersStore = useMessageTimersStore();
 
 const homeEvent = inject("homeEvent") as HomeEvent;
 
@@ -668,7 +672,6 @@ function handlerAssignPreviousPanel() {
 // 選擇下一層目標
 function handlerNextPanel() {
     let isRadioNodes = false;
-    console.log("handlerNextPanel")
 
     if(menuState.menuPanel?.nodes) {
         if(!menuState.secondPanel) {
@@ -1230,7 +1233,12 @@ function saveNodesValue(nodes: Nodes, previousNodes: Nodes) {
                 menuStore.$state.menu.nodes[1].disabled = previousNodes.result == OnNodesEnum.result;
 
                 reopenMenu();
-            }
+            },
+            [MessageTimersNodesEnum.key]: () => {
+                // 當為訊息時間器時
+                messageTimersStore.$state.messageTimers.result = previousNodes.result as string;
+                messageTimersStore.$state.messageTimers.enabled = [OnNodesEnum.result, SpeedrunTimerNodesEnum.result, CountdownTimerNodesEnum.result].includes(previousNodes.result as string);
+            },
         };
 
         // 當為 previousNodes.key 時，執行動作

@@ -57,7 +57,7 @@
                             :class="['item item-value', { disabled: secondNodes.disabled }]">
                             <span v-if="secondNodes.mode != ModeType.info" v-text="toDisplayValueLanguageText(secondNodes)"></span>
                             <span v-else-if="secondNodes.mode == ModeType.info" v-text="secondNodes.result"></span>
-                            <span v-if="secondNodes.unit" v-text="toLanguageText(secondNodes.unit)"></span>
+                            <span v-if="secondNodes.unitText" v-text="toLanguageText(secondNodes.unitText)"></span>
                         </div>
                         <!-- value -->
                     </div>
@@ -67,16 +67,25 @@
                 :class="['secondary-section', { 'customRGB-range-section': secondarySectionNodes.key == rgbGainAdjustNodesEnum.key }]">
 
                 <div class="setting-info-menu-left"
-                    v-if="secondarySectionNodes.key == refreshRateNodesEnum.key
-                    || secondarySectionNodes.key == messageTimersNodesEnum.key">
+                    v-if="secondarySectionNodes.key == monitorScreenResult.refFreshRate.key
+                    || secondarySectionNodes.key == monitorScreenResult.messageTimers.key">
 
                     <span :class="['setting-info-value',
-                            refreshRateNodesEnum.key,
+                            monitorScreenResult.refFreshRate.key,
                             monitorScreenResult.refFreshRate.color
                         ]"
-                        v-if="secondarySectionNodes.key == refreshRateNodesEnum.key
+                        v-if="secondarySectionNodes.key == monitorScreenResult.refFreshRate.key
                         && monitorScreenResult.refFreshRate.enabled"
                         v-text="monitorScreenResult.refFreshRate.rate">
+                    </span>
+
+                    <span :class="['setting-info-value',
+                            monitorScreenResult.messageTimers.key,
+                            monitorScreenResult.messageTimers.color
+                        ]"
+                        v-if="secondarySectionNodes.key == monitorScreenResult.messageTimers.key
+                        && monitorScreenResult.messageTimers.enabled"
+                        v-text="monitorScreenResult.messageTimers.timer[monitorScreenResult.messageTimers.result]">
                     </span>
                 </div>
 
@@ -155,8 +164,7 @@ import type { PropType } from 'vue';
 import type { Nodes } from '@/types';
 import { ModeType } from '@/types';
 import { isEnableNode, toLanguageText, toDisplayValueLanguageText } from '@/service/service';
-import { OnNodes } from '@/models/class/_utilities';
-import { monitorScreenResult } from '@/service/monitorStateResult';
+import { monitorScreenResult } from '@/service/monitor-state-result';
 
 // components
 import info from './_components/_info.vue';
@@ -171,15 +179,10 @@ import nextPageButtons from './_components/_next-page-button.vue';
 import FactoryResetNodes from '@/models/class/management/_factory-reset-nodes';
 import ImageScalingNodes from '@/models/class/image/_image-scaling-nodes';
 import RGBGainAdjustNodes from '@/models/class/color/_RGB-gain-adjust-nodes';
-import RefreshRateNodes from '@/models/class/gaming/_refresh-rate-nodes';
-import MessageTimersNodes from '@/models/class/gaming/_message-timers/message-timers-nodes';
 
 const factoryResetNodesEnum = new FactoryResetNodes();
 const imageScalingNodesEnum = new ImageScalingNodes();
 const rgbGainAdjustNodesEnum = new RGBGainAdjustNodes();
-const refreshRateNodesEnum = new RefreshRateNodes();
-const messageTimersNodesEnum = new MessageTimersNodes();
-const OnNodesEnum = new OnNodes();
 
 const props = defineProps({
     mainSectionNodes: {

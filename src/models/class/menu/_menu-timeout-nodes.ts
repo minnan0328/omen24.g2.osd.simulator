@@ -27,7 +27,7 @@ export default class MenuTimeoutNodes extends DefaultNodes implements Nodes {
         BrazilianPortuguese: "Tempo limite do menu",
         Russian: "Тайм-аут меню"
     };
-    unit = {
+    unitText = {
         German: "s",
         SimplifiedChinese: "s",
         TraditionalChinese: "s",
@@ -65,7 +65,7 @@ export default class MenuTimeoutNodes extends DefaultNodes implements Nodes {
                 BrazilianPortuguese: "Tempo limite do menu",
                 Russian: "Тайм-аут меню"
             },
-            unit: this.unit
+            unitText: this.unitText
         }
     ]
 };

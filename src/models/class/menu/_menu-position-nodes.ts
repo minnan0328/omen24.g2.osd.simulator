@@ -27,7 +27,6 @@ export default class MenuPositionNodes extends DefaultNodes implements Nodes {
         BrazilianPortuguese: "Posição do menu",
         Russian: "Положение меню"
     };
-    unit = null;
     nodes = [
         {
             // Range (0~100)

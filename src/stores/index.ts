@@ -4,7 +4,7 @@ import {
 	Gaming, Color, Image, Input,
 	Power, Menu, Management,Information, Exit
 } from '@/models/index';
-import { removeAndLowercase } from '@/service/format';
+import { removeAndLowercase, toDisplayTimeFormat, toTotalSeconds } from '@/service/service';
 import type { Nodes } from '@/types/index';
 
 export interface StoreState {
@@ -46,7 +46,9 @@ export const useMenuStore = defineStore('counter', () => {
 });
 
 export const useDiagnosticPatternsStore = defineStore('diagnosticPatterns', () => {
-    const management = new Management();
+    const menuStore = useMenuStore();
+    const management = menuStore.$state.management;
+
     const diagnosticPatternsFormat = "Full Screen";
     const diagnosticPatterns = {
         enabled: false,
@@ -66,20 +68,22 @@ export const useDiagnosticPatternsStore = defineStore('diagnosticPatterns', () =
 });
 
 export const useMessageTimersStore = defineStore('messageTimers', () => {
-    const gaming = new Gaming();
+    const menuStore = useMenuStore();
+    const gaming = menuStore.$state.gaming;
+
+
     const messageTimers = {
         key: gaming.nodes[4].key,
-        enabled: [gaming.nodes[4].nodes[0], gaming.nodes[4].nodes[2], gaming.nodes[4].nodes[3]].includes(gaming.nodes[4].result as string),
-        model: gaming.nodes[4].reset,
+        enabled: [gaming.nodes[4].nodes[0].result, gaming.nodes[4].nodes[2].result, gaming.nodes[4].nodes[3].result].includes(gaming.nodes[4].result as string),
         start: false,
-        time: {
-            [gaming.nodes[4].nodes![2].key]: 0,
-            [gaming.nodes[4].nodes![3].key]: gaming.nodes[4].nodes![3].nodes![0].result
+        result: gaming.nodes[4].result,
+        timer: {
+            [gaming.nodes[4].nodes![2].result]: toDisplayTimeFormat(0, "HH:mm"),
+            [gaming.nodes[4].nodes![3].result]: toDisplayTimeFormat(toTotalSeconds(gaming.nodes[4].nodes![3].nodes![0].result, gaming.nodes[4].nodes![3].nodes![0].timeUnit!), "HH:mm"),
         },
         color: gaming.nodes[4].nodes[7].result,
         location: gaming.nodes[4].nodes[8].result,
         message: gaming.nodes[4].nodes![6].nodes!.find((n: Nodes) => n.result == gaming.nodes[4].nodes![6].result)
-        
     }
 
     const state = reactive({

@@ -28,7 +28,6 @@ export default class PowerOnRecallNodes extends DefaultNodes implements Nodes {
         BrazilianPortuguese: "Ligar Novamente",
         Russian: "Восстан. питания"
     };
-    unit = null;
     nodes = [
         {
             ...JSON.parse(JSON.stringify(OnNodesEnum)),

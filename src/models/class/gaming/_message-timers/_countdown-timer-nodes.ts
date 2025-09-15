@@ -10,6 +10,7 @@ export default class CountdownTimerNodes extends DefaultNodes implements Nodes {
     selected = "Countdown Timer";
     result = "Countdown Timer";
     mode = ModeType.radio;
+    timeUnit = "minutes";
     language = {
         German: "Countdown",
         SimplifiedChinese: "倒计时计时器",
@@ -34,6 +35,7 @@ export default class CountdownTimerNodes extends DefaultNodes implements Nodes {
             step: 5,
             parents: this.key,
             mode: ModeType.verticalRange,
+            timeUnit: this.timeUnit,
             language: this.language
         }
     ]

@@ -23,7 +23,7 @@
 
 <script lang="ts" setup>
 import type { ControllerButtonList } from '@/types';
-import { menuStateResult } from '@/service/monitorStateResult';
+import { menuStateResult } from '@/service/monitor-state-result';
 
 const props = defineProps<{
     handleControllerButtonList: ControllerButtonList[];

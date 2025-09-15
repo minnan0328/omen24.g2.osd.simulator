@@ -29,7 +29,7 @@
 <script lang="ts" setup>
 import { onMounted } from 'vue';
 import monitorStatus from '@/views/home/_monitor-status/monitor-status.vue';
-import { menuStateResult, monitorScreenResult } from '@/service/monitorStateResult';
+import { menuStateResult, monitorScreenResult } from '@/service/monitor-state-result';
 
 const props = defineProps({
     openMonitor: {

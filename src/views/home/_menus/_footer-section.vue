@@ -11,7 +11,7 @@
 </template>
 
 <script lang="ts" setup>
-import { menuStateResult } from '@/service/monitorStateResult';
+import { menuStateResult } from '@/service/monitor-state-result';
 import { toLanguageText } from '@/service/service';
 </script>
 

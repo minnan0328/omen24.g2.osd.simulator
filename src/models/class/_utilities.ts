@@ -37,7 +37,8 @@ export class DefaultNodes implements Nodes {
         BrazilianPortuguese: "",
         Russian: ""
     };
-    unit!: Language | null;
+    unitText!: Language | null;
+    timeUnit!: string | null;
     nodes!: Nodes[] | null;
 };
 

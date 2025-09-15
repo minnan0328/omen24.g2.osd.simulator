@@ -2,9 +2,9 @@ import { computed } from 'vue';
 import { useMenuStore } from '@/stores/index';
 import type { Nodes, Language } from '@/types';
 import { ModeType } from '@/types';
-const menuStore = useMenuStore();
 
 const currentLanguage = computed(() => {
+    const menuStore = useMenuStore();
     let language = menuStore.$state.menu.nodes.find(n => n.key == 'Language');
     return language?.selected ? language?.selected : "English";
 });
