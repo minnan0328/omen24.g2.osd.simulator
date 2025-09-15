@@ -4,7 +4,7 @@ import {
 	Gaming, Color, Image, Input,
 	Power, Menu, Management,Information, Exit
 } from '@/models/index';
-import { removeAndLowercase, toDisplayTimeFormat, toTotalSeconds } from '@/service/service';
+import { removeAndLowercase, toDisplayTimeFormat, minutesTolSeconds } from '@/service/service';
 import type { Nodes } from '@/types/index';
 
 export interface StoreState {
@@ -71,15 +71,14 @@ export const useMessageTimersStore = defineStore('messageTimers', () => {
     const menuStore = useMenuStore();
     const gaming = menuStore.$state.gaming;
 
-
     const messageTimers = {
         key: gaming.nodes[4].key,
         enabled: [gaming.nodes[4].nodes[0].result, gaming.nodes[4].nodes[2].result, gaming.nodes[4].nodes[3].result].includes(gaming.nodes[4].result as string),
         start: false,
         result: gaming.nodes[4].result,
         timer: {
-            [gaming.nodes[4].nodes![2].result]: toDisplayTimeFormat(0, "HH:mm"),
-            [gaming.nodes[4].nodes![3].result]: toDisplayTimeFormat(toTotalSeconds(gaming.nodes[4].nodes![3].nodes![0].result, gaming.nodes[4].nodes![3].nodes![0].timeUnit!), "HH:mm"),
+            [gaming.nodes[4].nodes![2].result]: 0,
+            [gaming.nodes[4].nodes![3].result]: minutesTolSeconds(gaming.nodes[4].nodes![3].nodes![0].result as number)
         },
         color: gaming.nodes[4].nodes[7].result,
         location: gaming.nodes[4].nodes[8].result,
@@ -94,6 +93,10 @@ export const useMessageTimersStore = defineStore('messageTimers', () => {
         ...toRefs(state),
         $reset: () => {
             state.messageTimers = JSON.parse(JSON.stringify(messageTimers));
+        },
+        $resetTimer: () => {
+            state.messageTimers.start = false;
+            state.messageTimers.timer = JSON.parse(JSON.stringify(messageTimers.timer));
         }
     };
 });

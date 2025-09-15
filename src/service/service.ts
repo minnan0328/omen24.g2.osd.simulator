@@ -1,7 +1,7 @@
 import { useMenuStore } from '@/stores/index';
 import type { Nodes } from '@/types';
 import { toLanguageText, toDisplayValueLanguageText } from './_to-display-language-text';
-import { toDisplayTimeFormat, toTotalSeconds } from './_time-format';
+import { toDisplayTimeFormat, secondsToMinutes, minutesTolSeconds } from './_time-format';
 
 export function isEnableNode(nodes: Nodes): boolean {
     const menuStore = useMenuStore();
@@ -27,5 +27,6 @@ export {
     toLanguageText,
     toDisplayValueLanguageText,
     toDisplayTimeFormat,
-    toTotalSeconds
+    secondsToMinutes,
+    minutesTolSeconds
 }

@@ -2,6 +2,8 @@ import { ref, computed, reactive } from 'vue';
 import type { Nodes } from '@/types';
 import { useMenuStore, useDiagnosticPatternsStore, useMessageTimersStore } from '@/stores/index';
 import { OnNodes, OffNodes, TopNodes, MediumNodes, BottomNodes, LowNodes, HighNodes } from '@/models/class/_utilities';
+import SpeedrunTimerNodes from '@/models/class/gaming/_message-timers/_speedrun-timer-nodes';
+import CountdownTimerNodes from '@/models/class/gaming/_message-timers/_countdown-timer-nodes';
 import { removeAndLowercase } from '@/service/service';
 import screenOff from '@/assets/images/screen-off.jpg';
 import screenLow from '@/assets/images/screen-low.jpg';
@@ -18,6 +20,8 @@ const BottomNodesEnum = new BottomNodes();
 const LowNodesEnum = new LowNodes();
 const MediumNodesEnum = new MediumNodes();
 const HighNodesEnum = new HighNodes();
+const SpeedrunTimerNodesEnum = new SpeedrunTimerNodes();
+const CountdownTimerNodesEnum = new CountdownTimerNodes();
 
 const brightness = computed(()=> menuStore.$state.image.nodes[0]);
 const gaming = computed(()=> menuStore.$state.gaming);
@@ -265,24 +269,28 @@ diagnosticPatternsStore.$subscribe((mutation, state) => {
     }
     
 });
-
+const messageTimersIntervalId = ref<number | null>(null);
 messageTimersStore.$subscribe((mutation, state) => {
-    // console.log(state.messageTimers);
-    // if(state.messageTimers.model != null) {
-    //     let time = state.messageTimers.time;
-    //     const model = state.messageTimers.model;
+    if(state.messageTimers.enabled && state.messageTimers.start) {
+        if(messageTimersIntervalId.value == null) {
 
-    //     const intervalId = setInterval(() => {
-    //         time--;
-    //         state.messageTimers.time = time;
+            
+            const step = {
+                [SpeedrunTimerNodesEnum.result]: 1,
+                [CountdownTimerNodesEnum.result]: -1
+            };
+            
+            messageTimersIntervalId.value = setInterval(() => {
+                console.log(state.messageTimers.result);
+                state.messageTimers.timer[state.messageTimers.result] += step[state.messageTimers.result]!;
+            }, 1000);
 
-    //         if(time <= 0) {
-    //             clearInterval(intervalId);
-    //             state.messageTimers.model = null;
-    //             state.messageTimers.time = 0;
-    //         }
-    //     }, 1000);
-    // }
-
+        }
+    } else {
+        if (messageTimersIntervalId.value !== null) {
+            clearInterval(messageTimersIntervalId.value);
+            messageTimersIntervalId.value = null;
+        }
+    }
 });
 

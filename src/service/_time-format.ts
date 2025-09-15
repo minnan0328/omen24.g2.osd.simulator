@@ -11,10 +11,10 @@ export const toDisplayTimeFormat = (
     return `${pad(minutes)}:${pad(seconds)}`;
 };
 
-export const toTotalSeconds = (time: number, timeUnit: 'minutes' | 'seconds'): number => {
-    const units = {
-        minutes: time * 60,
-        seconds: time
-    };
-    return units[timeUnit];
+export const minutesTolSeconds = (time: number): number => {
+    return time * 60;
+};
+
+export const secondsToMinutes = (time: number): number => {
+    return time / 60;
 };

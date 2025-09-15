@@ -84,8 +84,19 @@
                             monitorScreenResult.messageTimers.color
                         ]"
                         v-if="secondarySectionNodes.key == monitorScreenResult.messageTimers.key
-                        && monitorScreenResult.messageTimers.enabled"
-                        v-text="monitorScreenResult.messageTimers.timer[monitorScreenResult.messageTimers.result]">
+                        && monitorScreenResult.messageTimers.enabled
+                        && secondarySectionNodes.nodes[2]!.result == monitorScreenResult.messageTimers.result"
+                        v-text="toDisplayTimeFormat(monitorScreenResult.messageTimers.timer[monitorScreenResult.messageTimers.result])">
+                    </span>
+
+                    <span :class="['setting-info-value',
+                            monitorScreenResult.messageTimers.key,
+                            monitorScreenResult.messageTimers.color
+                        ]"
+                        v-if="secondarySectionNodes.key == monitorScreenResult.messageTimers.key
+                        && monitorScreenResult.messageTimers.enabled
+                        && secondarySectionNodes.nodes[3]!.result == monitorScreenResult.messageTimers.result"
+                        v-text="toDisplayTimeFormat(monitorScreenResult.messageTimers.timer[monitorScreenResult.messageTimers.result])">
                     </span>
                 </div>
 
@@ -163,7 +174,7 @@ import { computed } from 'vue';
 import type { PropType } from 'vue';
 import type { Nodes } from '@/types';
 import { ModeType } from '@/types';
-import { isEnableNode, toLanguageText, toDisplayValueLanguageText } from '@/service/service';
+import { isEnableNode, toLanguageText, toDisplayValueLanguageText, toDisplayTimeFormat } from '@/service/service';
 import { monitorScreenResult } from '@/service/monitor-state-result';
 
 // components

@@ -141,6 +141,9 @@ import InputNodes from '@/models/class/input/input';
 import MessageTimersNodes from '@/models/class/gaming/_message-timers/message-timers-nodes';
 import SpeedrunTimerNodes from '@/models/class/gaming/_message-timers/_speedrun-timer-nodes';
 import CountdownTimerNodes from '@/models/class/gaming/_message-timers/_countdown-timer-nodes';
+import StartStopNodes from '@/models/class/gaming/_message-timers/_start-stop-nodes';
+import ResetTimerNodes from '@/models/class/gaming/_message-timers/_reset-timer-nodes';
+
 
 import {
     DefaultNodes, BackNodes, ResetNodes, ExitNodes,
@@ -180,6 +183,8 @@ const InputNodesEnum = new InputNodes();
 const MessageTimersNodesEnum = new MessageTimersNodes();
 const SpeedrunTimerNodesEnum = new SpeedrunTimerNodes();
 const CountdownTimerNodesEnum = new CountdownTimerNodes();
+const StartStopNodesEnum = new StartStopNodes();
+const ResetTimerNodesEnum = new ResetTimerNodes();
 
 const DefaultNodesEnum = new DefaultNodes();
 const BackNodesEnum = new BackNodes();
@@ -1156,6 +1161,14 @@ function saveNodesValue(nodes: Nodes, previousNodes: Nodes) {
         // 上下一頁 目前只處理 secondaryNodesPagination(第三層畫面)
         [NextPageButtonsNodesEnum.key]: () => handlerNavigation("down"),
         [PreviousPageButtonsNodesEnum.key]: () => handlerNavigation("up"),
+        [StartStopNodesEnum.key]: () => {
+            // 當為訊息時間器時
+            messageTimersStore.$state.messageTimers.start = !messageTimersStore.$state.messageTimers.start;
+        },
+        [ResetTimerNodesEnum.key]: () => {
+            // 當為訊息時間器時
+            messageTimersStore.$resetTimer();
+        },
     };
 
     const previousNodesActions: { [key: string]: () => void } = {
@@ -1236,9 +1249,11 @@ function saveNodesValue(nodes: Nodes, previousNodes: Nodes) {
             },
             [MessageTimersNodesEnum.key]: () => {
                 // 當為訊息時間器時
+                messageTimersStore.$state.messageTimers.start = false;
+                messageTimersStore.$reset();
                 messageTimersStore.$state.messageTimers.result = previousNodes.result as string;
                 messageTimersStore.$state.messageTimers.enabled = [OnNodesEnum.result, SpeedrunTimerNodesEnum.result, CountdownTimerNodesEnum.result].includes(previousNodes.result as string);
-            },
+            }
         };
 
         // 當為 previousNodes.key 時，執行動作
