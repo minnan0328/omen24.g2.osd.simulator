@@ -1423,6 +1423,9 @@ function handlerClose() {
     openAllMenu.value = false;
     openAssignButton.value = false;
 
+    // 當關閉 menu 開啟
+    emit("update:showGamingSettingText", true);
+
     menuState.menuPanel = null;
     menuState.secondPanel = null;
     menuState.thirdPanel = null;
@@ -1484,11 +1487,11 @@ function handlerMenuTimeout() {
                 handlerClose();
             }
 
-            // 當關閉 menu 開啟
-            emit("update:showGamingSettingText", true);
-    
+            
             openAllMenu.value = false;
             openControllerMenus.value = false;
+            // 當關閉 menu 開啟
+            emit("update:showGamingSettingText", true);
     
             if(menuState.menuPanel && menuState.secondPanel) {
 

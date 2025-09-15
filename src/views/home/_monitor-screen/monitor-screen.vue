@@ -21,6 +21,15 @@
             v-if="!showMonitorStatus && showGamingSettingText && monitorScreenResult.refFreshRate.enabled"
             v-text="monitorScreenResult.refFreshRate.rate">
         </span>
+
+        <span :class="['setting-info-value',
+                monitorScreenResult.messageTimers.key,
+                monitorScreenResult.messageTimers.color,
+                monitorScreenResult.messageTimers.location
+            ]"
+            v-else-if="!showMonitorStatus && showGamingSettingText && monitorScreenResult.messageTimers.enabled"
+            v-text="toDisplayTimeFormat(monitorScreenResult.messageTimers.timer[monitorScreenResult.messageTimers.result])">
+        </span>
     </div>
     <div v-else-if="monitorScreenResult.diagnosticPatterns.enabled" :key="monitorScreenResult.diagnosticPatterns.result"
         :class="['screen diagnostic-patterns', monitorScreenResult.diagnosticPatterns.result]">
@@ -30,6 +39,8 @@
 import { onMounted } from 'vue';
 import monitorStatus from '@/views/home/_monitor-status/monitor-status.vue';
 import { menuStateResult, monitorScreenResult } from '@/service/monitor-state-result';
+import { toDisplayTimeFormat } from '@/service/service';
+
 
 const props = defineProps({
     openMonitor: {
