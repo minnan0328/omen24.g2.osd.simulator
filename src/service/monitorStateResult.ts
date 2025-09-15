@@ -1,7 +1,8 @@
-import { ref, computed } from 'vue';
+import { ref, computed, reactive } from 'vue';
 import type { Nodes } from '@/types';
 import { useMenuStore, useDiagnosticPatternsStore, useMessageTimersStore } from '@/stores/index';
 import { OnNodes, OffNodes, TopNodes, MediumNodes, BottomNodes, LowNodes, HighNodes } from '@/models/class/_utilities';
+import { removeAndLowercase } from '@/service/format';
 import screenOff from '@/assets/images/screen-off.jpg';
 import screenLow from '@/assets/images/screen-low.jpg';
 import screenMedium from '@/assets/images/screen-medium.jpg';
@@ -218,23 +219,16 @@ function extractStringFromParentheses(input: string): number {
     return 0;
 }
 
-// 函數表達式
-const removeAndLowercase = (str: string): string => {
-    // 移除指定的子字符串
-    const removedString = str.replace("Full Screen", '').trim();
-    // 轉小寫
-    return removedString.toLowerCase();
-};
-
 // 取得診斷模式
 const diagnosticPatternsIntervalId = ref<number | null>(null);
-const patternsIndex = ref(0);
-const patterns = ref([
-    removeAndLowercase(management.value.nodes[2].nodes![1].result as string),
-    removeAndLowercase(management.value.nodes[2].nodes![2].result as string),
-    removeAndLowercase(management.value.nodes[2].nodes![3].result as string),
-    removeAndLowercase(management.value.nodes[2].nodes![4].result as string),
-    removeAndLowercase(management.value.nodes[2].nodes![5].result as string)
+const diagnosticPatternsIndex = ref(0);
+const diagnosticPatternsFormat = "Full Screen";
+const diagnosticPatternsColors = reactive([
+    removeAndLowercase(management.value.nodes[2].nodes![1].result as string, diagnosticPatternsFormat),
+    removeAndLowercase(management.value.nodes[2].nodes![2].result as string, diagnosticPatternsFormat),
+    removeAndLowercase(management.value.nodes[2].nodes![3].result as string, diagnosticPatternsFormat),
+    removeAndLowercase(management.value.nodes[2].nodes![4].result as string, diagnosticPatternsFormat),
+    removeAndLowercase(management.value.nodes[2].nodes![5].result as string, diagnosticPatternsFormat)
 ]);
 
 diagnosticPatternsStore.$subscribe((mutation, state) => {
@@ -246,11 +240,12 @@ diagnosticPatternsStore.$subscribe((mutation, state) => {
             if(diagnosticPatternsIntervalId.value) {
                 return
             }
-            patternsIndex.value = resultIndex;
-            state.diagnosticPatterns.color = patterns.value[patternsIndex.value]!;
+
+            diagnosticPatternsIndex.value = resultIndex;
+            state.diagnosticPatterns.color = diagnosticPatternsColors[diagnosticPatternsIndex.value]!;
             diagnosticPatternsIntervalId.value = setInterval(() => {
-                patternsIndex.value = (patternsIndex.value + 1) % patterns.value.length;
-                state.diagnosticPatterns.color = patterns.value[patternsIndex.value]!;
+                diagnosticPatternsIndex.value = (diagnosticPatternsIndex.value + 1) % diagnosticPatternsColors.length;
+                state.diagnosticPatterns.color = diagnosticPatternsColors[diagnosticPatternsIndex.value]!;
             }, 3000);
 
         } else if(resultIndex >= 1) {
@@ -258,8 +253,9 @@ diagnosticPatternsStore.$subscribe((mutation, state) => {
                 clearInterval(diagnosticPatternsIntervalId.value);
                 diagnosticPatternsIntervalId.value = null;
             };
-            patternsIndex.value = resultIndex - 1;
-            state.diagnosticPatterns.color = patterns.value[patternsIndex.value]!;
+
+            diagnosticPatternsIndex.value = resultIndex - 1;
+            state.diagnosticPatterns.color = diagnosticPatternsColors[diagnosticPatternsIndex.value]!;
         }
     } else {
         if (diagnosticPatternsIntervalId.value !== null) {

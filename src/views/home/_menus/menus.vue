@@ -133,6 +133,7 @@ import LanguageNodes from '@/models/class/menu/_language-nodes';
 
 import FactoryResetNodes from '@/models/class/management/_factory-reset-nodes';
 import AccessibilityNodes from '@/models/class/management/_accessibility-nodes';
+import DiagnosticPatternsNodes from '@/models/class/management/_diagnostic-patterns-nodes';
 
 import AutoSleepModeNodes from '@/models/class/power/_auto-sleep-mode-nodes';
 
@@ -169,6 +170,7 @@ const LanguageNodesEnum = new LanguageNodes();
 
 const FactoryResetNodesEnum = new FactoryResetNodes();
 const AccessibilityNodesEnum = new AccessibilityNodes();
+const DiagnosticPatternsNodesEnum = new DiagnosticPatternsNodes();
 
 const AutoSleepModeNodesEnum = new AutoSleepModeNodes();
 
@@ -723,7 +725,7 @@ function handlerNextPanel() {
                 }
 
                 // 當為診斷模式時
-                if(menuState.thirdPanel.parents == "DiagnosticPatterns") {
+                if(menuState.thirdPanel.parents == DiagnosticPatternsNodesEnum.key) {
                     diagnosticPatternsStore.$state.diagnosticPatterns.enabled = true;
                 }
             });

@@ -4,10 +4,8 @@ import {
 	Gaming, Color, Image, Input,
 	Power, Menu, Management,Information, Exit
 } from '@/models/index';
-
-
-import { AssignColorNodes } from '@/models/class/menu/_assign-buttons/_utilities';
-const AssignColorNodesEnum = new AssignColorNodes();
+import { removeAndLowercase } from '@/service/format';
+import type { Nodes } from '@/types/index';
 
 export interface StoreState {
     gaming: Gaming;
@@ -35,18 +33,10 @@ export class MenusDefaultModel implements StoreState  {
 };
 
 export const useMenuStore = defineStore('counter', () => {
-    const state = reactive<StoreState>(new MenusDefaultModel());
+    let state = reactive<StoreState>(new MenusDefaultModel());
 
     function $resetAll() {
-        state.gaming = JSON.parse(JSON.stringify(new Gaming()));
-        state.color = JSON.parse(JSON.stringify(new Color()));
-        state.image = JSON.parse(JSON.stringify(new Image()));
-        state.input = JSON.parse(JSON.stringify(new Input()));
-        state.power = JSON.parse(JSON.stringify(new Power()));
-        state.menu = JSON.parse(JSON.stringify(new Menu()));
-        state.management = JSON.parse(JSON.stringify(new Management()));
-        state.information = JSON.parse(JSON.stringify(new Information()));
-        state.exit = JSON.parse(JSON.stringify(new Exit()));
+        state = reactive<StoreState>(new MenusDefaultModel());
     }
 
     return {
@@ -56,36 +46,50 @@ export const useMenuStore = defineStore('counter', () => {
 });
 
 export const useDiagnosticPatternsStore = defineStore('diagnosticPatterns', () => {
+    const management = new Management();
+    const diagnosticPatternsFormat = "Full Screen";
+    const diagnosticPatterns = {
+        enabled: false,
+        result: removeAndLowercase(management.nodes[2].nodes![1].result as string, diagnosticPatternsFormat)
+    };
+
     const state = reactive({
-        diagnosticPatterns: {
-            enabled: false, // 是否啟用診斷模式
-            color: 'black', // 當前診斷模式顏色
-        }
+        diagnosticPatterns: JSON.parse(JSON.stringify(diagnosticPatterns))
     });
-    
+
     return {
         ...toRefs(state),
         $reset: () => {
-            state.diagnosticPatterns.enabled = false;
-            state.diagnosticPatterns.color = 'black';
+            state.diagnosticPatterns = JSON.parse(JSON.stringify(diagnosticPatterns));
         }
     };
 });
 
 export const useMessageTimersStore = defineStore('messageTimers', () => {
+    const gaming = new Gaming();
+    const messageTimers = {
+        key: gaming.nodes[4].key,
+        enabled: [gaming.nodes[4].nodes[0], gaming.nodes[4].nodes[2], gaming.nodes[4].nodes[3]].includes(gaming.nodes[4].result as string),
+        model: gaming.nodes[4].reset,
+        start: false,
+        time: {
+            [gaming.nodes[4].nodes![2].key]: 0,
+            [gaming.nodes[4].nodes![3].key]: gaming.nodes[4].nodes![3].nodes![0].result
+        },
+        color: gaming.nodes[4].nodes[7].result,
+        location: gaming.nodes[4].nodes[8].result,
+        message: gaming.nodes[4].nodes![6].nodes!.find((n: Nodes) => n.result == gaming.nodes[4].nodes![6].result)
+        
+    }
+
     const state = reactive({
-        messageTimers: {
-            time: 0,
-            model: null as string | null,
-            start: false
-        }
+        messageTimers: JSON.parse(JSON.stringify(messageTimers))
     });
 
     return {
         ...toRefs(state),
         $reset: () => {
-            state.messageTimers.time = 0;
-            state.messageTimers.model = null;
+            state.messageTimers = JSON.parse(JSON.stringify(messageTimers));
         }
     };
 });

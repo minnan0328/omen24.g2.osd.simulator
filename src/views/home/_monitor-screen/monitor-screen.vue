@@ -22,8 +22,8 @@
             v-text="monitorScreenResult.refFreshRate.rate">
         </span>
     </div>
-    <div v-else-if="monitorScreenResult.diagnosticPatterns.enabled" :key="monitorScreenResult.diagnosticPatterns.color"
-        :class="['screen diagnostic-patterns', monitorScreenResult.diagnosticPatterns.color]">
+    <div v-else-if="monitorScreenResult.diagnosticPatterns.enabled" :key="monitorScreenResult.diagnosticPatterns.result"
+        :class="['screen diagnostic-patterns', monitorScreenResult.diagnosticPatterns.result]">
     </div>
 </template>
 <script lang="ts" setup>
