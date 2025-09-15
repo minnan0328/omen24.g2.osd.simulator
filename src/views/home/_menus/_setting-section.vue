@@ -75,10 +75,9 @@
                             monitorScreenResult.refFreshRate.color
                         ]"
                         v-if="secondarySectionNodes.key == refreshRateNodesEnum.key
-                        && secondarySectionNodes.result == OnNodesEnum.result"
+                        && monitorScreenResult.refFreshRate.enabled"
                         v-text="monitorScreenResult.refFreshRate.rate">
                     </span>
-
                 </div>
 
                 <template v-for="(thirdNodes, thirdNodesIdx) in secondarySectionNodes.nodes">
