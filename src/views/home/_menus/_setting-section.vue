@@ -83,7 +83,7 @@
                             monitorScreenResult.messageTimers.key,
                             monitorScreenResult.messageTimers.color
                         ]"
-                        v-if="secondarySectionNodes.key == monitorScreenResult.messageTimers.key
+                        v-show="secondarySectionNodes.key == monitorScreenResult.messageTimers.key
                         && monitorScreenResult.messageTimers.enabled
                         && secondarySectionNodes.nodes[2]!.result == monitorScreenResult.messageTimers.result"
                         v-text="toDisplayTimeFormat(monitorScreenResult.messageTimers.timer[monitorScreenResult.messageTimers.result] as number)">
@@ -93,7 +93,7 @@
                             monitorScreenResult.messageTimers.key,
                             monitorScreenResult.messageTimers.color
                         ]"
-                        v-if="secondarySectionNodes.key == monitorScreenResult.messageTimers.key
+                        v-show="secondarySectionNodes.key == monitorScreenResult.messageTimers.key
                         && monitorScreenResult.messageTimers.enabled
                         && secondarySectionNodes.nodes[3]!.result == monitorScreenResult.messageTimers.result"
                         v-text="toDisplayTimeFormat(monitorScreenResult.messageTimers.timer[monitorScreenResult.messageTimers.result] as number)">

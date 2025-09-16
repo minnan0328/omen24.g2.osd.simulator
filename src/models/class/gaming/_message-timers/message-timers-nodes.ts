@@ -74,7 +74,7 @@ export default class MessageTimersNodes extends DefaultNodes implements Nodes {
         },
         {
             ...JSON.parse(JSON.stringify(ColorNodesEnum)),
-            parents: this.key
+            parents: this.key,
         },
         {
             ...JSON.parse(JSON.stringify(LocationNodesEnum)),

@@ -7,6 +7,7 @@ export default class ResetTimerNodes extends DefaultNodes implements Nodes {
     selected = "Reset Timer";
     result = "Reset Timer";
     assignItemDisplay = false;
+    disabled = true;
     mode = ModeType.button;
     language = {
         German: "Timer zurücksetzen",

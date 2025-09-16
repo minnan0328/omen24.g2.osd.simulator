@@ -80,11 +80,11 @@
 </template>
 <script lang="ts" setup>
 import { ref, reactive, watch, computed, inject } from 'vue';
-import { useMenuStore, MenusDefaultModel, useDiagnosticPatternsStore, useMessageTimersStore } from '@/stores/index';
+import { useMenuStore, MenusDefaultModel, useDiagnosticPatternsStore } from '@/stores/index';
 import type { StoreState } from '@/stores/index';
 import type { Nodes, ControllerButtonList, HomeEvent } from '@/types';
 import { ModeType } from '@/types';
-import { isEnableNode, toLanguageText, toLowerCaseFirstChar } from '@/service/service';
+import { isEnableNode, toLanguageText, toLowerCaseFirstChar, minutesTolSeconds } from '@/service/service';
 import { menuStateResult, monitorScreenResult } from '@/service/monitor-state-result';
 
 // components
@@ -116,7 +116,6 @@ import iconInformation from '@/assets/icons/icon-information.svg';
 import iconClock from '@/assets/icons/icon-clock.svg';
 import iconCrosshair from '@/assets/icons/icon-crosshair.svg';
 import iconFps from '@/assets/icons/icon-fps.svg';
-
 
 import PowerConfirmChangeNodes from '@/models/class/power/message/confirm-change';
 
@@ -210,7 +209,6 @@ const PowerConfirmChangeNodesEnum = new PowerConfirmChangeNodes();
 
 const menuStore = useMenuStore();
 const diagnosticPatternsStore = useDiagnosticPatternsStore();
-const messageTimersStore = useMessageTimersStore();
 
 const homeEvent = inject("homeEvent") as HomeEvent;
 
@@ -1085,11 +1083,10 @@ function handlerRangeValue(step: string) {
                 previousNodes.result = nodes.result;
             }
 
-            // 當為訊息時間器時，更新 duration 值
+            // 當為訊息時間器時，更新 timer 值
             if(previousNodes.key == CountdownTimerNodesEnum.key) {
                 const key = CountdownTimerNodesEnum.result as string;
-                // Add type assertion to fix TS index error
-                (monitorScreenResult.value.messageTimers.timer as Record<string, any>)[key] = nodes.result;
+                monitorScreenResult.value.messageTimers.timer[key] = JSON.parse(JSON.stringify(minutesTolSeconds(nodes.result as number)));
             }
 
             // 當調整亮度與對比時候，關閉動態對比
@@ -1147,10 +1144,10 @@ function handlerSave(currentPanelNumber = 0) {
     if(openAllMenu.value || openAssignButton.value) {
         switch(currentPanelNumber) {
             case 2:
-                if(menuState.menuPanel && menuState.secondPanel) { saveNodesValue(menuState.secondPanel, menuState.menuPanel); }
+                if(menuState.menuPanel && menuState.secondPanel) { saveNodesValue(menuState.secondPanel, menuState.menuPanel, currentPanelNumber); }
                 break;
             case 3:
-                if(menuState.secondPanel && menuState.thirdPanel) { saveNodesValue(menuState.thirdPanel, menuState.secondPanel); }
+                if(menuState.secondPanel && menuState.thirdPanel) { saveNodesValue(menuState.thirdPanel, menuState.secondPanel, currentPanelNumber); }
                 break;
             case 4:
                 if(menuState.thirdPanel && menuState.fourthPanel) { saveNodesValue(menuState.fourthPanel, menuState.thirdPanel); }
@@ -1163,32 +1160,36 @@ function handlerSave(currentPanelNumber = 0) {
     }
 };
 
-function saveNodesValue(nodes: Nodes, previousNodes: Nodes) {
+function saveNodesValue(nodes: Nodes, previousNodes: Nodes, currentPanelNumber = 0) {
+    currentPanelNumber = currentPanelNumber > 0 ? currentPanelNumber : menuState.currentPanelNumber;
+    const resetPreviousNodes = {
+        2: previousNodes,
+        3: nodes
+    };
+    
     const nodesActions: { [key: string]: () => void } = {
         // 離開選單
         [ExitNodesEnum.key]: () => handlerClose(),
         // 返回上一步
         [BackNodesEnum.key]: () => handlePrevious(),
         // 恢復當前 menu 預設值
-        [ResetNodesEnum.key]: () => handleResetAction(previousNodes),
+        [ResetNodesEnum.key]: () => {
+            handleResetAction(previousNodes);
+            
+            if (previousNodes.key === ColorNodesEnum.key) setBrightnessDefaultValue();
+
+        },
         // 上下一頁 目前只處理 secondaryNodesPagination(第三層畫面)
         [NextPageButtonsNodesEnum.key]: () => handlerNavigation("down"),
-        [PreviousPageButtonsNodesEnum.key]: () => handlerNavigation("up"),
-        [StartStopNodesEnum.key]: () => {
-            // 當為訊息時間器時
-            // messageTimersStore.$state.messageTimers.start = !messageTimersStore.$state.messageTimers.start;
-        },
-        [ResetTimerNodesEnum.key]: () => {
-            // 當為訊息時間器時
-            // messageTimersStore.$resetTimer();
-        },
+        [PreviousPageButtonsNodesEnum.key]: () => handlerNavigation("up")
     };
 
     const previousNodesActions: { [key: string]: () => void } = {
-        [FactoryResetNodesEnum.key]: () => handleFactoryResetAction(nodes, previousNodes),
         // 處理 Confirm 動作
-        ChangingMessage: () => handleChangingMessageAction(nodes)
-    };
+        ChangingMessage: () => handleChangingMessageAction(nodes),
+        [FactoryResetNodesEnum.key]: () => handleFactoryResetAction(nodes, previousNodes),
+    }
+    
 
     // 當為 previousNodes.key 時，執行動作
     if (previousNodes.key in previousNodesActions) {
@@ -1218,7 +1219,13 @@ function saveNodesValue(nodes: Nodes, previousNodes: Nodes) {
         checked ? previousNodes.selected.splice(previousNodes.selected.indexOf(nodes.selected), 1) : previousNodes.selected.push(nodes.selected);
         previousNodes.result = previousNodes.selected;
     } else {
-        if(nodes.mode != ModeType.horizontalRange && previousNodes.key != CountdownTimerNodesEnum.key && previousNodes.nodes!.length > 0) {
+        if(
+            previousNodes.nodes!.length > 0
+            && nodes.mode != ModeType.horizontalRange
+            && previousNodes.key != CountdownTimerNodesEnum.key
+            && nodes.key != StartStopNodesEnum.key
+            && nodes.key != ResetTimerNodesEnum.key
+        ) {
             if(previousNodes.key == RGBGainAdjustNodesEnum.key) {
                 menuState.menuPanel!.selected = previousNodes.selected;
                 menuState.menuPanel!.selected = previousNodes.result;
@@ -1227,9 +1234,6 @@ function saveNodesValue(nodes: Nodes, previousNodes: Nodes) {
                 previousNodes.result = nodes.result;
             }
         }
-
-        console.log(nodes.result, previousNodes.key);
-
 
         // 當垂直 range 調整後儲存返回上一步
         if(openAllMenu.value && nodes.mode == ModeType.verticalRange && previousNodes.nodes!.length == 1) {
@@ -1244,8 +1248,8 @@ function saveNodesValue(nodes: Nodes, previousNodes: Nodes) {
         if(previousNodes.mode == ModeType.radio && nodes.mode == ModeType.radio) {
             // 目前只有第三層會出現的 radio 選擇時需要設定到第一層
             if(menuState.currentPanelNumber == 3) {
-                menuState.menuPanel!.result = nodes.result
-                menuState.menuPanel!.selected= nodes.selected
+                menuState.menuPanel!.result = nodes.result;
+                menuState.menuPanel!.selected= nodes.selected;
             }
         }
 
@@ -1264,12 +1268,49 @@ function saveNodesValue(nodes: Nodes, previousNodes: Nodes) {
                 reopenMenu();
             },
             [MessageTimersNodesEnum.key]: () => {
-                // 當為訊息時間器時
-                // messageTimersStore.$state.messageTimers.start = false;
-                // messageTimersStore.$reset();
-                // messageTimersStore.$state.messageTimers.result = previousNodes.result as string;
-                // messageTimersStore.$state.messageTimers.enabled = [OnNodesEnum.result, SpeedrunTimerNodesEnum.result, CountdownTimerNodesEnum.result].includes(previousNodes.result as string);
-            }
+                const actions = {
+                    [OffNodesEnum.key]: () => {
+                        previousNodes.nodes[4].disabled = true;
+                        previousNodes.nodes[5].disabled = true;
+                        previousNodes.nodes[6].disabled = true;
+                        previousNodes.nodes[7].disabled = true;
+                        previousNodes.nodes[8].disabled = true;    
+                    },
+                    [OnNodesEnum.key]: () => {
+                        previousNodes.nodes[4].disabled = false;
+                        previousNodes.nodes[5].disabled = false;
+                        previousNodes.nodes[6].disabled = false;
+                        previousNodes.nodes[7].disabled = false;
+                        previousNodes.nodes[8].disabled = false;    
+                    },
+                    [SpeedrunTimerNodesEnum.key]: () => {
+                        previousNodes.nodes[4].disabled = false;
+                        previousNodes.nodes[5].disabled = false;
+                        previousNodes.nodes[6].disabled = false;
+                        previousNodes.nodes[7].disabled = false;
+                        previousNodes.nodes[8].disabled = false;    
+                    },
+                    [CountdownTimerNodesEnum.key]: () => {
+                        previousNodes.nodes[4].disabled = false;
+                        previousNodes.nodes[5].disabled = false;
+                        previousNodes.nodes[6].disabled = false;
+                        previousNodes.nodes[7].disabled = false;
+                        previousNodes.nodes[8].disabled = false;  
+                    },
+                    // 當為訊息時間器時，啟動或暫停
+                    [StartStopNodesEnum.key]: () => {
+                        monitorScreenResult.value.messageTimers.start = !monitorScreenResult.value.messageTimers.start;
+                        monitorScreenResult.value.messageTimers.implement(()=> handlerClose())
+                    },
+                    // 當為訊息時間器時，重設預設值
+                    [ResetTimerNodesEnum.key]: () => monitorScreenResult.value.messageTimers.resetTimer()
+                };
+
+                if (nodes.key in actions) {
+                    actions[nodes.key]!();
+                    return;
+                }
+            },
         };
 
         // 當為 previousNodes.key 時，執行動作
@@ -1305,11 +1346,10 @@ function restartScreenPreview() {
 }
 
 // 重置動作
-function handleResetAction(previousNodes: Nodes) {
+function handleResetAction() {
     const key = toLowerCaseFirstChar(menuState.menuPanel!.key) as keyof StoreState;
     menuStore.$patch({ [key]: { ...JSON.parse(JSON.stringify(MenusDefaultEnum[key])) } });
 
-    if (previousNodes.key === ColorNodesEnum.key) setBrightnessDefaultValue();
 };
 
 //恢復原廠設定

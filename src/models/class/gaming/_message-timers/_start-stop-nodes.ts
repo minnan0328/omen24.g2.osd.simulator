@@ -7,6 +7,7 @@ export default class StartStopNodes extends DefaultNodes implements Nodes {
     selected = "Start / Stop";
     result = "Start / Stop";
     assignItemDisplay = false;
+    disabled = true;
     mode = ModeType.button;
     language = {
         German: "Start / Stop",

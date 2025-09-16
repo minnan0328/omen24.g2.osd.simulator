@@ -27,8 +27,8 @@
                 monitorScreenResult.messageTimers.color,
                 monitorScreenResult.messageTimers.location
             ]"
-            v-else-if="!showMonitorStatus && showGamingSettingText && monitorScreenResult.messageTimers.enabled"
-            v-text="toDisplayTimeFormat(monitorScreenResult.messageTimers.timer[monitorScreenResult.messageTimers.result])">
+            v-if="!showMonitorStatus && showGamingSettingText && monitorScreenResult.messageTimers.enabled"
+            v-text="toDisplayTimeFormat(monitorScreenResult.messageTimers.timer[monitorScreenResult.messageTimers.result] as number)">
         </span>
     </div>
     <div v-else-if="monitorScreenResult.diagnosticPatterns.enabled" :key="monitorScreenResult.diagnosticPatterns.result"

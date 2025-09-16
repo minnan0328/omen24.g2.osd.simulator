@@ -1,6 +1,6 @@
 import { ref, computed, reactive } from 'vue';
 import type { Nodes } from '@/types';
-import { useMenuStore, useDiagnosticPatternsStore, useMessageTimersStore } from '@/stores/index';
+import { useMenuStore, useDiagnosticPatternsStore } from '@/stores/index';
 import { OnNodes, OffNodes, TopNodes, MediumNodes, BottomNodes, LowNodes, HighNodes } from '@/models/class/_utilities';
 import SpeedrunTimerNodes from '@/models/class/gaming/_message-timers/_speedrun-timer-nodes';
 import CountdownTimerNodes from '@/models/class/gaming/_message-timers/_countdown-timer-nodes';
@@ -12,7 +12,6 @@ import screenHigh from '@/assets/images/screen-high.jpg';
 
 const menuStore = useMenuStore();
 const diagnosticPatternsStore = useDiagnosticPatternsStore();
-const messageTimersStore = useMessageTimersStore();
 const OnNodesEnum = new OnNodes();
 const OffNodesEnum = new OffNodes();
 const TopNodesEnum = new TopNodes();
@@ -37,6 +36,16 @@ const monitorWidth = 960;
 const monitorHeight = 526;
 const menuWidth = 480;
 const menuHeight = 356;
+
+// 將 timer 狀態移到 module 層級，避免 computed 重設
+const messageTimersTimer = reactive({
+    timer: {
+        [SpeedrunTimerNodesEnum.result]: 0,
+        [CountdownTimerNodesEnum.result]: minutesTolSeconds(gaming.value.nodes[4].nodes![3].nodes![0].result as number)
+    },
+    start: false,
+    intervalId: null
+});
 
 // 螢幕與圖片設定
 export const monitorScreenResult = computed(() => {
@@ -77,41 +86,55 @@ export const monitorScreenResult = computed(() => {
         messageTimers: {
             key: gaming.value.nodes[4].key,
             enabled: [gaming.value.nodes[4].nodes[0].result, gaming.value.nodes[4].nodes[2].result, gaming.value.nodes[4].nodes[3].result].includes(gaming.value.nodes[4].result as string),
-            start: false,
-            result: gaming.value.nodes[4].result,
-            timer: {
-                [gaming.value.nodes[4].nodes![2].result]: 0,
-                [gaming.value.nodes[4].nodes![3].result]: minutesTolSeconds(gaming.value.nodes[4].nodes![3].nodes![0].result as number)
+            get start() {
+                return messageTimersTimer.start;
             },
+            set start(value: boolean) {
+                messageTimersTimer.start = value;
+            },
+            result: gaming.value.nodes[4].result,
+            timer: messageTimersTimer.timer,
             color: gaming.value.nodes[4].nodes[7].result,
             location: gaming.value.nodes[4].nodes[8].result,
             message: gaming.value.nodes[4].nodes![6].nodes!.find((n: Nodes) => n.result == gaming.value.nodes[4].nodes![6].result),
-            messageTimersIntervalId: ref<number | null>(null),
-            implement: function() {
+            get messageTimersIntervalId() {
+                return messageTimersTimer.intervalId;
+            },
+            set messageTimersIntervalId(value: number | null) {
+                messageTimersTimer.intervalId = value;
+            },
+            messageTimersClearInterval: function() {
+                if (this.messageTimersIntervalId !== null) {
+                    clearInterval(this.messageTimersIntervalId);
+                    this.messageTimersIntervalId = null;
+                }
+            },
+            implement: function(callback?: Function) {
                 if(this.enabled && this.start) {
-
                     const step = {
                         [SpeedrunTimerNodesEnum.result]: 1,
                         [CountdownTimerNodesEnum.result]: -1
                     };
-                    
-                    if(this.enabled && this.start) {
-                        this.messageTimersIntervalId.value = setInterval(() => {
-                            if(this.result == CountdownTimerNodesEnum.result && this.timer[this.result]! <= (CountdownTimerNodesEnum.nodes![0].result as number)) {
-                                this.start = false;
-                                return;
-                            }
-
-                            this.timer[this.result]! += step[this.result]!;
-
-                        }, 1000);
-                    }   
+                    this.messageTimersIntervalId = setInterval(() => {
+                        if(this.result <= CountdownTimerNodesEnum.result && this.timer[this.result] == 0) {
+                            this.start = false;
+                            this.messageTimersClearInterval();
+                            callback && callback();
+                            return;
+                        }
+                        this.timer[this.result] += step[this.result];
+                    }, 1000);
                 } else {
-                    if (this.messageTimersIntervalId.value !== null) {
-                        clearInterval(this.messageTimersIntervalId.value);
-                        this.messageTimersIntervalId.value = null;
-                    }
+                    this.messageTimersClearInterval();
                 }
+            },
+            resetTimer: function() {
+                this.messageTimersClearInterval();
+                this.start = false;
+                this.timer = JSON.parse(JSON.stringify({
+                    [SpeedrunTimerNodesEnum.result]: 0,
+                    [CountdownTimerNodesEnum.result]: minutesTolSeconds(gaming.value.nodes[4].nodes![3].nodes![0].result as number)
+                }));
             }
         }
     }

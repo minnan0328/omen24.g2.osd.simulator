@@ -18,6 +18,7 @@ export default class LocationNodes extends DefaultNodes implements Nodes {
     result = TopRightNodesEnum.result;
     assignItemDisplay = false;
     displayValue = true;
+    disabled = true;
     size = 5;
     mode = ModeType.button;
     language = {
