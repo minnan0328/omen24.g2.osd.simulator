@@ -137,12 +137,16 @@ import AutoSleepModeNodes from '@/models/class/power/_auto-sleep-mode-nodes';
 
 import InputNodes from '@/models/class/input/input';
 
+import RefreshRateNodes from '@/models/class/gaming/_refresh-rate-nodes';
+import CrosshairNodes from '@/models/class/gaming/_crosshair/crosshair-nodes';
+
 import MessageTimersNodes from '@/models/class/gaming/_message-timers/message-timers-nodes';
 import SpeedrunTimerNodes from '@/models/class/gaming/_message-timers/_speedrun-timer-nodes';
 import CountdownTimerNodes from '@/models/class/gaming/_message-timers/_countdown-timer-nodes';
 import StartStopNodes from '@/models/class/gaming/_message-timers/_start-stop-nodes';
 import ResetTimerNodes from '@/models/class/gaming/_message-timers/_reset-timer-nodes';
 
+import MultiMonitorAlignNodes from '@/models/class/gaming/_multi-monitor-align-nodes';
 
 import {
     DefaultNodes, BackNodes, ResetNodes, ExitNodes,
@@ -179,11 +183,16 @@ const AutoSleepModeNodesEnum = new AutoSleepModeNodes();
 
 const InputNodesEnum = new InputNodes();
 
+const RefreshRateNodesEnum = new RefreshRateNodes();
+const CrosshairNodesEnum = new CrosshairNodes();
+
 const MessageTimersNodesEnum = new MessageTimersNodes();
 const SpeedrunTimerNodesEnum = new SpeedrunTimerNodes();
 const CountdownTimerNodesEnum = new CountdownTimerNodes();
 const StartStopNodesEnum = new StartStopNodes();
 const ResetTimerNodesEnum = new ResetTimerNodes();
+
+const MultiMonitorAlignNodesEnum = new MultiMonitorAlignNodes();
 
 const DefaultNodesEnum = new DefaultNodes();
 const BackNodesEnum = new BackNodes();
@@ -1267,6 +1276,40 @@ function saveNodesValue(nodes: Nodes, previousNodes: Nodes, currentPanelNumber =
 
                 reopenMenu();
             },
+            [RefreshRateNodesEnum.key]: () => {
+                const actions = {
+                    [OffNodesEnum.key]: () => {
+                        previousNodes.nodes[2].disabled = true;
+                        previousNodes.nodes[3].disabled = true;
+                    },
+                    [OnNodesEnum.key]: () => {
+                        previousNodes.nodes[2].disabled = false;
+                        previousNodes.nodes[3].disabled = false;
+                    }
+                };
+
+                if (nodes.key in actions) {
+                    actions[nodes.key]!();
+                    return;
+                }
+            },
+            [CrosshairNodesEnum.key]: () => {
+                const actions = {
+                    [OffNodesEnum.key]: () => {
+                        previousNodes.nodes[2].disabled = true;
+                        previousNodes.nodes[3].disabled = true;
+                    },
+                    [OnNodesEnum.key]: () => {
+                        previousNodes.nodes[2].disabled = false;
+                        previousNodes.nodes[3].disabled = false;
+                    }
+                };
+
+                if (nodes.key in actions) {
+                    actions[nodes.key]!();
+                    return;
+                }
+            },
             [MessageTimersNodesEnum.key]: () => {
                 const actions = {
                     [OffNodesEnum.key]: () => {
@@ -1311,6 +1354,21 @@ function saveNodesValue(nodes: Nodes, previousNodes: Nodes, currentPanelNumber =
                     return;
                 }
             },
+            [MultiMonitorAlignNodesEnum.key]: () => {
+                const actions = {
+                    [OffNodesEnum.key]: () => {
+                        previousNodes.nodes[2].disabled = true;
+                    },
+                    [OnNodesEnum.key]: () => {
+                        previousNodes.nodes[2].disabled = false;
+                    }
+                };
+
+                if (nodes.key in actions) {
+                    actions[nodes.key]!();
+                    return;
+                }
+            }
         };
 
         // 當為 previousNodes.key 時，執行動作
