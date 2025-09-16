@@ -4,7 +4,7 @@ import { useMenuStore, useDiagnosticPatternsStore, useMessageTimersStore } from 
 import { OnNodes, OffNodes, TopNodes, MediumNodes, BottomNodes, LowNodes, HighNodes } from '@/models/class/_utilities';
 import SpeedrunTimerNodes from '@/models/class/gaming/_message-timers/_speedrun-timer-nodes';
 import CountdownTimerNodes from '@/models/class/gaming/_message-timers/_countdown-timer-nodes';
-import { removeAndLowercase } from '@/service/service';
+import { removeAndLowercase, minutesTolSeconds } from '@/service/service';
 import screenOff from '@/assets/images/screen-off.jpg';
 import screenLow from '@/assets/images/screen-low.jpg';
 import screenMedium from '@/assets/images/screen-medium.jpg';
@@ -74,7 +74,46 @@ export const monitorScreenResult = computed(() => {
             rate: 120
         },
         // 取得訊息顯示時間
-        messageTimers: messageTimersStore.$state.messageTimers
+        messageTimers: {
+            key: gaming.value.nodes[4].key,
+            enabled: [gaming.value.nodes[4].nodes[0].result, gaming.value.nodes[4].nodes[2].result, gaming.value.nodes[4].nodes[3].result].includes(gaming.value.nodes[4].result as string),
+            start: false,
+            result: gaming.value.nodes[4].result,
+            timer: {
+                [gaming.value.nodes[4].nodes![2].result]: 0,
+                [gaming.value.nodes[4].nodes![3].result]: minutesTolSeconds(gaming.value.nodes[4].nodes![3].nodes![0].result as number)
+            },
+            color: gaming.value.nodes[4].nodes[7].result,
+            location: gaming.value.nodes[4].nodes[8].result,
+            message: gaming.value.nodes[4].nodes![6].nodes!.find((n: Nodes) => n.result == gaming.value.nodes[4].nodes![6].result),
+            messageTimersIntervalId: ref<number | null>(null),
+            implement: function() {
+                if(this.enabled && this.start) {
+
+                    const step = {
+                        [SpeedrunTimerNodesEnum.result]: 1,
+                        [CountdownTimerNodesEnum.result]: -1
+                    };
+                    
+                    if(this.enabled && this.start) {
+                        this.messageTimersIntervalId.value = setInterval(() => {
+                            if(this.result == CountdownTimerNodesEnum.result && this.timer[this.result]! <= (CountdownTimerNodesEnum.nodes![0].result as number)) {
+                                this.start = false;
+                                return;
+                            }
+
+                            this.timer[this.result]! += step[this.result]!;
+
+                        }, 1000);
+                    }   
+                } else {
+                    if (this.messageTimersIntervalId.value !== null) {
+                        clearInterval(this.messageTimersIntervalId.value);
+                        this.messageTimersIntervalId.value = null;
+                    }
+                }
+            }
+        }
     }
 });
 
@@ -269,28 +308,3 @@ diagnosticPatternsStore.$subscribe((mutation, state) => {
     }
     
 });
-const messageTimersIntervalId = ref<number | null>(null);
-messageTimersStore.$subscribe((mutation, state) => {
-    if(state.messageTimers.enabled && state.messageTimers.start) {
-        if(messageTimersIntervalId.value == null) {
-
-            
-            const step = {
-                [SpeedrunTimerNodesEnum.result]: 1,
-                [CountdownTimerNodesEnum.result]: -1
-            };
-            
-            messageTimersIntervalId.value = setInterval(() => {
-                console.log(state.messageTimers.result);
-                state.messageTimers.timer[state.messageTimers.result] += step[state.messageTimers.result]!;
-            }, 1000);
-
-        }
-    } else {
-        if (messageTimersIntervalId.value !== null) {
-            clearInterval(messageTimersIntervalId.value);
-            messageTimersIntervalId.value = null;
-        }
-    }
-});
-

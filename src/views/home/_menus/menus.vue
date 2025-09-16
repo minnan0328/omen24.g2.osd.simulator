@@ -85,7 +85,7 @@ import type { StoreState } from '@/stores/index';
 import type { Nodes, ControllerButtonList, HomeEvent } from '@/types';
 import { ModeType } from '@/types';
 import { isEnableNode, toLanguageText, toLowerCaseFirstChar } from '@/service/service';
-import { menuStateResult } from '@/service/monitor-state-result';
+import { menuStateResult, monitorScreenResult } from '@/service/monitor-state-result';
 
 // components
 import headerSection from './_header-section.vue';
@@ -1076,16 +1076,29 @@ function handlerRangeValue(step: string) {
                 (nodes.result as number) += nodes.step;
             }
 
-            if(previousNodes.key != RGBGainAdjustNodesEnum.key && nodes.mode != ModeType.horizontalRange) {
+            // 當為 RGB Gain Adjust 時候，調整完後不更新 selected 及 result 值
+            if(
+                previousNodes.key != RGBGainAdjustNodesEnum.key
+                && previousNodes.key != CountdownTimerNodesEnum.key
+            ) {
                 previousNodes.selected = nodes.selected;
                 previousNodes.result = nodes.result;
             }
 
+            // 當為訊息時間器時，更新 duration 值
+            if(previousNodes.key == CountdownTimerNodesEnum.key) {
+                const key = CountdownTimerNodesEnum.result as string;
+                // Add type assertion to fix TS index error
+                (monitorScreenResult.value.messageTimers.timer as Record<string, any>)[key] = nodes.result;
+            }
+
+            // 當調整亮度與對比時候，關閉動態對比
             if(previousNodes.key == BrightnessNodesEnum.key || previousNodes.key == ContrastNodesEnum.key) {
                 menus.value.nodes[0]!.nodes[2].result = OffNodesEnum.result;
                 menus.value.nodes[0]!.nodes[2].selected = OffNodesEnum.selected;
             }
 
+            // 當調整 Menu Position 時候，顯示 H=xx, V=xx
             if(previousNodes.key == MenuPositionNodesEnum.key) {
                 let menuPositionText = `H=${previousNodes.nodes![0]!.result}, V=${previousNodes.nodes![1]!.result}`;
                 previousNodes.selected = menuPositionText;
@@ -1163,11 +1176,11 @@ function saveNodesValue(nodes: Nodes, previousNodes: Nodes) {
         [PreviousPageButtonsNodesEnum.key]: () => handlerNavigation("up"),
         [StartStopNodesEnum.key]: () => {
             // 當為訊息時間器時
-            messageTimersStore.$state.messageTimers.start = !messageTimersStore.$state.messageTimers.start;
+            // messageTimersStore.$state.messageTimers.start = !messageTimersStore.$state.messageTimers.start;
         },
         [ResetTimerNodesEnum.key]: () => {
             // 當為訊息時間器時
-            messageTimersStore.$resetTimer();
+            // messageTimersStore.$resetTimer();
         },
     };
 
@@ -1205,15 +1218,18 @@ function saveNodesValue(nodes: Nodes, previousNodes: Nodes) {
         checked ? previousNodes.selected.splice(previousNodes.selected.indexOf(nodes.selected), 1) : previousNodes.selected.push(nodes.selected);
         previousNodes.result = previousNodes.selected;
     } else {
-        if(nodes.mode != ModeType.horizontalRange && previousNodes.nodes!.length > 0) {
+        if(nodes.mode != ModeType.horizontalRange && previousNodes.key != CountdownTimerNodesEnum.key && previousNodes.nodes!.length > 0) {
             if(previousNodes.key == RGBGainAdjustNodesEnum.key) {
                 menuState.menuPanel!.selected = previousNodes.selected;
-                menuState.menuPanel!.selected  = previousNodes.result;
+                menuState.menuPanel!.selected = previousNodes.result;
             } else {
                 previousNodes.selected = nodes.selected;
                 previousNodes.result = nodes.result;
             }
         }
+
+        console.log(nodes.result, previousNodes.key);
+
 
         // 當垂直 range 調整後儲存返回上一步
         if(openAllMenu.value && nodes.mode == ModeType.verticalRange && previousNodes.nodes!.length == 1) {
@@ -1249,10 +1265,10 @@ function saveNodesValue(nodes: Nodes, previousNodes: Nodes) {
             },
             [MessageTimersNodesEnum.key]: () => {
                 // 當為訊息時間器時
-                messageTimersStore.$state.messageTimers.start = false;
-                messageTimersStore.$reset();
-                messageTimersStore.$state.messageTimers.result = previousNodes.result as string;
-                messageTimersStore.$state.messageTimers.enabled = [OnNodesEnum.result, SpeedrunTimerNodesEnum.result, CountdownTimerNodesEnum.result].includes(previousNodes.result as string);
+                // messageTimersStore.$state.messageTimers.start = false;
+                // messageTimersStore.$reset();
+                // messageTimersStore.$state.messageTimers.result = previousNodes.result as string;
+                // messageTimersStore.$state.messageTimers.enabled = [OnNodesEnum.result, SpeedrunTimerNodesEnum.result, CountdownTimerNodesEnum.result].includes(previousNodes.result as string);
             }
         };
 

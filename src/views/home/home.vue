@@ -1,6 +1,7 @@
 <template>
     <div class="container">
         <div class="curtain">
+
             <ribbon></ribbon>
 
             <div class="section">

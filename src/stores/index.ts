@@ -1,4 +1,4 @@
-import { reactive, toRefs } from 'vue';
+import { computed, reactive, toRefs } from 'vue';
 import { defineStore } from 'pinia';
 import {
 	Gaming, Color, Image, Input,
@@ -47,7 +47,7 @@ export const useMenuStore = defineStore('counter', () => {
 
 export const useDiagnosticPatternsStore = defineStore('diagnosticPatterns', () => {
     const menuStore = useMenuStore();
-    const management = menuStore.$state.management;
+    const management = computed(() => menuStore.$state.management).value;
 
     const diagnosticPatternsFormat = "Full Screen";
     const diagnosticPatterns = {
@@ -69,7 +69,7 @@ export const useDiagnosticPatternsStore = defineStore('diagnosticPatterns', () =
 
 export const useMessageTimersStore = defineStore('messageTimers', () => {
     const menuStore = useMenuStore();
-    const gaming = menuStore.$state.gaming;
+    const gaming = computed(() => menuStore.$state.gaming).value;
 
     const messageTimers = {
         key: gaming.nodes[4].key,
