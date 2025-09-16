@@ -978,12 +978,12 @@ function updatePanelIndex(node: Nodes, nodeIndex: number, step: number, send: (p
         index = updateIndex(index, node.nodes.length);
         
         const oldNodes = JSON.parse(JSON.stringify(node));
-
+        
         if (
             !isEnableNode(node.nodes[index]!) || node.nodes[index]!.disabled
             // 暫時先寫死跳過
-            // || openAllMenu.value && node.nodes[index]!.key == "AudioFollowsVideo" && node.nodes[index]!.mode == ModeType.info
             || openAllMenu.value && node.nodes[index]!.key == ExitNodesEnum.key && node.nodes[index]!.mode != ModeType.exit
+            || openAllMenu.value && node.nodes[index].menuItemDisplay === false
             || openAssignButton.value && node.nodes[index]!.key == ResetNodesEnum.key
             || openAssignButton.value && node.nodes[index]!.key == BackNodesEnum.key
             || openAssignButton.value && node.nodes[index]!.mode == ModeType.button && !node.nodes[index]!.assignItemDisplay
@@ -1175,7 +1175,7 @@ function saveNodesValue(nodes: Nodes, previousNodes: Nodes, currentPanelNumber =
         // 恢復當前 menu 預設值
         [ResetNodesEnum.key]: () => {
             handleResetAction(previousNodes);
-            
+
             if (previousNodes.key === ColorNodesEnum.key) setBrightnessDefaultValue();
 
         },
@@ -1345,12 +1345,62 @@ function restartScreenPreview() {
     }, 1000)
 }
 
+// 遞迴尋找 key 並重設內容
+function deepFindAndReset(target: any, defaultObj: any, key: string) {
+    if (!target || !defaultObj) return false;
+    if (target.key === key && defaultObj.key === key) {
+        // 只覆蓋屬性，不更換 reference
+        Object.keys(defaultObj).forEach(k => {
+            if (defaultObj[k] !== undefined) {
+                // 僅對物件或陣列做深拷貝，其他型別直接賦值
+                if (typeof defaultObj[k] === 'object' && defaultObj[k] !== null) {
+                    try {
+                        target[k] = JSON.parse(JSON.stringify(defaultObj[k]));
+                    } catch (e) {
+                        // fallback: 直接賦值
+                        target[k] = defaultObj[k];
+                    }
+                } else {
+                    target[k] = defaultObj[k];
+                }
+            }
+        });
+        return true;
+    }
+    // 遞迴 nodes 陣列
+    if (Array.isArray(target.nodes) && Array.isArray(defaultObj.nodes)) {
+        for (let i = 0; i < target.nodes.length; i++) {
+            if (deepFindAndReset(target.nodes[i], defaultObj.nodes[i], key)) return true;
+        }
+    }
+    return false;
+}
+
 // 重置動作
 function handleResetAction() {
-    const key = toLowerCaseFirstChar(menuState.menuPanel!.key) as keyof StoreState;
-    menuStore.$patch({ [key]: { ...JSON.parse(JSON.stringify(MenusDefaultEnum[key])) } });
+    const resetPanel = {
+        2: menuState.menuPanel,
+        3: menuState.secondPanel,
+        4: menuState.thirdPanel
+    };
+    const panel = resetPanel[menuState.currentPanelNumber];
+    if (!panel) return;
+    const key = panel.key;
 
-};
+    // 遞迴尋找並重設 menuStore.$state 與 MenusDefaultEnum
+    let found = false;
+    for (const storeKey of Object.keys(menuStore.$state)) {
+        const storeObj = menuStore.$state[storeKey as keyof StoreState];
+        const defaultObj = MenusDefaultEnum[storeKey as keyof StoreState];
+        if (deepFindAndReset(storeObj, defaultObj, key)) {
+            found = true;
+            break;
+        }
+    }
+    if (!found) {
+        console.warn('handleResetAction: key not found in menuStore/MenusDefaultEnum', key);
+    }
+}
 
 //恢復原廠設定
 function handleFactoryResetAction(nodes: Nodes, previousNodes: Nodes) {
