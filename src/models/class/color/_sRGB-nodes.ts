@@ -5,7 +5,6 @@ export default class sRGBNodes extends DefaultNodes implements Nodes {
     key = "sRGB";
     selected = "sRGB";
     result = "sRGB";
-    livePreview = true;
     mode = ModeType.radio;
     language = {
         German: "sRGB",

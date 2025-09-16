@@ -242,10 +242,12 @@ export const monitorResult = computed(() => {
 
 const toImageColor = computed(() => {
     // 自訂 RGB，RGB 轉換
+    // night 255 188 90
+    // fps 255 215 255
     const RGB = {
-        r: (color.value.result == "RGB Gain Adjust" && color.value.nodes[8].nodes) ? color.value.nodes[8].nodes[0].result as number : 255,
-        g:(color.value.result == "RGB Gain Adjust" && color.value.nodes[8].nodes) ? color.value.nodes[8].nodes[1].result as number : 255,
-        b: (color.value.result == "RGB Gain Adjust" && color.value.nodes[8].nodes) ? color.value.nodes[8].nodes[2].result as number : 255
+        r: (color.value.nodes[8].nodes) ? color.value.nodes[8].nodes[0].result as number : 255,
+        g:(color.value.nodes[8].nodes) ? color.value.nodes[8].nodes[1].result as number : 255,
+        b: (color.value.nodes[8].nodes) ? color.value.nodes[8].nodes[2].result as number : 255
     }
 
     const combinedHue = (RGB.r + RGB.g + RGB.b) / -2.125;

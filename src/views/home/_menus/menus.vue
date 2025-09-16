@@ -891,7 +891,7 @@ function handlerNavigation(direction: 'up' | 'down') {
                                 // 預覽所選擇顏色亮度
                                 if(menuState.secondPanel!.parents == ColorNodesEnum.key) {
                                     if(menuState.secondPanel!.key != BackNodesEnum.key || menuState.secondPanel!.key != ResetNodesEnum.key || menuState.secondPanel!.key != ExitNodesEnum.key) {
-                                        menus.value.nodes[0]!.nodes![0].result = BrightnessDefaultValueEnum[menuState.secondPanel!.result as string];
+                                        menus.value.nodes[2]!.nodes![0].result = BrightnessDefaultValueEnum[menuState.secondPanel!.result as string];
                                     }
                                 }
 
@@ -903,7 +903,7 @@ function handlerNavigation(direction: 'up' | 'down') {
                             || menuState.temporaryStorage && menuState.secondPanel!.mode == ModeType.button && menuState.secondPanel!.key == BackNodesEnum.key
                         ) {
                             menuState.menuPanel.result = menuState.temporaryStorage.result;
-                            menus.value.nodes[0]!.nodes![0].result = BrightnessDefaultValueEnum[menuState.menuPanel.result as string];
+                            menus.value.nodes[0]!.nodes![0].result = [menuState.menuPanel.result as string];
                             menuState.temporaryStorage = null;
                         }
                     }

@@ -36,7 +36,15 @@ export const useMenuStore = defineStore('counter', () => {
     let state = reactive<StoreState>(new MenusDefaultModel());
 
     function $resetAll() {
-        state = reactive<StoreState>(new MenusDefaultModel());
+        state.gaming = JSON.parse(JSON.stringify(new Gaming()));
+        state.color = JSON.parse(JSON.stringify(new Color()));
+        state.image = JSON.parse(JSON.stringify(new Image()));
+        state.input = JSON.parse(JSON.stringify(new Input()));
+        state.power = JSON.parse(JSON.stringify(new Power()));
+        state.menu = JSON.parse(JSON.stringify(new Menu()));
+        state.management = JSON.parse(JSON.stringify(new Management()));
+        state.information = JSON.parse(JSON.stringify(new Information()));
+        state.exit = JSON.parse(JSON.stringify(new Exit()));
     }
 
     return {
