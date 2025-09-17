@@ -11,7 +11,6 @@ export default class CustomRGBNodes extends DefaultNodes implements Nodes {
     selected = "RGB Gain Adjust";
     result = "RGB Gain Adjust";
     assignItemDisplay = false;
-    livePreview = true;
     size = 3;
     mode = ModeType.button;
     language = {
@@ -57,8 +56,8 @@ export default class CustomRGBNodes extends DefaultNodes implements Nodes {
         {
             ...JSON.parse(JSON.stringify(DefaultNodesEnum)),
             key: "GreenColor",
-            selected: 255,
-            result: 255,
+            selected: 215,
+            result: 215,
             parents: this.key,
             mode: ModeType.verticalRange,
             rangeMin: 0,

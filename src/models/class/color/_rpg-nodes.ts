@@ -6,6 +6,8 @@ export default class RPGNodes extends DefaultNodes implements Nodes {
     key = "RPG";
     selected = "RPG";
     result = "RPG";
+    brightness = 52;
+    rgb = { r: 255, g: 255, b: 255 };
     livePreview = true;
     mode = ModeType.radio;
     language = {

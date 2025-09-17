@@ -28,7 +28,7 @@ const SpeedrunTimerNodesEnum = new SpeedrunTimerNodes();
 const CountdownTimerNodesEnum = new CountdownTimerNodes();
 const MessageNodesEnum = new MessageNodes();
 
-const brightness = computed(()=> menuStore.$state.image.nodes[0]);
+const brightness = computed(()=> menuStore.$state.image);
 const gaming = computed(()=> menuStore.$state.gaming);
 const color = computed(()=> menuStore.$state.color);
 const image = computed(()=> menuStore.$state.image);
@@ -42,6 +42,20 @@ const monitorWidth = 960;
 const monitorHeight = 526;
 const menuWidth = 480;
 const menuHeight = 356;
+
+const toImageColor = computed(() => {
+    // 自訂 RGB，RGB 轉換
+    const RGB = {
+        r: (color.value.nodes[8].nodes) ? color.value.nodes[8].nodes[0].result as number : 255,
+        g:(color.value.nodes[8].nodes) ? color.value.nodes[8].nodes[1].result as number : 255,
+        b: (color.value.nodes[8].nodes) ? color.value.nodes[8].nodes[2].result as number : 255
+    }
+
+    const combinedHue = (RGB.r + RGB.g + RGB.b) / 20;
+
+    return `${combinedHue}deg`;
+});
+
 
 const DiagnosticPatternsEnum = reactive({
     enabled: false,
@@ -78,9 +92,9 @@ export const monitorScreenResult = computed(() => {
             monitorHeight: `${monitorHeight}px`
         }, 
         // 取得亮度值 Brightness
-        brightness: `${brightness.value.nodes[0].result}%`,
+        brightness: `${image.value.nodes[0].result}%`,
         // 取得對比值 Contrast
-        contrast: `${brightness.value.nodes[0].result}%`,
+        contrast: `${image.value.nodes[1].result}%`,
         RGB: toImageColor.value,
         // 取得銳利度
         sharpness: getSharpness.value,
@@ -195,7 +209,7 @@ export const monitorScreenResult = computed(() => {
                         [CountdownTimerNodesEnum.result]: -1
                     };
                     MessageTimersEnum.intervalId = setInterval(() => {
-                        
+
                         if(this.result <= CountdownTimerNodesEnum.result && this.timer[this.result] == 0) {
                             this.start = false;
                             this.clearInterval();
@@ -322,21 +336,6 @@ export const monitorResult = computed(() => {
         // 取得店員指示燈設定
         powerLED: power.value.nodes[2].result == OnNodesEnum.result ? true : false,
     }
-});
-
-const toImageColor = computed(() => {
-    // 自訂 RGB，RGB 轉換
-    // night 255 188 90
-    // fps 255 215 255
-    const RGB = {
-        r: (color.value.nodes[8].nodes) ? color.value.nodes[8].nodes[0].result as number : 255,
-        g:(color.value.nodes[8].nodes) ? color.value.nodes[8].nodes[1].result as number : 255,
-        b: (color.value.nodes[8].nodes) ? color.value.nodes[8].nodes[2].result as number : 255
-    }
-
-    const combinedHue = (RGB.r + RGB.g + RGB.b) / -2.125;
-
-    return `${combinedHue}deg`;
 });
 
 // 取讀銳利度

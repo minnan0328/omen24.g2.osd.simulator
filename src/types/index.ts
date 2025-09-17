@@ -31,6 +31,8 @@ export interface Nodes {
     key: string;
     selected: number | string | string[] | boolean | null;
     result: number | string | string[] | boolean | null;
+    brightness: number | null;
+    rgb: { r: number, g: number, b: number } | null;
     assignItemDisplay: Boolean;
     menuItemDisplay: Boolean;
     disabled: Boolean;

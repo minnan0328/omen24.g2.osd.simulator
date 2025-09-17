@@ -8,6 +8,8 @@ export default class NativeNodes extends DefaultNodes implements Nodes {
     key = "Native";
     selected = "Native";
     result = "Native";
+    brightness = 100;
+    rgb = { r: 255, g: 255, b: 255 };
     livePreview = true;
     mode = ModeType.radio;
     language = {

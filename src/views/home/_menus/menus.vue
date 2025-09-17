@@ -886,11 +886,18 @@ function handlerNavigation(direction: 'up' | 'down') {
     
                             if(menuState.secondPanel!.mode == ModeType.button || menuState.secondPanel!.mode == ModeType.radio) {
                                 // 目前只有 button 及 radio 類型才需要，如有其他類型在進行判斷
-    
+                                
                                 // 預覽所選擇顏色亮度
                                 if(menuState.secondPanel!.parents == ColorNodesEnum.key) {
-                                    if(menuState.secondPanel!.key != BackNodesEnum.key || menuState.secondPanel!.key != ResetNodesEnum.key || menuState.secondPanel!.key != ExitNodesEnum.key) {
-                                        menus.value.nodes[2]!.nodes![0].result = BrightnessDefaultValueEnum[menuState.secondPanel!.result as string];
+                                    if(
+                                        menuState.secondPanel!.key != BackNodesEnum.key 
+                                        && menuState.secondPanel!.key != ResetNodesEnum.key
+                                        && menuState.secondPanel!.key != ExitNodesEnum.key
+                                    ) {
+                                        menus.value.nodes[1]!.nodes![0].result = menuState.secondPanel.brightness as number;
+                                        menus.value.nodes[2]!.nodes![8].nodes![0].result = menuState.secondPanel.rgb.r as number;
+                                        menus.value.nodes[2]!.nodes![8].nodes![1].result = menuState.secondPanel.rgb.g as number;
+                                        menus.value.nodes[2]!.nodes![8].nodes![2].result = menuState.secondPanel.rgb.b as number;
                                     }
                                 }
 
@@ -900,10 +907,12 @@ function handlerNavigation(direction: 'up' | 'down') {
                             menuState.temporaryStorage && menuState.secondPanel!.mode == ModeType.button && menuState.secondPanel!.key == ExitNodesEnum.key
                             || menuState.temporaryStorage && menuState.secondPanel!.mode == ModeType.button && menuState.secondPanel!.key == ResetNodesEnum.key
                             || menuState.temporaryStorage && menuState.secondPanel!.mode == ModeType.button && menuState.secondPanel!.key == BackNodesEnum.key
+                            || menuState.temporaryStorage && menuState.secondPanel!.mode == ModeType.button && menuState.secondPanel!.key == RGBGainAdjustNodesEnum.key
                         ) {
                             menuState.menuPanel.result = menuState.temporaryStorage.result;
                             menus.value.nodes[0]!.nodes![0].result = [menuState.menuPanel.result as string];
                             menuState.temporaryStorage = null;
+                            setBrightnessDefaultValue();
                         }
                     }
                 });
@@ -1095,6 +1104,18 @@ function handlerRangeValue(step: string) {
             ) {
                 previousNodes.selected = nodes.selected;
                 previousNodes.result = nodes.result;
+            }
+
+            if(previousNodes.key == BrightnessNodesEnum.key) {
+                const colorResult = menus.value.nodes[2].nodes.find(n => n.result === menus.value.nodes[2].result);
+                colorResult.brightness = nodes.result as number;
+            }
+
+            if(previousNodes.key == RGBGainAdjustNodesEnum.key) {
+                const colorResult = menus.value.nodes[2].nodes.find(n => n.selected == menus.value.nodes[2].selected);
+                colorResult.rgb.r = previousNodes.nodes[0].result as number;
+                colorResult.rgb.g = previousNodes.nodes[1].result as number;
+                colorResult.rgb.b = previousNodes.nodes[2].result as number;
             }
 
             // 當為訊息時間器時，更新 timer 值
