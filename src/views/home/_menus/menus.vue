@@ -225,7 +225,6 @@ const props = defineProps({
     startUpFinish: { type: Boolean, default: false },
     showScreen: { type: Boolean, default: false },
     showMonitorStatus: { type: Boolean, default: false },
-    openToast: { type: Boolean, default: false },
     showGamingSettingText: { type: Boolean, default: false }
 });
 
@@ -381,7 +380,7 @@ watch(() => props.openMonitor, (newVal, oldVal) => {
 
 // 開啟控制選單
 function handlerControllerMenus() {
-    if(props.openMonitor && props.showMonitorStatus && props.startUpFinish == false && !props.openToast) {
+    if(props.openMonitor && props.showMonitorStatus && props.startUpFinish == false) {
         emit("update:showMonitorStatus", false);
         emit("update:startUpFinish", true);
     }

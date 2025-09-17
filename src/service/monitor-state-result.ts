@@ -4,12 +4,16 @@ import { useMenuStore } from '@/stores/index';
 import { OnNodes, OffNodes, TopNodes, MediumNodes, BottomNodes, LowNodes, HighNodes } from '@/models/class/_utilities';
 import SpeedrunTimerNodes from '@/models/class/gaming/_message-timers/_speedrun-timer-nodes';
 import CountdownTimerNodes from '@/models/class/gaming/_message-timers/_countdown-timer-nodes';
+import MessageNodes from '@/models/class/gaming/_message-timers/_message-nodes';
 import { removeAndLowercase, minutesTolSeconds } from '@/service/service';
+import dialog from '@/service/dialog/dialog';
 
 import screenOff from '@/assets/images/screen-off.jpg';
 import screenLow from '@/assets/images/screen-low.jpg';
 import screenMedium from '@/assets/images/screen-medium.jpg';
 import screenHigh from '@/assets/images/screen-high.jpg';
+
+import iconClock from '@/assets/icons/icon-clock.svg';
 
 const menuStore = useMenuStore();
 const OnNodesEnum = new OnNodes();
@@ -19,8 +23,10 @@ const BottomNodesEnum = new BottomNodes();
 const LowNodesEnum = new LowNodes();
 const MediumNodesEnum = new MediumNodes();
 const HighNodesEnum = new HighNodes();
+
 const SpeedrunTimerNodesEnum = new SpeedrunTimerNodes();
 const CountdownTimerNodesEnum = new CountdownTimerNodes();
+const MessageNodesEnum = new MessageNodes();
 
 const brightness = computed(()=> menuStore.$state.image.nodes[0]);
 const gaming = computed(()=> menuStore.$state.gaming);
@@ -188,6 +194,8 @@ export const monitorScreenResult = computed(() => {
                             this.start = false;
                             this.clearInterval();
                             callback && callback();
+                            const message = MessageNodesEnum.nodes.find((n: Nodes) => n.result == MessageNodesEnum.result);
+                            dialog.toast({ message: message.language, image: iconClock });
                             return;
                         }
                         this.timer[this.result]! += step[this.result]!;

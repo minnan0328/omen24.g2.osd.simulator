@@ -24,7 +24,7 @@
                             <img src="@/assets/images/monitor.png" alt="monitor">
                         </div>
 
-                        <div class="wrapper">
+                        <div class="wrapper" id="monitor-wrapper">
                             <div class="power-light" v-if="openMonitor && monitorResult.powerLED"></div>
     
                             <monitorScreen v-if="openMonitor" v-model:openMonitor="openMonitor"
@@ -34,10 +34,6 @@
                                 v-model:startUpFinish="startUpFinish"
                                 v-model:showGamingSettingText="showGamingSettingText">
                             </monitorScreen>
-
-                            <toast v-if="toastObj.open" v-model:open="toastObj.open"
-                                :message="toastObj.message" :images="toastObj.images">
-                            </toast>
 
                             <div class="menu-buttons-image">
                                 <img src="@/assets/images/menu-buttons.svg" alt="">
@@ -49,7 +45,6 @@
                                 v-model:startUpFinish="startUpFinish"
                                 v-model:showScreen="showScreen"
                                 v-model:showMonitorStatus="showMonitorStatus"
-                                v-model:openToast="toastObj.open"
                                 v-model:showGamingSettingText="showGamingSettingText"
                                 ref="childMenusComponentRef">
                                 <template v-slot:openMonitor>
@@ -73,7 +68,6 @@ import monitorScreen from '@/views/home/_monitor-screen/monitor-screen.vue';
 import menus from '@/views/home/_menus/menus.vue';
 import { monitorResult } from '@/service/monitor-state-result';
 import config from '@/config/config';
-import toast from '@/views/home/_toast/toast.vue';
 
 const menuStore = useMenuStore();
 
@@ -84,13 +78,6 @@ const tabs = reactive([
 ]);
 
 const selectedTab = ref<Nodes | null>(tabs[0] as Nodes | null);
-
-const toastObj = ref({
-    open: false,
-    images: "",
-    message: null as Language | null,
-    timeout: 5000
-});
 
 function selectInput(tab: Nodes) {
     if(screenInitial.value == false) {
@@ -131,16 +118,7 @@ function handleMonitor() {
         startUpFinish.value = false;
     }
 };
-
 /* 啟動螢幕 end  */
-
-
-function resetToast() {
-    toastObj.value.open = false;
-    toastObj.value.images = "";
-    toastObj.value.message = null;
-    toastObj.value.timeout = 5000;
-};
 
 /* 重啟畫面 */
 function restartScreen() {
