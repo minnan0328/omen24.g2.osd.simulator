@@ -44,7 +44,7 @@ const messageTimersTimer = reactive({
         [CountdownTimerNodesEnum.result]: minutesTolSeconds(gaming.value.nodes[4].nodes![3].nodes![0].result as number)
     },
     start: false,
-    intervalId: null
+    intervalId: null as number | null
 });
 
 // 螢幕與圖片設定
@@ -122,7 +122,7 @@ export const monitorScreenResult = computed(() => {
                             callback && callback();
                             return;
                         }
-                        this.timer[this.result] += step[this.result];
+                        this.timer[this.result]! += step[this.result]!;
                     }, 1000);
                 } else {
                     this.messageTimersClearInterval();
