@@ -52,25 +52,3 @@ export const useMenuStore = defineStore('counter', () => {
         $resetAll
     };
 });
-
-export const useDiagnosticPatternsStore = defineStore('diagnosticPatterns', () => {
-    const menuStore = useMenuStore();
-    const management = computed(() => menuStore.$state.management).value;
-
-    const diagnosticPatternsFormat = "Full Screen";
-    const diagnosticPatterns = {
-        enabled: false,
-        result: removeAndLowercase(management.nodes[2].nodes![1].result as string, diagnosticPatternsFormat)
-    };
-
-    const state = reactive({
-        diagnosticPatterns: JSON.parse(JSON.stringify(diagnosticPatterns))
-    });
-
-    return {
-        ...toRefs(state),
-        $reset: () => {
-            state.diagnosticPatterns = JSON.parse(JSON.stringify(diagnosticPatterns));
-        }
-    };
-});
