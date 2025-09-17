@@ -557,7 +557,7 @@ function handlerModeControllerButtonList(nodes: Nodes, previousNodes: Nodes) {
     // range value 組合
     const rangeButtonList: ControllerButtonList[] = [ MenuControllerTypes.checkSave!,  MenuControllerTypes.rangeAdd!, MenuControllerTypes.rangeSubtract!, MenuControllerTypes.previous!, MenuControllerTypes.empty! ];
     // 多個 range value 組合
-    const rangeNextButtonList: ControllerButtonList[] = [ MenuControllerTypes.empty!, MenuControllerTypes.previous!, MenuControllerTypes.nextRight!, MenuControllerTypes.rangeSubtract!, MenuControllerTypes.rangeAdd! ];
+    const rangeNextButtonList: ControllerButtonList[] = [ MenuControllerTypes.empty!, MenuControllerTypes.rangeSubtract!, MenuControllerTypes.rangeAdd!, MenuControllerTypes.previous!, MenuControllerTypes.nextRight! ];
     // 多個直向 range value 組合，且最後一個時候
     const rangeNextButtonListLast: ControllerButtonList[] = [ MenuControllerTypes.empty!, MenuControllerTypes.rangeSubtract!, MenuControllerTypes.rangeAdd!,  MenuControllerTypes.previous!, MenuControllerTypes.next! ];
     // 多個縱向 range value 組合 unfocus
