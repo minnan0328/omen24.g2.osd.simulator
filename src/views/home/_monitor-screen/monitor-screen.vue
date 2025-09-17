@@ -31,7 +31,7 @@
             v-text="toDisplayTimeFormat(monitorScreenResult.messageTimers.timer[monitorScreenResult.messageTimers.result] as number)">
         </span>
     </div>
-    <div v-else-if="monitorScreenResult.diagnosticPatterns.enabled" :key="monitorScreenResult.diagnosticPatterns.result"
+    <div v-else-if="monitorScreenResult.diagnosticPatterns.enabled && monitorScreenResult.diagnosticPatterns.result" :key="monitorScreenResult.diagnosticPatterns.result"
         :class="['screen diagnostic-patterns', monitorScreenResult.diagnosticPatterns.result]">
     </div>
 </template>
@@ -149,7 +149,7 @@ onMounted(() => {
     }
 
     &.diagnostic-patterns {
-        background-color: v-bind("monitorScreenResult.diagnosticPatterns.color");
+        background-color: v-bind("monitorScreenResult.diagnosticPatterns.result");
     }
 
     .setting-info-value {

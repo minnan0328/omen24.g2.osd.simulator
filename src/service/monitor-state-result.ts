@@ -1,17 +1,17 @@
 import { ref, computed, reactive } from 'vue';
 import type { Nodes } from '@/types';
-import { useMenuStore, useDiagnosticPatternsStore } from '@/stores/index';
+import { useMenuStore } from '@/stores/index';
 import { OnNodes, OffNodes, TopNodes, MediumNodes, BottomNodes, LowNodes, HighNodes } from '@/models/class/_utilities';
 import SpeedrunTimerNodes from '@/models/class/gaming/_message-timers/_speedrun-timer-nodes';
 import CountdownTimerNodes from '@/models/class/gaming/_message-timers/_countdown-timer-nodes';
 import { removeAndLowercase, minutesTolSeconds } from '@/service/service';
+
 import screenOff from '@/assets/images/screen-off.jpg';
 import screenLow from '@/assets/images/screen-low.jpg';
 import screenMedium from '@/assets/images/screen-medium.jpg';
 import screenHigh from '@/assets/images/screen-high.jpg';
 
 const menuStore = useMenuStore();
-const diagnosticPatternsStore = useDiagnosticPatternsStore();
 const OnNodesEnum = new OnNodes();
 const OffNodesEnum = new OffNodes();
 const TopNodesEnum = new TopNodes();
@@ -37,8 +37,23 @@ const monitorHeight = 526;
 const menuWidth = 480;
 const menuHeight = 356;
 
+const DiagnosticPatternsEnum = reactive({
+    enabled: false,
+    result: removeAndLowercase(management.value.nodes[2].nodes![1].result as string, "Full Screen"),
+    index: 0,
+    colors: [
+        removeAndLowercase(management.value.nodes[2].nodes?.[1]?.result as string, "Full Screen"),
+        removeAndLowercase(management.value.nodes[2].nodes![2].result as string, "Full Screen"),
+        removeAndLowercase(management.value.nodes[2].nodes![3].result as string, "Full Screen"),
+        removeAndLowercase(management.value.nodes[2].nodes![4].result as string, "Full Screen"),
+        removeAndLowercase(management.value.nodes[2].nodes![5].result as string, "Full Screen")
+    ],
+    intervalId: null as number | null
+});
+
+
 // 將 timer 狀態移到 module 層級，避免 computed 重設
-const messageTimersTimer = reactive({
+const MessageTimersEnum = reactive({
     timer: {
         [SpeedrunTimerNodesEnum.result]: 0,
         [CountdownTimerNodesEnum.result]: minutesTolSeconds(gaming.value.nodes[4].nodes![3].nodes![0].result as number)
@@ -64,7 +79,66 @@ export const monitorScreenResult = computed(() => {
         // 取得銳利度
         sharpness: getSharpness.value,
         // 取得診斷模式顏色
-        diagnosticPatterns: diagnosticPatternsStore.$state.diagnosticPatterns,
+        diagnosticPatterns: {
+            get enabled() {
+                return DiagnosticPatternsEnum.enabled;
+            },
+            set enabled(value: boolean) {
+                DiagnosticPatternsEnum.enabled = value;
+            },
+            get result() {
+                return DiagnosticPatternsEnum.result;
+            },
+            set result(value: string) {
+                DiagnosticPatternsEnum.result = value;
+            },
+            clearInterval: function() {
+                if (DiagnosticPatternsEnum.intervalId !== null) {
+                    clearInterval(DiagnosticPatternsEnum.intervalId);
+                    DiagnosticPatternsEnum.intervalId = null;
+                }
+            },
+            implement: function () {
+                if(this.enabled) {
+                    const resultIndex = management.value.nodes[2].nodes!.findIndex((node: Nodes) => node.result === management.value.nodes[2].result);
+                    
+                    if(resultIndex == 0 && DiagnosticPatternsEnum.intervalId == null) {
+                        if(DiagnosticPatternsEnum.intervalId) {
+                            return
+                        }
+                            
+                        DiagnosticPatternsEnum.index = resultIndex;
+                        this.result = DiagnosticPatternsEnum.colors[DiagnosticPatternsEnum.index]!;
+
+                        DiagnosticPatternsEnum.intervalId = setInterval(() => {
+                            DiagnosticPatternsEnum.index = (DiagnosticPatternsEnum.index + 1) % DiagnosticPatternsEnum.colors.length;
+                            this.result = DiagnosticPatternsEnum.colors[DiagnosticPatternsEnum.index]!;
+                        }, 3000);
+
+                    } else if(resultIndex >= 1) {
+                        if (DiagnosticPatternsEnum.intervalId !== null) {
+                            this.clearInterval();
+                            DiagnosticPatternsEnum.intervalId = null;
+                        };
+
+                        DiagnosticPatternsEnum.index = resultIndex - 1;
+                        this.result = DiagnosticPatternsEnum.colors[DiagnosticPatternsEnum.index]!;
+                    }
+                } else {
+                    if (DiagnosticPatternsEnum.intervalId !== null) {
+                        this.clearInterval();
+                        DiagnosticPatternsEnum.intervalId = null;
+                    }
+                }
+            },
+            close: function () {
+                this.enabled = false;
+                this.result = removeAndLowercase(management.value.nodes[2].nodes![1].result as string, "Full Screen");
+                DiagnosticPatternsEnum.index = 0;
+                this.clearInterval();
+
+            }
+        },
         // 取得影像位置座標 Image Position
         imagePosition: {
             // x 座標
@@ -87,26 +161,20 @@ export const monitorScreenResult = computed(() => {
             key: gaming.value.nodes[4].key,
             enabled: [gaming.value.nodes[4].nodes[0].result, gaming.value.nodes[4].nodes[2].result, gaming.value.nodes[4].nodes[3].result].includes(gaming.value.nodes[4].result as string),
             get start() {
-                return messageTimersTimer.start;
+                return MessageTimersEnum.start;
             },
             set start(value: boolean) {
-                messageTimersTimer.start = value;
+                MessageTimersEnum.start = value;
             },
             result: gaming.value.nodes[4].result,
-            timer: messageTimersTimer.timer,
+            timer: MessageTimersEnum.timer,
             color: gaming.value.nodes[4].nodes[7].result,
             location: gaming.value.nodes[4].nodes[8].result,
             message: gaming.value.nodes[4].nodes![6].nodes!.find((n: Nodes) => n.result == gaming.value.nodes[4].nodes![6].result),
-            get messageTimersIntervalId() {
-                return messageTimersTimer.intervalId;
-            },
-            set messageTimersIntervalId(value: number | null) {
-                messageTimersTimer.intervalId = value;
-            },
-            messageTimersClearInterval: function() {
-                if (this.messageTimersIntervalId !== null) {
-                    clearInterval(this.messageTimersIntervalId);
-                    this.messageTimersIntervalId = null;
+            clearInterval: function() {
+                if (MessageTimersEnum.intervalId !== null) {
+                    clearInterval(MessageTimersEnum.intervalId);
+                    MessageTimersEnum.intervalId = null;
                 }
             },
             implement: function(callback?: Function) {
@@ -115,21 +183,21 @@ export const monitorScreenResult = computed(() => {
                         [SpeedrunTimerNodesEnum.result]: 1,
                         [CountdownTimerNodesEnum.result]: -1
                     };
-                    this.messageTimersIntervalId = setInterval(() => {
+                    MessageTimersEnum.intervalId = setInterval(() => {
                         if(this.result <= CountdownTimerNodesEnum.result && this.timer[this.result] == 0) {
                             this.start = false;
-                            this.messageTimersClearInterval();
+                            this.clearInterval();
                             callback && callback();
                             return;
                         }
                         this.timer[this.result]! += step[this.result]!;
                     }, 1000);
                 } else {
-                    this.messageTimersClearInterval();
+                    this.clearInterval();
                 }
             },
             resetTimer: function() {
-                this.messageTimersClearInterval();
+                this.clearInterval();
                 this.start = false;
                 this.timer = JSON.parse(JSON.stringify({
                     [SpeedrunTimerNodesEnum.result]: 0,
@@ -286,50 +354,3 @@ function extractStringFromParentheses(input: string): number {
     }
     return 0;
 }
-
-// 取得診斷模式
-const diagnosticPatternsIntervalId = ref<number | null>(null);
-const diagnosticPatternsIndex = ref(0);
-const diagnosticPatternsFormat = "Full Screen";
-const diagnosticPatternsColors = reactive([
-    removeAndLowercase(management.value.nodes[2].nodes![1].result as string, diagnosticPatternsFormat),
-    removeAndLowercase(management.value.nodes[2].nodes![2].result as string, diagnosticPatternsFormat),
-    removeAndLowercase(management.value.nodes[2].nodes![3].result as string, diagnosticPatternsFormat),
-    removeAndLowercase(management.value.nodes[2].nodes![4].result as string, diagnosticPatternsFormat),
-    removeAndLowercase(management.value.nodes[2].nodes![5].result as string, diagnosticPatternsFormat)
-]);
-
-diagnosticPatternsStore.$subscribe((mutation, state) => {
-    // 診斷模式需要透過監聽 store
-    if(state.diagnosticPatterns.enabled) {
-        const resultIndex = management.value.nodes[2].nodes!.findIndex((node: Nodes) => node.result === management.value.nodes[2].result);
-        
-        if(resultIndex == 0 && diagnosticPatternsIntervalId.value == null) {
-            if(diagnosticPatternsIntervalId.value) {
-                return
-            }
-
-            diagnosticPatternsIndex.value = resultIndex;
-            state.diagnosticPatterns.color = diagnosticPatternsColors[diagnosticPatternsIndex.value]!;
-            diagnosticPatternsIntervalId.value = setInterval(() => {
-                diagnosticPatternsIndex.value = (diagnosticPatternsIndex.value + 1) % diagnosticPatternsColors.length;
-                state.diagnosticPatterns.color = diagnosticPatternsColors[diagnosticPatternsIndex.value]!;
-            }, 3000);
-
-        } else if(resultIndex >= 1) {
-            if (diagnosticPatternsIntervalId.value !== null) {
-                clearInterval(diagnosticPatternsIntervalId.value);
-                diagnosticPatternsIntervalId.value = null;
-            };
-
-            diagnosticPatternsIndex.value = resultIndex - 1;
-            state.diagnosticPatterns.color = diagnosticPatternsColors[diagnosticPatternsIndex.value]!;
-        }
-    } else {
-        if (diagnosticPatternsIntervalId.value !== null) {
-            clearInterval(diagnosticPatternsIntervalId.value);
-            diagnosticPatternsIntervalId.value = null;
-        }
-    }
-    
-});

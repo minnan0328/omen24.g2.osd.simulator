@@ -80,11 +80,11 @@
 </template>
 <script lang="ts" setup>
 import { ref, reactive, watch, computed, inject } from 'vue';
-import { useMenuStore, MenusDefaultModel, useDiagnosticPatternsStore } from '@/stores/index';
+import { useMenuStore, MenusDefaultModel } from '@/stores/index';
 import type { StoreState } from '@/stores/index';
 import type { Nodes, ControllerButtonList, HomeEvent } from '@/types';
 import { ModeType } from '@/types';
-import { isEnableNode, toLanguageText, toLowerCaseFirstChar, minutesTolSeconds } from '@/service/service';
+import { isEnableNode, minutesTolSeconds } from '@/service/service';
 import { menuStateResult, monitorScreenResult } from '@/service/monitor-state-result';
 
 // components
@@ -217,7 +217,6 @@ const AssignEmptyNodesEnum = new AssignEmptyNodes();
 const PowerConfirmChangeNodesEnum = new PowerConfirmChangeNodes();
 
 const menuStore = useMenuStore();
-const diagnosticPatternsStore = useDiagnosticPatternsStore();
 
 const homeEvent = inject("homeEvent") as HomeEvent;
 
@@ -739,9 +738,10 @@ function handlerNextPanel() {
                     menuState.temporaryStorage = JSON.parse(JSON.stringify(menuState.secondPanel));
                 }
 
-                // 當為診斷模式時
+                // 當為診斷模式時                
                 if(menuState.thirdPanel.parents == DiagnosticPatternsNodesEnum.key) {
-                    diagnosticPatternsStore.$state.diagnosticPatterns.enabled = true;
+                    monitorScreenResult.value.diagnosticPatterns.enabled = true;
+                    monitorScreenResult.value.diagnosticPatterns.implement();
                 }
             });
         } else if(menuState.secondPanel!.nodes && menuState.thirdPanel && menuState.thirdPanel.nodes && !menuState.fourthPanel) {
@@ -933,6 +933,12 @@ function handlerNavigation(direction: 'up' | 'down') {
                             if(menuState.thirdPanel.mode == ModeType.button || menuState.thirdPanel.mode == ModeType.radio) {
                                 // 目前只有 button 及 radio 類型才需要，如有其他類型在進行判斷
                                 menuState.secondPanel.result = menuState.thirdPanel.result;
+
+                                // 當為診斷模式時                
+                                if(menuState.thirdPanel.parents == DiagnosticPatternsNodesEnum.key) {
+                                    monitorScreenResult.value.diagnosticPatterns.enabled = true;
+                                    monitorScreenResult.value.diagnosticPatterns.implement();
+                                }
                             }
                         }
                     }
@@ -1171,10 +1177,6 @@ function handlerSave(currentPanelNumber = 0) {
 
 function saveNodesValue(nodes: Nodes, previousNodes: Nodes, currentPanelNumber = 0) {
     currentPanelNumber = currentPanelNumber > 0 ? currentPanelNumber : menuState.currentPanelNumber;
-    const resetPreviousNodes = {
-        2: previousNodes,
-        3: nodes
-    };
     
     const nodesActions: { [key: string]: () => void } = {
         // 離開選單
@@ -1196,7 +1198,7 @@ function saveNodesValue(nodes: Nodes, previousNodes: Nodes, currentPanelNumber =
     const previousNodesActions: { [key: string]: () => void } = {
         // 處理 Confirm 動作
         ChangingMessage: () => handleChangingMessageAction(nodes),
-        [FactoryResetNodesEnum.key]: () => handleFactoryResetAction(nodes, previousNodes),
+        [FactoryResetNodesEnum.key]: () => handleFactoryResetAction(nodes, previousNodes)
     }
     
 
@@ -1617,7 +1619,7 @@ function handlerClose() {
 function returnToDefaultValue() {
 
     // 關閉診斷模式
-    diagnosticPatternsStore.$reset();
+    monitorScreenResult.value.diagnosticPatterns.close();
     // 恢復英文且回到第一頁
     menuStore.$state.menu.nodes[0].selected = "English";
     menuStore.$state.menu.nodes[0].result = "English";
@@ -1626,6 +1628,10 @@ function returnToDefaultValue() {
     //取消無障礙模式
     menuStore.$state.management.nodes[3].selected = OffNodesEnum.selected;
     menuStore.$state.management.nodes[3].result = OffNodesEnum.result;
+
+    // 恢復預設
+    menuStore.$state.management.nodes[2].selected = DiagnosticPatternsNodesEnum.nodes[0].selected;
+    menuStore.$state.management.nodes[2].result = DiagnosticPatternsNodesEnum.nodes[0].result;
 
     // 選單旋轉角度恢復
     menuStore.$state.menu.nodes[4].selected = "Landscape (0°)";
@@ -1642,10 +1648,10 @@ function handlerMenuTimeout() {
     menuTimeOutIntervalId.value = null;
 
     // 當為診斷模式時關閉倒數關閉
-    if (menuTimeOutIntervalId.value != null && diagnosticPatternsStore.$state.diagnosticPatterns.enabled) {
+    if (menuTimeOutIntervalId.value != null && monitorScreenResult.value.diagnosticPatterns.enabled) {
         clearInterval(menuTimeOutIntervalId.value!);
         menuTimeOutIntervalId.value = null;
-    } else if(menuTimeOutIntervalId.value == null && diagnosticPatternsStore.$state.diagnosticPatterns.enabled == false) {
+    } else if(menuTimeOutIntervalId.value == null && monitorScreenResult.value.diagnosticPatterns.enabled == false) {
         menuTimeOutIntervalId.value = setTimeout(() => {
             if(openAssignButton.value) {
                 handlerClose();
