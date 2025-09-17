@@ -477,7 +477,7 @@ const getAssignButton = computed(() => {
     ]
 });
 
-const confirmButtonList:ControllerButtonList[] = [ MenuControllerTypes.checkSave!, MenuControllerTypes.arrowLeft!, MenuControllerTypes.arrowRight!, MenuControllerTypes.confirmClose! ];
+const confirmButtonList:ControllerButtonList[] = [ MenuControllerTypes.checkSave!, MenuControllerTypes.confirmClose!, MenuControllerTypes.empty!, MenuControllerTypes.arrowLeft!, MenuControllerTypes.arrowRight!  ];
 
 const handleControllerButtonList = computed<ControllerButtonList[] | null>(() => {
     if(!props.openMonitor) return[];
@@ -530,6 +530,8 @@ function createMenuButtonList(): ControllerButtonList[] {
 function createFirstLayerButtonList(): ControllerButtonList[] {
     // 順序為 center, bottom, top, left, right
     const mode = menuState.menuPanel?.mode as string;
+    console.log(mode);
+    
     const buttonMap: Record<string, ControllerButtonList[]> = {
         [ModeType.info]: [MenuControllerTypes.empty!, MenuControllerTypes.arrowUp!, MenuControllerTypes.arrowBottom!, MenuControllerTypes.close!, MenuControllerTypes.empty!],
         [ModeType.exit]: [MenuControllerTypes.checkClose!, MenuControllerTypes.arrowUp!, MenuControllerTypes.arrowBottom!, MenuControllerTypes.close!, MenuControllerTypes.empty!],
