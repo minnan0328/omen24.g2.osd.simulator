@@ -21,13 +21,15 @@ export default {
         const message = ref<Language | null>(null);
         const image = ref("");
 
-        function open(msg: Language, img: string) {
+        function open({ message: msg, image: img }: { message: Language, image: string }) {
             message.value = msg;
             image.value = img;
             show.value = true;
 
+            console.log(toLanguageText(message.value));
+
             setTimeout(() => {
-                show.value = true;
+                show.value = false;
                 message.value = null;
                 image.value = "";
             }, 5000);

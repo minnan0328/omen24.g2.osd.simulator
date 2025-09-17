@@ -173,7 +173,12 @@ export const monitorScreenResult = computed(() => {
                 MessageTimersEnum.start = value;
             },
             result: gaming.value.nodes[4].result,
-            timer: MessageTimersEnum.timer,
+            get timer() {
+                return MessageTimersEnum.timer;
+            },
+            set timer(value: any) {
+                MessageTimersEnum.timer = value;
+            },
             color: gaming.value.nodes[4].nodes[7].result,
             location: gaming.value.nodes[4].nodes[8].result,
             message: gaming.value.nodes[4].nodes![6].nodes!.find((n: Nodes) => n.result == gaming.value.nodes[4].nodes![6].result),
@@ -190,6 +195,7 @@ export const monitorScreenResult = computed(() => {
                         [CountdownTimerNodesEnum.result]: -1
                     };
                     MessageTimersEnum.intervalId = setInterval(() => {
+                        
                         if(this.result <= CountdownTimerNodesEnum.result && this.timer[this.result] == 0) {
                             this.start = false;
                             this.clearInterval();
@@ -198,7 +204,9 @@ export const monitorScreenResult = computed(() => {
                             dialog.toast({ message: message.language, image: iconClock });
                             return;
                         }
+
                         this.timer[this.result]! += step[this.result]!;
+
                     }, 1000);
                 } else {
                     this.clearInterval();

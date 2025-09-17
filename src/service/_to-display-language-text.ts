@@ -9,10 +9,11 @@ const currentLanguage = computed(() => {
     return language?.selected ? language?.selected : "English";
 });
 
-export function toLanguageText(langItem: Language ) {
+export function toLanguageText(langItem: Language | null | undefined ) {
+    if (!langItem) return '';
     const langKey = currentLanguage.value as keyof typeof langItem;
-    return langItem[langKey];
-};
+    return langItem[langKey] ?? '';
+}
 
 export function toDisplayValueLanguageText(nodes: Nodes) {
     // 取得第一層需要顯示值得語言 
