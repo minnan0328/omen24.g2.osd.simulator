@@ -460,7 +460,7 @@ const MenuControllerTypes: Record<string, ControllerButtonList> = reactive({
     nextAssignLeft: { image: iconNextLeft, event: handlerAssignPreviousPanel, stopEvent: () => {}, type: "Button" },
     rangeSubtract: { image: iconSubtract, event: handlerRangeSubtract, stopEvent: stopRangeValueTrigger, type: "eventButton" },
     rangeAdd: { image: iconAdd, event: handlerRangeAdd, stopEvent: stopRangeValueTrigger, type: "eventButton" },
-    confirmClose: { image: iconClose, event: handlerCloseConfirmAction, stopEvent: () => {}, type: "Button" }
+    confirmClose: { image: iconClose, event: handlerCloseConfirmAction, stopEvent: () => {}, type: "Button" },
 });
 
 // 取得自訂選單項目
@@ -568,7 +568,8 @@ function handlerModeControllerButtonList(nodes: Nodes, previousNodes: Nodes) {
     const rangeAssignButtonList: ControllerButtonList[] = [ MenuControllerTypes.close!, MenuControllerTypes.rangeAdd!, MenuControllerTypes.rangeSubtract!, MenuControllerTypes.nextAssignLeft!, MenuControllerTypes.nextAssignRight! ];
     // assign button info 組合
     const infoAssignButtonList: ControllerButtonList[] = [ MenuControllerTypes.checkSave!, MenuControllerTypes.empty!, MenuControllerTypes.empty!, MenuControllerTypes.nextAssignLeft!, MenuControllerTypes.nextAssignRight! ];
-
+    // 多個螢幕校正組合
+    const multiMonitorAlignButtonList: ControllerButtonList[] = [ MenuControllerTypes.checkSave!, MenuControllerTypes.checkSave!, MenuControllerTypes.checkSave!, MenuControllerTypes.checkSave!, MenuControllerTypes.checkSave! ];
     // 當為 reset and back, button 下一層沒有節點的時候
     const isLastNode = nodes.key == ResetNodesEnum.key || nodes.key == BackNodesEnum.key
         || (nodes.mode == ModeType.radio || nodes.mode == ModeType.button || nodes.mode == ModeType.checkBox || nodes.mode == ModeType.paginationButton) && !nodes.nodes;
@@ -579,8 +580,15 @@ function handlerModeControllerButtonList(nodes: Nodes, previousNodes: Nodes) {
     const isVerticalRangeNode = nodes.mode == ModeType.verticalRange && previousNodes.nodes && previousNodes.nodes?.length > 1;
     // 多個橫向 range value
     const isHorizontalRangeNode = nodes.mode == ModeType.horizontalRange && previousNodes.nodes && previousNodes.nodes?.length > 1;
+    // 多個螢幕校正
+    const isMultiMonitorAlignNodes = previousNodes.key == MultiMonitorAlignNodesEnum.key && monitorScreenResult.value.multiMonitorAlign.enabled;
 
     if(openAllMenu.value) {
+
+        if(isMultiMonitorAlignNodes) {
+            return multiMonitorAlignButtonList;
+        }
+
         if(isLastNode) {
             return confirmedButtonList;
         } 
@@ -1390,7 +1398,24 @@ function saveNodesValue(nodes: Nodes, previousNodes: Nodes, currentPanelNumber =
                     actions[nodes.key]!();
                     return;
                 }
-            }
+            },
+            [MultiMonitorAlignNodesEnum.key]: () => {
+                const actions = {
+                    [OffNodesEnum.key]: () => {
+                        monitorScreenResult.value.multiMonitorAlign.enabled = false;
+                    },
+                    [OnNodesEnum.key]: () => {
+                        monitorScreenResult.value.multiMonitorAlign.enabled = true;
+                        
+                        handlerNavigation("down");
+                    }
+                };
+
+                if (nodes.key in actions) {
+                    actions[nodes.key]!();
+                    return;
+                }
+            },
         };
 
         // 當為 previousNodes.key 時，執行動作

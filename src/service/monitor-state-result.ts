@@ -71,7 +71,6 @@ const DiagnosticPatternsEnum = reactive({
     intervalId: null as number | null
 });
 
-
 // 將 timer 狀態移到 module 層級，避免 computed 重設
 const MessageTimersEnum = reactive({
     timer: {
@@ -234,6 +233,10 @@ export const monitorScreenResult = computed(() => {
                     [CountdownTimerNodesEnum.result]: minutesTolSeconds(gaming.value.nodes[4].nodes![3].nodes![0].result as number)
                 }));
             }
+        },
+        multiMonitorAlign: {
+            enabled: gaming.value.nodes[5].result == OnNodesEnum.selected,
+            color: gaming.value.nodes[5].nodes![2].result,
         }
     }
 });

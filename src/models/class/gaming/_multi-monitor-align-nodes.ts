@@ -38,7 +38,8 @@ export default class MultiMonitorAlignNodes extends DefaultNodes implements Node
         },
         {
             ...JSON.parse(JSON.stringify(ColorNodesEnum)),
-            parents: this.key
+            parents: this.key,
+            disabled: false
         },
         {
             ...JSON.parse(JSON.stringify(BackNodesEnum)),

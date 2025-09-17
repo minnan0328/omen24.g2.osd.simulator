@@ -38,6 +38,79 @@
     }
 }
 
+@mixin multi-monitor-align-color {
+    &.White {
+        svg {
+            rect,
+            path {
+                fill: $white;
+            }
+        }
+    }
+    &.Red {
+        svg {
+            rect,
+            path {
+                fill: $text-red;
+            }
+        }
+    }
+    &.Green {
+        svg {
+            rect,
+            path {
+                fill: $text-green;
+            }
+        }
+    }
+    &.Blue {
+        rect,
+        path {
+            fill: $text-blue;
+        }
+    }
+    &.Yellow {
+        svg {
+            rect,
+            path {
+                fill: $text-yellow;
+            }
+        }
+    }
+    &.Purple {
+        svg {
+            rect,
+            path {
+                fill: $text-purple;
+            }
+        }
+    }
+    &.Light-Blue {
+        svg {
+            rect,
+            path {
+                fill: $text-light-blue;
+            }
+        }
+    }
+    &.Orange {
+        svg {
+            rect,
+            path {
+                fill: $text-orange;
+            }
+        }
+    }
+    &.Black {
+        svg {
+            rect,
+            path {
+                fill: $text-black;
+            }
+        }
+    }
+}
+
 @mixin gaming-setting-text-location {
     &.Top-Left {
         top: 16px;
