@@ -1245,7 +1245,7 @@ function saveNodesValue(nodes: Nodes, previousNodes: Nodes, currentPanelNumber =
 
     // 當是原廠廠設定時，且 OSD Message 是啟用時，顏色與自動休眠的選擇設定結果不一樣時
     if(isOpenOSDMessage.value && (previousNodes.key == ColorNodesEnum.key || previousNodes.key == AutoSleepModeNodesEnum.key) && nodes.selected != previousNodes.selected) {
-        factorySettingOSDMessage(nodes, previousNodes);
+        factorySettingOSDMessage();
         return;
     }
 
@@ -1546,7 +1546,7 @@ function handleChangingMessageAction(nodes: Nodes) {
 };
 
 // 原廠設定電源警告判斷
-function factorySettingOSDMessage(nodes: Nodes, previousNodes: Nodes, ) {
+function factorySettingOSDMessage() {
 
     // 設定 confirm State message
     const setupConfirmState = () => {
