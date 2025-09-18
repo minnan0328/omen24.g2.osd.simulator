@@ -1,12 +1,9 @@
-import { computed, reactive, toRefs } from 'vue';
+import { reactive, toRefs } from 'vue';
 import { defineStore } from 'pinia';
 import {
 	Gaming, Color, Image, Input,
 	Power, Menu, Management,Information, Exit
 } from '@/models/index';
-import { removeAndLowercase, toDisplayTimeFormat, minutesTolSeconds } from '@/service/service';
-import type { Nodes } from '@/types/index';
-
 export interface StoreState {
     gaming: Gaming;
     color: Color;
