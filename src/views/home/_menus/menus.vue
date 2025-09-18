@@ -161,7 +161,7 @@ import {
     AssignEmptyNodes
 } from '@/models/class/menu/_assign-buttons/_utilities';
 
-import { BrightnessDefaultValueEnum, setBrightnessDefaultValue } from '@/models/enum/brightnessDefaultValue/brightnessDefaultValue';
+import { setBrightnessValue } from '@/models/enum/brightnessDefaultValue/brightnessDefaultValue';
 
 const MenusDefaultEnum = new MenusDefaultModel();
 
@@ -530,7 +530,6 @@ function createMenuButtonList(): ControllerButtonList[] {
 function createFirstLayerButtonList(): ControllerButtonList[] {
     // 順序為 center, bottom, top, left, right
     const mode = menuState.menuPanel?.mode as string;
-    console.log(mode);
     
     const buttonMap: Record<string, ControllerButtonList[]> = {
         [ModeType.info]: [MenuControllerTypes.empty!, MenuControllerTypes.arrowUp!, MenuControllerTypes.arrowBottom!, MenuControllerTypes.close!, MenuControllerTypes.empty!],
@@ -639,7 +638,7 @@ function handlerAssignNextPanel() {
     if(menuState.temporaryStorage) {
         menuState.menuPanel!.result = menuState.temporaryStorage.result;
         menuState.temporaryStorage = null;
-        setBrightnessDefaultValue();
+        setBrightnessValue();
     };
 
     menuState.menuPanel = null;
@@ -665,7 +664,7 @@ function handlerAssignPreviousPanel() {
     if(menuState.temporaryStorage) {
         menuState.menuPanel!.result = menuState.temporaryStorage.result;
         menuState.temporaryStorage = null;
-        setBrightnessDefaultValue();
+        setBrightnessValue();
     };
 
     menuState.menuPanel = null;
@@ -844,8 +843,8 @@ function handlePrevious() {
         menuState.currentPanelNumber = 3;
     }
 
-    // 設定亮度
-    setBrightnessDefaultValue();
+    // 設定亮度與顏色
+    setBrightnessValue();
     //特殊邏輯，恢復預設值
     returnToDefaultValue();
     // 選單 timeout
@@ -905,9 +904,9 @@ function handlerNavigation(direction: 'up' | 'down') {
                                         && menuState.secondPanel!.key != ExitNodesEnum.key
                                     ) {
                                         menus.value.nodes[1]!.nodes![0].result = menuState.secondPanel.brightness as number;
-                                        menus.value.nodes[2]!.nodes![8].nodes![0].result = menuState.secondPanel.rgb.r as number;
-                                        menus.value.nodes[2]!.nodes![8].nodes![1].result = menuState.secondPanel.rgb.g as number;
-                                        menus.value.nodes[2]!.nodes![8].nodes![2].result = menuState.secondPanel.rgb.b as number;
+                                        menus.value.nodes[2]!.nodes![8].nodes![0].result = menuState.secondPanel.rgb!.r as number;
+                                        menus.value.nodes[2]!.nodes![8].nodes![1].result = menuState.secondPanel.rgb!.g as number;
+                                        menus.value.nodes[2]!.nodes![8].nodes![2].result = menuState.secondPanel.rgb!.b as number;
                                     }
                                 }
 
@@ -922,7 +921,7 @@ function handlerNavigation(direction: 'up' | 'down') {
                             menuState.menuPanel.result = menuState.temporaryStorage.result;
                             menus.value.nodes[0]!.nodes![0].result = [menuState.menuPanel.result as string];
                             menuState.temporaryStorage = null;
-                            setBrightnessDefaultValue();
+                            setBrightnessValue();
                         }
                     }
                 });
@@ -1117,15 +1116,15 @@ function handlerRangeValue(step: string) {
             }
 
             if(previousNodes.key == BrightnessNodesEnum.key) {
-                const colorResult = menus.value.nodes[2].nodes.find(n => n.result === menus.value.nodes[2].result);
+                const colorResult = menus.value.nodes[2]!.nodes.find(n => n.result === menus.value.nodes[2]!.result);
                 colorResult.brightness = nodes.result as number;
             }
 
             if(previousNodes.key == RGBGainAdjustNodesEnum.key) {
-                const colorResult = menus.value.nodes[2].nodes.find(n => n.selected == menus.value.nodes[2].selected);
-                colorResult.rgb.r = previousNodes.nodes[0].result as number;
-                colorResult.rgb.g = previousNodes.nodes[1].result as number;
-                colorResult.rgb.b = previousNodes.nodes[2].result as number;
+                const colorResult = menus.value.nodes[2]!.nodes.find(n => n.selected == menus.value.nodes[2]!.selected);
+                colorResult.rgb.r = previousNodes.nodes![0]!.result as number;
+                colorResult.rgb.g = previousNodes.nodes![1]!.result as number;
+                colorResult.rgb.b = previousNodes.nodes![2]!.result as number;
             }
 
             // 當為訊息時間器時，更新 timer 值
@@ -1217,7 +1216,7 @@ function saveNodesValue(nodes: Nodes, previousNodes: Nodes, currentPanelNumber =
         [ResetNodesEnum.key]: () => {
             handleResetAction();
 
-            if (previousNodes.key === ColorNodesEnum.key) setBrightnessDefaultValue();
+            if (previousNodes.key === ColorNodesEnum.key) setBrightnessValue();
 
         },
         // 上下一頁 目前只處理 secondaryNodesPagination(第三層畫面)
@@ -1300,7 +1299,7 @@ function saveNodesValue(nodes: Nodes, previousNodes: Nodes, currentPanelNumber =
                 homeEvent.restartScreen!();
                 handlerClose();
             },
-            [ColorNodesEnum.key]: () => setBrightnessDefaultValue(),
+            [ColorNodesEnum.key]: () => setBrightnessValue(),
             [VideoLevelNodesEnum.key]: () => restartScreenPreview(),
             [AccessibilityNodesEnum.key]: () => {
                 menuStore.$state.menu.nodes[0].disabled = previousNodes.result == OnNodesEnum.result;
@@ -1492,7 +1491,7 @@ function handleResetAction() {
     };
     const panel = resetPanel[menuState.currentPanelNumber];
     if (!panel) return;
-    const key = panel.key;
+    let  key = panel.key;
 
     // 遞迴尋找並重設 menuStore.$state 與 MenusDefaultEnum
     let found = false;
@@ -1603,7 +1602,7 @@ function handlerCloseConfirmAction() {
         menuState.thirdPanel = menuState.secondPanel!.nodes![menuState.thirdPanelIndex] as Nodes;
     }
 
-    setBrightnessDefaultValue();
+    setBrightnessValue();
 
 }
 
@@ -1657,7 +1656,7 @@ function handlerClose() {
     confirmState.confirmThirdPanel = null;
     confirmState.confirmThirdPanelIndex = 0;
 
-    setBrightnessDefaultValue();
+    setBrightnessValue();
     returnToDefaultValue();
 };
 
@@ -1725,8 +1724,8 @@ function handlerMenuTimeout() {
                 menuState.fourthPanelIndex = 0;
                 menuState.currentPanelNumber = 2;
 
-                // 恢復原本選擇亮度
-                setBrightnessDefaultValue();
+                // 恢復原本選擇亮度與顏色
+                setBrightnessValue();
                 // 特殊邏輯，恢復預設值
                 returnToDefaultValue();
             }
