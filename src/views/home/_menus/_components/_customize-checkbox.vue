@@ -2,7 +2,8 @@
     <div v-if="currentNode.mode == ModeType.checkBox" :class="['customize-checkbox', { 'border-bottom-line': isLastNode(currentNode, previousNodes) }]">
         <div :class="['checkbox', { selected: nodes?.key == currentNode.key, disabled: currentNode.disabled }]">
             <div :class="['box', { checked: isChecked(currentNode), disabled: currentNode.disabled }]"></div>
-            <div v-text="toLanguageText(currentNode.language!)"></div>
+            <svgIcon v-if="currentNode.useIcon"  :nodes="currentNode"></svgIcon>
+            <div v-else v-text="toLanguageText(currentNode.language!)"></div>
         </div>
     </div>
 </template>
@@ -11,6 +12,7 @@ import type { PropType } from 'vue';
 import type { Nodes } from '@/types';
 import { ModeType } from '@/types';
 import { toLanguageText } from '@/service/service';
+import svgIcon from './_icon-svg.vue';
 
 const props = defineProps({
     currentNode: {
@@ -22,7 +24,6 @@ const props = defineProps({
         required: false,
         default: null,
     },
-    // type Nodes[]
     previousNodes: {
         type: Object as PropType<Nodes>,
         required: true

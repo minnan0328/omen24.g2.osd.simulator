@@ -1690,51 +1690,51 @@ defineExpose({ handlerClose });
 
 // 處理選單顯示時效
 function handlerMenuTimeout() {
-    clearInterval(menuTimeOutIntervalId.value!);
-    menuTimeOutIntervalId.value = null;
+    // clearInterval(menuTimeOutIntervalId.value!);
+    // menuTimeOutIntervalId.value = null;
 
-    // 當為診斷模式時關閉倒數關閉
-    if (menuTimeOutIntervalId.value != null && monitorScreenResult.value.diagnosticPatterns.enabled) {
-        clearInterval(menuTimeOutIntervalId.value!);
-        menuTimeOutIntervalId.value = null;
-    } else if(menuTimeOutIntervalId.value == null && monitorScreenResult.value.diagnosticPatterns.enabled == false) {
-        menuTimeOutIntervalId.value = setTimeout(() => {
-            if(openAssignButton.value) {
-                handlerClose();
-            }
+    // // 當為診斷模式時關閉倒數關閉
+    // if (menuTimeOutIntervalId.value != null && monitorScreenResult.value.diagnosticPatterns.enabled) {
+    //     clearInterval(menuTimeOutIntervalId.value!);
+    //     menuTimeOutIntervalId.value = null;
+    // } else if(menuTimeOutIntervalId.value == null && monitorScreenResult.value.diagnosticPatterns.enabled == false) {
+    //     menuTimeOutIntervalId.value = setTimeout(() => {
+    //         if(openAssignButton.value) {
+    //             handlerClose();
+    //         }
 
             
-            openAllMenu.value = false;
-            openControllerMenus.value = false;
-            // 當關閉 menu 開啟
-            emit("update:showGamingSettingText", true);
+    //         openAllMenu.value = false;
+    //         openControllerMenus.value = false;
+    //         // 當關閉 menu 開啟
+    //         emit("update:showGamingSettingText", true);
     
-            if(menuState.menuPanel && menuState.secondPanel) {
+    //         if(menuState.menuPanel && menuState.secondPanel) {
 
-                if(menuState.menuPanel.key == ColorNodesEnum.key) {
-                    menuState.menuPanel.result = menuState.menuPanel.selected;
-                    menuState.secondPanel = null;
-                    menuState.secondPanelIndex = 0;
-                    menuState.currentPanelNumber = 1;
-                }
+    //             if(menuState.menuPanel.key == ColorNodesEnum.key) {
+    //                 menuState.menuPanel.result = menuState.menuPanel.selected;
+    //                 menuState.secondPanel = null;
+    //                 menuState.secondPanelIndex = 0;
+    //                 menuState.currentPanelNumber = 1;
+    //             }
 
-                menuState.thirdPanel = null;
-                menuState.thirdPanelIndex = 0;
-                menuState.fourthPanel = null;
-                menuState.fourthPanelIndex = 0;
-                menuState.currentPanelNumber = 2;
+    //             menuState.thirdPanel = null;
+    //             menuState.thirdPanelIndex = 0;
+    //             menuState.fourthPanel = null;
+    //             menuState.fourthPanelIndex = 0;
+    //             menuState.currentPanelNumber = 2;
 
-                // 恢復原本選擇亮度與顏色
-                setBrightnessValue();
-                // 特殊邏輯，恢復預設值
-                returnToDefaultValue();
-            }
+    //             // 恢復原本選擇亮度與顏色
+    //             setBrightnessValue();
+    //             // 特殊邏輯，恢復預設值
+    //             returnToDefaultValue();
+    //         }
     
-        }, (menuStateResult.value.menuTimeout as number) * 1000);
-    } else {
-        clearInterval(menuTimeOutIntervalId.value!);
-        menuTimeOutIntervalId.value = null;
-    }
+    //     }, (menuStateResult.value.menuTimeout as number) * 1000);
+    // } else {
+    //     clearInterval(menuTimeOutIntervalId.value!);
+    //     menuTimeOutIntervalId.value = null;
+    // }
 }
 
 </script>

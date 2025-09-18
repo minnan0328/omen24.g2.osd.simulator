@@ -160,6 +160,18 @@
                     <p>But for this OSD training simulation, the menu will remain active for the simulated 1920x1080 resolution.</p>
                 </div>
 
+                <div class="setting-item crosshair" v-if="secondarySectionNodes.key == configureNodesEnum.key">
+                    <div class="text">Preview:</div>
+                    <div class="combination">
+                        <template v-for="nodes in secondarySectionNodes.nodes">
+                            <svgIcon :nodes="nodes"
+                                :color="crosshairResult.color"
+                                :enabledIcon="crosshairResult.result"
+                                :combination="true"></svgIcon>
+                        </template>
+                    </div>
+                </div>
+
             </div>
         </template>
         <template v-if="mainSectionNodes && mainSectionNodes.mode == ModeType.exit">
@@ -175,7 +187,7 @@ import type { PropType } from 'vue';
 import type { Nodes } from '@/types';
 import { ModeType } from '@/types';
 import { isEnableNode, toLanguageText, toDisplayValueLanguageText, toDisplayTimeFormat } from '@/service/service';
-import { monitorScreenResult } from '@/service/monitor-state-result';
+import { monitorScreenResult, crosshairResult } from '@/service/monitor-state-result';
 
 // components
 import info from './_components/_info.vue';
@@ -186,14 +198,17 @@ import customizeCheckbox from './_components/_customize-checkbox.vue';
 import customizeRadio from './_components/_customize-radio.vue';
 import previousPageButtons from './_components/_previous-page-buttons.vue';
 import nextPageButtons from './_components/_next-page-button.vue';
+import svgIcon from './_components/_icon-svg.vue';
 
 import FactoryResetNodes from '@/models/class/management/_factory-reset-nodes';
 import ImageScalingNodes from '@/models/class/image/_image-scaling-nodes';
 import RGBGainAdjustNodes from '@/models/class/color/_RGB-gain-adjust-nodes';
+import ConfigureNodes from '@/models/class/gaming/_crosshair/_configure-nodes';
 
 const factoryResetNodesEnum = new FactoryResetNodes();
 const imageScalingNodesEnum = new ImageScalingNodes();
 const rgbGainAdjustNodesEnum = new RGBGainAdjustNodes();
+const configureNodesEnum = new ConfigureNodes();
 
 const props = defineProps({
     mainSectionNodes: {
@@ -231,7 +246,7 @@ function enabledRadioBottomLine(node: Nodes) {
 }
 
 function enabledBottomLine(node: Nodes) {
-    const enabledNodes = ["ResetTimer", "Location", "MessageTimers", "Crosshair", "RefreshRate", "MultiMonitorAlign", "OSDMessages"];
+    const enabledNodes = ["ResetTimer", "Location", "MessageTimers", "Configure", "option5bmp", "RefreshRate", "MultiMonitorAlign", "OSDMessages"];
 
     return enabledNodes.includes(node.key) && isEnableNode(node);
 }

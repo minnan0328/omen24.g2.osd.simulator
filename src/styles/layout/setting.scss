@@ -174,6 +174,70 @@
         color: #f3d139;
         margin: 48px 24px;
     }
+
+    .crosshair {
+        display: block;
+        width: 100%;
+        height: 100%;
+        height: calc(100% - 180px);
+
+        .text {
+            line-height: 28px;
+            width: 100%;
+            height: 28px;
+            color: $white;
+            font-size: 14px;
+        }
+
+        .combination {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            width: 100%;
+            height: calc(100% - 28px);
+
+            .icon {
+                position: absolute;
+            }
+
+            .icon:nth-child(2)  {
+                width: 24px;
+                height: 24px;
+
+                svg {
+                    width: inherit;
+                    height: inherit;
+                }
+            }
+            
+            .icon:nth-child(3) {
+                width: 24px;
+                height: 24px;
+                svg {
+                    width: inherit;
+                    height: inherit;
+                }
+            }
+
+            .icon:nth-child(4) {
+                width: 24px;
+                height: 24px;
+                svg {
+                    width: inherit;
+                    height: inherit;
+                }
+            }
+
+            .icon:nth-child(5) {
+                width: 48px;
+                height: 48px;
+                svg {
+                    width: inherit;
+                    height: inherit;
+                }
+            }
+        }
+    }
 }
 
 .assign-setting {

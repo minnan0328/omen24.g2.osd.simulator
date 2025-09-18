@@ -41,6 +41,8 @@ export class DefaultNodes implements Nodes {
     };
     unitText!: Language | null;
     timeUnit!: string | null;
+    useIcon = false;
+    svgIcon: string | null;
     nodes!: Nodes[] | null;
 };
 

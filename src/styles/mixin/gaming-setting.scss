@@ -40,6 +40,10 @@
 
 @mixin multi-monitor-align-color {
     &.White {
+        &:deep(svg rect, svg path) {
+            fill: $white;
+        }
+
         svg {
             rect,
             path {
@@ -48,6 +52,9 @@
         }
     }
     &.Red {
+        &:deep(svg rect, svg path) {
+            fill: $text-red;
+        }
         svg {
             rect,
             path {
@@ -56,6 +63,9 @@
         }
     }
     &.Green {
+        &:deep(svg rect, svg path) {
+            fill: $text-green;
+        }
         svg {
             rect,
             path {
@@ -64,12 +74,18 @@
         }
     }
     &.Blue {
+        &:deep(svg rect, svg path) {
+            fill: $text-blue;
+        }
         rect,
         path {
             fill: $text-blue;
         }
     }
     &.Yellow {
+        &:deep(svg rect, svg path) {
+            fill: $text-yellow;
+        }
         svg {
             rect,
             path {
@@ -78,6 +94,9 @@
         }
     }
     &.Purple {
+        &:deep(svg rect, svg path) {
+            fill: $text-purple;
+        }
         svg {
             rect,
             path {
@@ -86,6 +105,9 @@
         }
     }
     &.Light-Blue {
+        &:deep(svg rect, svg path) {
+            fill: $text-light-blue;
+        }
         svg {
             rect,
             path {
@@ -94,6 +116,9 @@
         }
     }
     &.Orange {
+        &:deep(svg rect, svg path) {
+            fill: $text-orange;
+        }
         svg {
             rect,
             path {
@@ -102,6 +127,9 @@
         }
     }
     &.Black {
+        &:deep(svg rect, svg path) {
+            fill: $text-black;
+        }
         svg {
             rect,
             path {

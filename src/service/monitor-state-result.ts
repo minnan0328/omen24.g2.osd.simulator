@@ -341,6 +341,18 @@ export const monitorResult = computed(() => {
     }
 });
 
+export const crosshairResult = computed(() => {
+    return {
+        enabled: gaming.value.nodes[3].result == OnNodesEnum.selected,
+        result: gaming.value.nodes[3].nodes[2].result,
+        color: gaming.value.nodes[3].nodes![3].result,
+        position: {
+            x: 100,
+            y: 100
+        }
+    }
+});
+
 // 取讀銳利度
 const getSharpness = computed(() => {
     if(image.value.nodes[4].result == image.value.nodes[4].nodes![0].result) {

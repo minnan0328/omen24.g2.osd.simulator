@@ -34,6 +34,11 @@ export default class ConfigureNodes extends DefaultNodes implements Nodes {
             result: "option 1 bmp",
             parents: this.key,
             mode: ModeType.checkBox,
+            useIcon: true,
+            svgIcon: `
+<svg width="18" height="18" viewBox="0 0 18 18" fill="none" xmlns="http://www.w3.org/2000/svg">
+    <rect x="8.25" y="8.25" width="1.5" height="1.5" fill="white"/>
+</svg>`,
             language: {
                 German: "Option 1 BMP",
                 SimplifiedChinese: "选项 1 BMP",
@@ -55,6 +60,14 @@ export default class ConfigureNodes extends DefaultNodes implements Nodes {
             result: "option 2 bmp",
             parents: this.key,
             mode: ModeType.checkBox,
+            useIcon: true,
+            svgIcon: `
+<svg width="18" height="18" viewBox="0 0 18 18" fill="none" xmlns="http://www.w3.org/2000/svg">
+    <rect x="8.25" y="3" width="1.5" height="4.5" fill="white"/>
+    <rect x="15" y="8.25" width="1.5" height="4.5" transform="rotate(90 15 8.25)" fill="white"/>
+    <rect x="8.25" y="10.5" width="1.5" height="4.5" fill="white"/>
+    <rect x="7.5" y="8.25" width="1.5" height="4.5" transform="rotate(90 7.5 8.25)" fill="white"/>
+</svg>`,
             language: {
                 German: "Option 2 BMP",
                 SimplifiedChinese: "选项 2 BMP",
@@ -76,6 +89,14 @@ export default class ConfigureNodes extends DefaultNodes implements Nodes {
             result: "option 3 bmp",
             parents: this.key,
             mode: ModeType.checkBox,
+            useIcon: true,
+            svgIcon: `
+<svg width="18" height="18" viewBox="0 0 18 18" fill="none" xmlns="http://www.w3.org/2000/svg">
+    <rect x="11.1479" y="2" width="1.5" height="4.33333" transform="rotate(90 11.1479 2)" fill="white"/>
+    <rect x="15" y="11.25" width="1.44444" height="4.5" transform="rotate(-180 15 11.25)" fill="white"/>
+    <rect x="6.81494" y="16.5" width="1.5" height="4.33333" transform="rotate(-90 6.81494 16.5)" fill="white"/>
+    <rect x="2" y="6.75" width="1.44444" height="4.5" fill="white"/>
+</svg>`,
             language: {
                 German: "Option 3 BMP",
                 SimplifiedChinese: "选项 3 BMP",
@@ -97,6 +118,14 @@ export default class ConfigureNodes extends DefaultNodes implements Nodes {
             result: "option 4 bmp",
             parents: this.key,
             mode: ModeType.checkBox,
+            useIcon: true,
+            svgIcon: `
+<svg width="18" height="18" viewBox="0 0 18 18" fill="none" xmlns="http://www.w3.org/2000/svg">
+<rect x="13.7124" y="3.22693" width="1.5" height="4.5" transform="rotate(45 13.7124 3.22693)" fill="white"/>
+<rect x="14.7725" y="13.7124" width="1.5" height="4.5" transform="rotate(135 14.7725 13.7124)" fill="white"/>
+<rect x="6.40869" y="10.5304" width="1.5" height="4.5" transform="rotate(45 6.40869 10.5304)" fill="white"/>
+<rect x="7.46973" y="6.40894" width="1.5" height="4.5" transform="rotate(135 7.46973 6.40894)" fill="white"/>
+</svg>`,
             language: {
                 German: "Option 4 BMP",
                 SimplifiedChinese: "选项 4 BMP",
@@ -118,6 +147,11 @@ export default class ConfigureNodes extends DefaultNodes implements Nodes {
             result: "option 5 bmp",
             parents: this.key,
             mode: ModeType.checkBox,
+            useIcon: true,
+            svgIcon: `
+<svg width="18" height="18" viewBox="0 0 18 18" fill="none" xmlns="http://www.w3.org/2000/svg">
+<circle cx="9" cy="9" r="6.5" stroke="white"/>
+</svg>`,
             language: {
                 German: "Option 5 BMP",
                 SimplifiedChinese: "选项 5 BMP",
