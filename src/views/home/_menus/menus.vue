@@ -161,7 +161,7 @@ import {
     AssignEmptyNodes
 } from '@/models/class/menu/_assign-buttons/_utilities';
 
-import { setBrightnessValue } from '@/models/enum/brightnessDefaultValue/brightnessDefaultValue';
+import { setBrightnessValue } from '@/service/brightnessDefaultValue';
 
 const MenusDefaultEnum = new MenusDefaultModel();
 
