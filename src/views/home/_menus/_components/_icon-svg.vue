@@ -3,8 +3,7 @@
     <div :class="['icon', color]" v-html="nodes.svgIcon"  v-if="combination && enabledIcon(nodes.result)"></div>
 </template>
 <script lang="ts" setup>
-import { defineProps, computed } from 'vue';
-import { Nodes } from '@/types/index';
+import type { Nodes } from '@/types/index';
 
 const props = defineProps({
     nodes: {
@@ -28,8 +27,8 @@ const props = defineProps({
     }
 });
 
-function enabledIcon(icon) {
-    return props.enabledIcon.includes(icon);
+function enabledIcon(icon: string | number | boolean | string[] | null) {
+    return props.enabledIcon.includes(icon as string);
 };
 
 </script>
