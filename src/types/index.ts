@@ -6,7 +6,6 @@ export enum ModeType {
     button = "button",
     paginationButton = "PaginationButton",
     checkBox ="checkBox",
-    timer = "timer",
     message = "message",
     info = "info",
     exit = "exit"
@@ -29,8 +28,8 @@ export interface Language {
 // interface
 export interface Nodes {
     key: string;
-    selected: number | string | string[] | boolean | null;
-    result: number | string | string[] | boolean | null;
+    selected: number | string | string[] | boolean | object | null;
+    result: number | string | string[] | boolean | object | null;
     brightness: number | null;
     rgb: { r: number, g: number, b: number } | null;
     assignItemDisplay: Boolean;

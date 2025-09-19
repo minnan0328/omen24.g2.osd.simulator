@@ -27,7 +27,7 @@ const props = defineProps({
     }
 });
 
-function enabledIcon(icon: string | number | boolean | string[] | null) {
+function enabledIcon(icon: string | number | boolean | string[] | object |null) {
     return props.enabledIcon.includes(icon as string);
 };
 

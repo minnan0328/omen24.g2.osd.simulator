@@ -4,8 +4,8 @@ import { ModeType } from "@/types";
 
 export class DefaultNodes implements Nodes {
     key = "";
-    selected!: number | string | string[] | boolean | null;
-    result!: number | string | string[] | boolean | null;
+    selected!: number | string | string[] | boolean | object |null;
+    result!: number | string | string[] | boolean | object | null;
     brightness = 100; // 亮度
     rgb = { r: 255, g: 255, b: 255 }; // RGB 顏色值
     assignItemDisplay = true; // 顯示在快捷 menu 上面
@@ -39,10 +39,10 @@ export class DefaultNodes implements Nodes {
         BrazilianPortuguese: "",
         Russian: ""
     };
-    unitText!: Language | null;
-    timeUnit!: string | null;
+    unitText = null;
+    timeUnit = null;
     useIcon = false;
-    svgIcon: string | null;
+    svgIcon = null;
     nodes!: Nodes[] | null;
 };
 

@@ -341,14 +341,24 @@ export const monitorResult = computed(() => {
     }
 });
 
+const CrosshairEnum = reactive({
+    start: false
+});
+
 export const crosshairResult = computed(() => {
     return {
         enabled: gaming.value.nodes[3].result == OnNodesEnum.selected,
         result: gaming.value.nodes[3].nodes[2].result,
         color: gaming.value.nodes[3].nodes![3].result,
         position: {
-            x: 100,
-            y: 100
+            x: gaming.value.nodes[3].nodes![4].result.x as number,
+            y: gaming.value.nodes[3].nodes![4].result.y as number
+        },
+        get start() {
+            return CrosshairEnum.start;
+        },
+        set start(value: boolean) {
+            CrosshairEnum.start = value;
         }
     }
 });

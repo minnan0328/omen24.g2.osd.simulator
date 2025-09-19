@@ -20,7 +20,7 @@
         <!-- 全部的選單 -->
 
         <!-- 自訂的小選單 -->
-        <assignMenu v-if="openAssignButton && menuState.menuPanel"
+        <assignMenu v-if="openAssignMenu && menuState.menuPanel"
                     v-model:mainSectionNodes="menuState.menuPanel"
                     v-model:secondarySectionNodes="menuState.secondPanel">
         </assignMenu>
@@ -35,9 +35,7 @@
         <!-- 原廠設定改變的 conform -->
 
         <!-- 控制選單按鈕 -->
-        <menuControllerItem v-if="openControllerMenus"
-                            v-model:handleControllerButtonList="handleControllerButtonList!"
-        ></menuControllerItem>
+        <menuControllerItem v-if="openControllerMenus" v-model:handleControllerButtonList="handleControllerButtonList!"></menuControllerItem>
         <!-- 控制選單按鈕 -->
 
         <!-- 控制選單按鈕-點擊範圍 -->
@@ -85,7 +83,7 @@ import type { StoreState } from '@/stores/index';
 import type { Nodes, ControllerButtonList, HomeEvent } from '@/types';
 import { ModeType } from '@/types';
 import { isEnableNode, minutesTolSeconds } from '@/service/service';
-import { menuStateResult, monitorScreenResult } from '@/service/monitor-state-result';
+import { menuStateResult, monitorScreenResult, crosshairResult } from '@/service/monitor-state-result';
 
 // components
 import headerSection from './_header-section.vue';
@@ -139,6 +137,7 @@ import InputNodes from '@/models/class/input/input';
 
 import RefreshRateNodes from '@/models/class/gaming/_refresh-rate-nodes';
 import CrosshairNodes from '@/models/class/gaming/_crosshair/crosshair-nodes';
+import CrosshairLocationNodes from '@/models/class/gaming/_crosshair/_location-nodes';
 
 import MessageTimersNodes from '@/models/class/gaming/_message-timers/message-timers-nodes';
 import SpeedrunTimerNodes from '@/models/class/gaming/_message-timers/_speedrun-timer-nodes';
@@ -185,6 +184,7 @@ const InputNodesEnum = new InputNodes();
 
 const RefreshRateNodesEnum = new RefreshRateNodes();
 const CrosshairNodesEnum = new CrosshairNodes();
+const CrosshairLocationNodesEnum = new CrosshairLocationNodes();
 
 const MessageTimersNodesEnum = new MessageTimersNodes();
 const SpeedrunTimerNodesEnum = new SpeedrunTimerNodes();
@@ -234,7 +234,7 @@ const menuTimeOutIntervalId = ref<number | null>(null);
 
 const openControllerMenus = ref(false);
 const openAllMenu = ref(false);
-const openAssignButton = ref(false);
+const openAssignMenu = ref(false);
 const factorySettings = ref(true);
 
 const menus = computed(() => {
@@ -369,7 +369,7 @@ const confirmState = reactive({
 });
 
 // 是否開啟OSD Message，當是原廠設定時，且 OSD Message 是啟用時
-const isOpenOSDMessage = computed(() => factorySettings.value && menuStore.$state.menu.nodes[5].result.includes(menuStore.$state.menu.nodes[5].nodes[2].result))
+const isOpenOSDMessage = computed(() => factorySettings.value && menuStore.$state.menu.nodes[5].result.includes(menuStore.$state.menu.nodes[5].nodes[2].result));
 
 // 當關閉螢幕時，關閉所有狀態
 watch(() => props.openMonitor, (newVal, oldVal) => {
@@ -394,7 +394,7 @@ function handlerControllerMenus() {
 // 開啟主要選單
 function handlerOpenAllMenu() {
     openAllMenu.value = true;
-    openAssignButton.value = false;
+    openAssignMenu.value = false;
     selectedMenuPanel(menus.value.nodes[0]!);
 
     handlerMenuTimeout();
@@ -418,7 +418,7 @@ function handleAssignButton(key: string) {
         menuState.menuPanelIndex = 0;
         menuState.secondPanelIndex = 0;
         menuState.assignPanelOrderIndex = assignPanelOrder.findIndex(a => a == key);
-        openAssignButton.value = true;
+        openAssignMenu.value = true;
         selectedMenuPanel(assignMenus.value[key]!.node as Nodes);
         handlerNextPanel();
     }
@@ -431,7 +431,7 @@ function selectedMenuPanel(nodes: Nodes) {
     menuState.menuPanel = menuState.menuPanel ? menuState.menuPanel : nodes;
     menuState.currentPanelNumber = menuState.currentPanelNumber > 0 ? menuState.currentPanelNumber : 1;
 
-    if(openAssignButton.value && menuState.currentPanelNumber > 1) {
+    if(openAssignMenu.value && menuState.currentPanelNumber > 1) {
         handlerNextPanel();
     }
 };
@@ -439,7 +439,7 @@ function selectedMenuPanel(nodes: Nodes) {
 
 /* 控制選單按鈕組合列表 */
 // 是否啟用選單控制按鈕
-const isMenuControllerButton = computed(() => openControllerMenus.value && !openAllMenu.value && !openAssignButton.value && !confirmState.openConfirm);
+const isMenuControllerButton = computed(() => openControllerMenus.value && !openAllMenu.value && !openAssignMenu.value && !confirmState.openConfirm);
 
 const MenuControllerTypes: Record<string, ControllerButtonList> = reactive({
     empty: { image: null, event: () => {}, stopEvent: () => {}, type: "Button" },
@@ -502,7 +502,7 @@ const handleControllerButtonList = computed<ControllerButtonList[] | null>(() =>
         return createMenuButtonList();
     }
     
-    if(openAssignButton.value && menuState.menuPanel) {
+    if(openAssignMenu.value && menuState.menuPanel) {
         return handlerModeControllerButtonList(menuState.secondPanel!, menuState.menuPanel);
     } 
     
@@ -612,7 +612,7 @@ function handlerModeControllerButtonList(nodes: Nodes, previousNodes: Nodes) {
 
     } 
     
-    if(openAssignButton.value) {
+    if(openAssignMenu.value) {
         if(previousNodes.mode == ModeType.info) {
             return infoAssignButtonList;
         } 
@@ -792,8 +792,8 @@ function selectEnabledNode(node: Nodes, startIndex: number, setValue: (node: Nod
             // 檢查節點是否可用且未被禁用
             if (
                 openAllMenu.value && isEnableNode(node.nodes[index]!) && !node.nodes[index]!.disabled && node.nodes[index]!.menuItemDisplay
-                || (openAssignButton.value && node.nodes[index]!.mode !== ModeType.info)
-                || (openAssignButton.value && node.nodes[index]!.mode == ModeType.button && !node.nodes[index]!.assignItemDisplay)
+                || (openAssignMenu.value && node.nodes[index]!.mode !== ModeType.info)
+                || (openAssignMenu.value && node.nodes[index]!.mode == ModeType.button && !node.nodes[index]!.assignItemDisplay)
             ) {
                 let selectedIndex = (node.selected || node.selected === 0) ? node.nodes.findIndex(n => n.selected === node.selected) : index;
                 index = selectedIndex >= 0 ? selectedIndex : index;
@@ -858,7 +858,7 @@ function handlePrevious() {
 function handlerNavigation(direction: 'up' | 'down') {
     const step = direction === 'up' ? -1 : 1;
 
-    if(openAllMenu.value || openAssignButton.value) {
+    if(openAllMenu.value || openAssignMenu.value) {
         if (menus.value && menuState.menuPanel?.nodes) {
             if (!menuState.secondPanel) {
                 updatePanelIndex(menus.value, menuState.menuPanelIndex, step, (page, index) => {
@@ -1016,9 +1016,9 @@ function updatePanelIndex(node: Nodes, nodeIndex: number, step: number, send: (p
             // 暫時先寫死跳過
             || openAllMenu.value && node.nodes[index]!.key == ExitNodesEnum.key && node.nodes[index]!.mode != ModeType.exit
             || openAllMenu.value && node.nodes[index]!.menuItemDisplay === false
-            || openAssignButton.value && node.nodes[index]!.key == ResetNodesEnum.key
-            || openAssignButton.value && node.nodes[index]!.key == BackNodesEnum.key
-            || openAssignButton.value && node.nodes[index]!.mode == ModeType.button && !node.nodes[index]!.assignItemDisplay
+            || openAssignMenu.value && node.nodes[index]!.key == ResetNodesEnum.key
+            || openAssignMenu.value && node.nodes[index]!.key == BackNodesEnum.key
+            || openAssignMenu.value && node.nodes[index]!.mode == ModeType.button && !node.nodes[index]!.assignItemDisplay
         ) {
             updatePanelIndex(node, index ,step, send);
         } else {
@@ -1185,7 +1185,7 @@ function handlerRangeAdd() {
 // 儲存選擇節點的 value
 function handlerSave(currentPanelNumber = 0) {
     currentPanelNumber = currentPanelNumber > 0 ? currentPanelNumber : menuState.currentPanelNumber;
-    if(openAllMenu.value || openAssignButton.value) {
+    if(openAllMenu.value || openAssignMenu.value) {
         switch(currentPanelNumber) {
             case 2:
                 if(menuState.menuPanel && menuState.secondPanel) { saveNodesValue(menuState.secondPanel, menuState.menuPanel, currentPanelNumber); }
@@ -1221,7 +1221,12 @@ function saveNodesValue(nodes: Nodes, previousNodes: Nodes, currentPanelNumber =
         },
         // 上下一頁 目前只處理 secondaryNodesPagination(第三層畫面)
         [NextPageButtonsNodesEnum.key]: () => handlerNavigation("down"),
-        [PreviousPageButtonsNodesEnum.key]: () => handlerNavigation("up")
+        [PreviousPageButtonsNodesEnum.key]: () => handlerNavigation("up"),
+        [CrosshairLocationNodesEnum.key]: () => {
+            if(crosshairResult.value.enabled) {
+                handleCrosshairLocationAction();
+            } 
+        }
     };
 
     const previousNodesActions: { [key: string]: () => void } = {
@@ -1281,7 +1286,7 @@ function saveNodesValue(nodes: Nodes, previousNodes: Nodes, currentPanelNumber =
         }
 
         // 當開自訂選單時且為 垂直 range 調整後關閉
-        if(openAssignButton.value && nodes.mode == ModeType.verticalRange && previousNodes.nodes!.length == 1) {
+        if(openAssignMenu.value && nodes.mode == ModeType.verticalRange && previousNodes.nodes!.length == 1) {
             handlerClose();
         }
 
@@ -1329,10 +1334,12 @@ function saveNodesValue(nodes: Nodes, previousNodes: Nodes, currentPanelNumber =
                     [OffNodesEnum.key]: () => {
                         previousNodes.nodes![2]!.disabled = true;
                         previousNodes.nodes![3]!.disabled = true;
+                        previousNodes.nodes![4]!.disabled = true;
                     },
                     [OnNodesEnum.key]: () => {
                         previousNodes.nodes![2]!.disabled = false;
                         previousNodes.nodes![3]!.disabled = false;
+                        previousNodes.nodes![4]!.disabled = false;
                     }
                 };
 
@@ -1563,21 +1570,40 @@ function factorySettingOSDMessage() {
     };
 
     // 當是開啟自訂選單時，暫時關閉且紀錄目前開啟的選當類型
-    if(openAssignButton.value) {
-        openAssignButton.value = false;
-        confirmState.selectedMenus = "openAssignButton";
+    if(openAssignMenu.value) {
+        openAssignMenu.value = false;
+        confirmState.selectedMenus = "openAssignMenu";
     };
 
     handlerMenuTimeout();
     setupConfirmState();
 };
 
+function handleCrosshairLocationAction() {
+    if (crosshairResult.value.enabled && crosshairResult.value.start == false) {
+        if(openAllMenu.value) {
+            openAllMenu.value = false;
+            confirmState.selectedMenus = "openAllMenu";
+            crosshairResult.value.start = true;
+        };
+
+        if(openAssignMenu.value) {
+            openAssignMenu.value = false;
+            confirmState.selectedMenus = "openAssignMenu";
+            crosshairResult.value.start = true;
+        };
+    } else if(crosshairResult.value.start) {
+        crosshairResult.value.start = false;
+        restoreSelectedMenu();
+    }
+}
+
 // 重啟選擇的 menu
 function restoreSelectedMenu() {
     if (confirmState.selectedMenus === "openAllMenu") {
         openAllMenu.value = true;
     } else {
-        openAssignButton.value = true;
+        openAssignMenu.value = true;
     }
 }
 
@@ -1633,7 +1659,7 @@ function handlerClose() {
     openControllerMenus.value = false;
 
     openAllMenu.value = false;
-    openAssignButton.value = false;
+    openAssignMenu.value = false;
 
     // 當關閉 menu 開啟
     emit("update:showGamingSettingText", true);
@@ -1699,7 +1725,7 @@ function handlerMenuTimeout() {
     //     menuTimeOutIntervalId.value = null;
     // } else if(menuTimeOutIntervalId.value == null && monitorScreenResult.value.diagnosticPatterns.enabled == false) {
     //     menuTimeOutIntervalId.value = setTimeout(() => {
-    //         if(openAssignButton.value) {
+    //         if(openAssignMenu.value) {
     //             handlerClose();
     //         }
 
