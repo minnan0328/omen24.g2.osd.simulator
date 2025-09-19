@@ -239,12 +239,6 @@ const isTwoColumns = computed(() => {
     return props.secondarySectionNodes?.nodes && props.secondarySectionNodes?.nodes!.length! > 0;
 });
 
-function enabledRadioBottomLine(node: Nodes) {
-    const enabledNodes = ["Crosshair", "RefreshRate", "MessageTimers"];
-
-    return enabledNodes.includes(node.key) && isEnableNode(node);
-}
-
 function enabledBottomLine(node: Nodes) {
     const enabledNodes = ["ResetTimer", "Location", "MessageTimers", "Configure", "option5bmp", "RefreshRate", "MultiMonitorAlign", "OSDMessages"];
 
