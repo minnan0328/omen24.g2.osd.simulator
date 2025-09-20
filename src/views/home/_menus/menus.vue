@@ -136,9 +136,9 @@ import AutoSleepModeNodes from '@/models/class/power/_auto-sleep-mode-nodes';
 
 import InputNodes from '@/models/class/input/input';
 
+import AMDFreeSyncNodes from '@/models/class/gaming/_amd-free-sync-nodes';
 import RefreshRateNodes from '@/models/class/gaming/_refresh-rate-nodes';
 import CrosshairNodes from '@/models/class/gaming/_crosshair/crosshair-nodes';
-import CrosshairConfigureNodes from '@/models/class/gaming/_crosshair/_configure-nodes';
 import CrosshairLocationNodes from '@/models/class/gaming/_crosshair/_location-nodes';
 
 import MessageTimersNodes from '@/models/class/gaming/_message-timers/message-timers-nodes';
@@ -184,9 +184,9 @@ const AutoSleepModeNodesEnum = new AutoSleepModeNodes();
 
 const InputNodesEnum = new InputNodes();
 
+const AMDFreeSyncNodesEnum = new AMDFreeSyncNodes();
 const RefreshRateNodesEnum = new RefreshRateNodes();
 const CrosshairNodesEnum = new CrosshairNodes();
-const CrosshairConfigureNodesEnum = new CrosshairConfigureNodes();
 const CrosshairLocationNodesEnum = new CrosshairLocationNodes();
 
 const MessageTimersNodesEnum = new MessageTimersNodes();
@@ -1552,6 +1552,23 @@ function saveNodesValue(nodes: Nodes, previousNodes: Nodes, currentPanelNumber =
                         gamingResult.value.multiMonitorAlign.enabled = true;
                         // 切換到 off
                         handlerNavigation("down");
+                    }
+                };
+
+                if (nodes.key in actions) {
+                    actions[nodes.key]!();
+                    return;
+                }
+            },
+            [AMDFreeSyncNodesEnum.key]: () => {
+                const actions = {
+                    [OffNodesEnum.key]: () => {
+                        reopenMenu();
+                        restartScreenPreview();
+                    },
+                    [OnNodesEnum.key]: () => {
+                        reopenMenu();
+                        restartScreenPreview();
                     }
                 };
 
