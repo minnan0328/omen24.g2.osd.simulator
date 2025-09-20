@@ -39,7 +39,19 @@ export class DefaultNodes implements Nodes {
         BrazilianPortuguese: "",
         Russian: ""
     };
-    unitText = null;
+    unitText: Language = {
+        German: "",
+        SimplifiedChinese: "",
+        TraditionalChinese: "",
+        English: "",
+        Español: "",
+        French: "",
+        Italian: "",
+        Japanese: "",
+        Nederlands: "",
+        BrazilianPortuguese: "",
+        Russian: ""
+    };
     timeUnit = "";
     useIcon = false;
     svgIcon = null;

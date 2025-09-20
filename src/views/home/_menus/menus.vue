@@ -6,7 +6,7 @@
             <headerSection></headerSection>
 
             <div class="body">
-                <sidebarSection v-model:menus="menus" v-model:menuState="menuState"></sidebarSection>
+                <sidebarSection v-model:menus="menus" :menuState="menuState"></sidebarSection>
     
                 <settingSection v-model:mainSectionNodes="displayCurrentNodes.mainSectionNodes"
                                 v-model:secondarySectionNodes="displayCurrentNodes.secondarySectionNodes"
