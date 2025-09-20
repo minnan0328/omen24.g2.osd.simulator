@@ -2,7 +2,7 @@
     <div v-if="currentNode.mode == ModeType.checkBox" :class="['customize-checkbox', { 'border-bottom-line': isLastNode(currentNode, previousNodes) }]">
         <div :class="['checkbox', { selected: nodes?.key == currentNode.key, disabled: currentNode.disabled }]">
             <div :class="['box', { checked: isChecked(currentNode), disabled: currentNode.disabled }]"></div>
-            <svgIcon v-if="currentNode.useIcon"  :nodes="currentNode"></svgIcon>
+            <svgIcon v-if="currentNode.useIcon"  :node="currentNode"></svgIcon>
             <div v-else v-text="toLanguageText(currentNode.language!)"></div>
         </div>
     </div>

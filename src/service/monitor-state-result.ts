@@ -351,8 +351,8 @@ export const crosshairResult = computed(() => {
         result: gaming.value.nodes[3].nodes[2].result,
         color: gaming.value.nodes[3].nodes![3].result,
         position: {
-            x: gaming.value.nodes[3].nodes![4].result.x as number,
-            y: gaming.value.nodes[3].nodes![4].result.y as number
+            x: `${gaming.value.nodes[3].nodes![4].result.x}px`,
+            y: `${gaming.value.nodes[3].nodes![4].result.y}px`
         },
         get start() {
             return CrosshairEnum.start;

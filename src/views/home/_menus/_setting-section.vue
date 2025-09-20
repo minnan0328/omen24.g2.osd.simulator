@@ -163,12 +163,12 @@
                 <div class="setting-item crosshair" v-if="secondarySectionNodes.key == configureNodesEnum.key">
                     <div class="text">Preview:</div>
                     <div class="combination">
-                        <template v-for="nodes in secondarySectionNodes.nodes">
-                            <svgIcon :nodes="nodes"
-                                :color="crosshairResult.color"
-                                :enabledIcon="crosshairResult.result"
-                                :combination="true"></svgIcon>
-                        </template>
+                        <svgIcon v-for="(node, index) in secondarySectionNodes.nodes" :key="index"
+                            :node="node"
+                            :color="crosshairResult.color"
+                            :enabledIcon="crosshairResult.result"
+                            :combination="true">
+                        </svgIcon>
                     </div>
                 </div>
 

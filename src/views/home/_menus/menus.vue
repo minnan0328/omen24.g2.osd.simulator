@@ -34,6 +34,21 @@
         </confirm>
         <!-- 原廠設定改變的 conform -->
 
+        <!-- 十字準星 -->
+        <div class="crosshair" v-if="crosshairResult.enabled && crosshairResult.start">
+            <div class="combination">
+                <iconSvg 
+                    v-for="(node, index) in CrosshairConfigureNodesEnum.nodes" :key="index"
+                    :node="node"
+                    :enabledIcon="crosshairResult.result"
+                    :combination="true"
+                    :color="crosshairResult.color"
+                    :position="crosshairResult.position">
+                </iconSvg>
+            </div>
+        </div>
+        <!-- 十字準星 -->
+        
         <!-- 控制選單按鈕 -->
         <menuControllerItem v-if="openControllerMenus" v-model:handleControllerButtonList="handleControllerButtonList!"></menuControllerItem>
         <!-- 控制選單按鈕 -->
@@ -93,6 +108,7 @@ import settingSection from './_setting-section.vue';
 import assignMenu from './_assign-menu.vue';
 import confirm from '@/views/home/_confirm/confirm.vue';
 import menuControllerItem from './_menu-controller-item.vue';
+import iconSvg from './_components/_icon-svg.vue';
 // svg
 import iconAllMenu from '@/assets/icons/icon-menu.svg';
 import iconBrightness from '@/assets/icons/icon-brightness.svg';
@@ -137,6 +153,7 @@ import InputNodes from '@/models/class/input/input';
 
 import RefreshRateNodes from '@/models/class/gaming/_refresh-rate-nodes';
 import CrosshairNodes from '@/models/class/gaming/_crosshair/crosshair-nodes';
+import CrosshairConfigureNodes from '@/models/class/gaming/_crosshair/_configure-nodes';
 import CrosshairLocationNodes from '@/models/class/gaming/_crosshair/_location-nodes';
 
 import MessageTimersNodes from '@/models/class/gaming/_message-timers/message-timers-nodes';
@@ -184,6 +201,7 @@ const InputNodesEnum = new InputNodes();
 
 const RefreshRateNodesEnum = new RefreshRateNodes();
 const CrosshairNodesEnum = new CrosshairNodes();
+const CrosshairConfigureNodesEnum = new CrosshairConfigureNodes();
 const CrosshairLocationNodesEnum = new CrosshairLocationNodes();
 
 const MessageTimersNodesEnum = new MessageTimersNodes();
@@ -260,6 +278,7 @@ const menus = computed(() => {
 
 // selected menuState and node
 const menuState = reactive<{
+    selectedMenus: string | null,
     menuPanel: Nodes | null,
     secondPanel: Nodes | null,
     thirdPanel: Nodes | null,
@@ -272,6 +291,7 @@ const menuState = reactive<{
     fourthPanelIndex: number
     assignPanelOrderIndex: number
 }>({
+    selectedMenus: null,
     menuPanel: null,
     secondPanel: null,
     thirdPanel: null,
@@ -361,7 +381,6 @@ const assignPanelOrder = reactive([
 // power confirm message menuState
 const confirmState = reactive({
     openConfirm: false,
-    selectedMenus: null as string | null,
     confirmMainPanel: null as Nodes | null,
     confirmSecondPanel: null as Nodes | null,
     confirmThirdPanel: null as Nodes | null,
@@ -395,6 +414,7 @@ function handlerControllerMenus() {
 function handlerOpenAllMenu() {
     openAllMenu.value = true;
     openAssignMenu.value = false;
+    menuState.selectedMenus = "openAllMenu";
     selectedMenuPanel(menus.value.nodes[0]!);
 
     handlerMenuTimeout();
@@ -419,6 +439,7 @@ function handleAssignButton(key: string) {
         menuState.secondPanelIndex = 0;
         menuState.assignPanelOrderIndex = assignPanelOrder.findIndex(a => a == key);
         openAssignMenu.value = true;
+        menuState.selectedMenus = "openAssignMenu";
         selectedMenuPanel(assignMenus.value[key]!.node as Nodes);
         handlerNextPanel();
     }
@@ -439,7 +460,8 @@ function selectedMenuPanel(nodes: Nodes) {
 
 /* 控制選單按鈕組合列表 */
 // 是否啟用選單控制按鈕
-const isMenuControllerButton = computed(() => openControllerMenus.value && !openAllMenu.value && !openAssignMenu.value && !confirmState.openConfirm);
+const isCrosshairLocationNodes = computed(() => crosshairResult.value.enabled && crosshairResult.value.start && !openAllMenu.value && !openAssignMenu.value);
+const isMenuControllerButton = computed(() => openControllerMenus.value && !openAllMenu.value && !openAssignMenu.value && !confirmState.openConfirm && !isCrosshairLocationNodes.value);
 
 const MenuControllerTypes: Record<string, ControllerButtonList> = reactive({
     empty: { image: null, event: () => {}, stopEvent: () => {}, type: "Button" },
@@ -453,6 +475,7 @@ const MenuControllerTypes: Record<string, ControllerButtonList> = reactive({
     arrowRight: { image: iconArrowRight, event: () => { handlerNavigation('up') }, stopEvent: () => {}, type: "Button" },
     arrowLeft: { image: iconArrowLeft, event: () => { handlerNavigation('down') }, stopEvent: () => {}, type: "Button" },
     previous: { image: iconPrevious, event: handlePrevious, stopEvent: () => {}, type: "Button" },
+    previousSave: { image: iconPrevious, event: handlerSave, stopEvent: () => {}, type: "Button" },
     checkNext: { image: iconCheck, event: handlerNextPanel, stopEvent: () => {}, type: "Button" },
     next: { image: iconNext, event: handlerNextPanel, stopEvent: () => {}, type: "Button" },
     nextRight: { image: iconNextRight, event: () => handlerNavigation('down'), stopEvent: () => {}, type: "Button" },
@@ -461,6 +484,10 @@ const MenuControllerTypes: Record<string, ControllerButtonList> = reactive({
     rangeSubtract: { image: iconSubtract, event: handlerRangeSubtract, stopEvent: stopRangeValueTrigger, type: "eventButton" },
     rangeAdd: { image: iconAdd, event: handlerRangeAdd, stopEvent: stopRangeValueTrigger, type: "eventButton" },
     confirmClose: { image: iconClose, event: handlerCloseConfirmAction, stopEvent: () => {}, type: "Button" },
+    positionUp: { image: iconArrowUp, event: handlerCrosshairSubtractUp, stopEvent: stopCrosshairPosition, type: "eventButton" },
+    positionDown: { image: iconArrowBottom, event: handlerCrosshairAddDown, stopEvent: stopCrosshairPosition, type: "eventButton" },
+    positionLeft: { image: iconArrowLeft, event: handlerCrosshairSubtractLeft, stopEvent: stopCrosshairPosition, type: "eventButton" },
+    positionRight: { image: iconArrowRight, event: handlerCrosshairAddRight, stopEvent: stopCrosshairPosition, type: "eventButton" },
 });
 
 // 取得自訂選單項目
@@ -481,6 +508,7 @@ const confirmButtonList:ControllerButtonList[] = [ MenuControllerTypes.checkSave
 
 const handleControllerButtonList = computed<ControllerButtonList[] | null>(() => {
     if(!props.openMonitor) return[];
+
 
     if(isMenuControllerButton.value) {
         // 開啟螢幕及開啟全部選單列表時候的組合
@@ -510,7 +538,7 @@ const handleControllerButtonList = computed<ControllerButtonList[] | null>(() =>
         return confirmButtonList;
     }
 
-    return [];
+    return createMenuButtonList();
 });
 
 function createMenuButtonList(): ControllerButtonList[] {
@@ -571,6 +599,9 @@ function handlerModeControllerButtonList(nodes: Nodes, previousNodes: Nodes) {
     const infoAssignButtonList: ControllerButtonList[] = [ MenuControllerTypes.checkSave!, MenuControllerTypes.empty!, MenuControllerTypes.empty!, MenuControllerTypes.nextAssignLeft!, MenuControllerTypes.nextAssignRight! ];
     // 多個螢幕校正組合
     const multiMonitorAlignButtonList: ControllerButtonList[] = [ MenuControllerTypes.checkSave!, MenuControllerTypes.checkSave!, MenuControllerTypes.checkSave!, MenuControllerTypes.checkSave!, MenuControllerTypes.checkSave! ];
+    // 位置調整組合
+    const positionButtonList: ControllerButtonList[] = [ MenuControllerTypes.previousSave!, MenuControllerTypes.positionUp!, MenuControllerTypes.positionDown!, MenuControllerTypes.positionLeft!, MenuControllerTypes.positionRight! ];
+    
     // 當為 reset and back, button 下一層沒有節點的時候
     const isLastNode = nodes.key == ResetNodesEnum.key || nodes.key == BackNodesEnum.key
         || (nodes.mode == ModeType.radio || nodes.mode == ModeType.button || nodes.mode == ModeType.checkBox || nodes.mode == ModeType.paginationButton) && !nodes.nodes;
@@ -582,8 +613,13 @@ function handlerModeControllerButtonList(nodes: Nodes, previousNodes: Nodes) {
     // 多個橫向 range value
     const isHorizontalRangeNode = nodes.mode == ModeType.horizontalRange && previousNodes.nodes && previousNodes.nodes?.length > 1;
     // 多個螢幕校正
-    const isMultiMonitorAlignNodes = previousNodes.key == MultiMonitorAlignNodesEnum.key && monitorScreenResult.value.multiMonitorAlign.enabled;
+    const isMultiMonitorAlignNodes = previousNodes.key == MultiMonitorAlignNodesEnum.key
+        && monitorScreenResult.value.multiMonitorAlign.enabled;
 
+    if(isCrosshairLocationNodes.value) {
+        return positionButtonList;
+    }
+    
     if(openAllMenu.value) {
 
         if(isMultiMonitorAlignNodes) {
@@ -1098,10 +1134,23 @@ function handlerRangeValue(step: string) {
                 nodes.step = 1;
             }
 
-            if(step == "subtract" && (nodes.selected as number) > nodes.rangeMin && (nodes.selected as number) <= nodes.rangeMax) {
+            if (
+                step == "subtract" &&
+                typeof nodes.rangeMin === "number" &&
+                typeof nodes.rangeMax === "number" &&
+                (nodes.selected as number) > nodes.rangeMin &&
+                (nodes.selected as number) <= nodes.rangeMax
+            ) {
                 (nodes.selected as number) -= nodes.step;
                 (nodes.result as number) -= nodes.step;
-            } else if(step == "add" && (nodes.selected as number) >= nodes.rangeMin && (nodes.selected as number) < nodes.rangeMax) {
+            } 
+            if (
+                step == "add" &&
+                typeof nodes.rangeMin === "number" &&
+                typeof nodes.rangeMax === "number" &&
+                (nodes.selected as number) >= nodes.rangeMin &&
+                (nodes.selected as number) < nodes.rangeMax
+            ) {
                 (nodes.selected as number) += nodes.step;
                 (nodes.result as number) += nodes.step;
             }
@@ -1152,7 +1201,7 @@ function handlerRangeValue(step: string) {
 const rangeIntervalId = ref<number | null>(null);
 const currentRangeStep = ref<string | null>(null);
 
-// 開始觸發
+// 開始觸發 Range Value
 function startRangeValueTrigger(step: string) {
     currentRangeStep.value = step;
     // 清除現有的計時器
@@ -1162,7 +1211,7 @@ function startRangeValueTrigger(step: string) {
     // 設置新的計時器，每隔 100 毫秒觸發一次函式
     rangeIntervalId.value = window.setInterval(() => handlerRangeValue(currentRangeStep.value!), DELAY_TIME);
 };
-// 停止觸發
+// 停止觸發 Range Value
 function stopRangeValueTrigger() {
     if (rangeIntervalId.value !== null) {
         clearInterval(rangeIntervalId.value);
@@ -1182,10 +1231,110 @@ function handlerRangeAdd() {
 /* 控制 range value */
 
 
+/// 控制 crosshair position 遞減
+function handlerCrosshairPosition(step: string, position: string) {
+    switch(menuState.currentPanelNumber) {
+        case 2:
+            if(menuState.menuPanel && menuState.secondPanel) { calculateValue(menuState.secondPanel, menuState.menuPanel); }
+            break;
+        case 3:
+            if(menuState.secondPanel && menuState.thirdPanel) { calculateValue(menuState.thirdPanel, menuState.secondPanel); }
+            break;
+        case 4:
+            if(menuState.thirdPanel && menuState.fourthPanel) { calculateValue(menuState.fourthPanel, menuState.thirdPanel); }
+            break;
+    };
+
+    function calculateValue(nodes: Nodes, previousNodes: Nodes){
+        if(nodes.key == CrosshairLocationNodesEnum.key) {
+            // Add index signature to selected for type safety
+            type SelectedPosition = { [key: string]: number };
+            const selected = nodes.selected as SelectedPosition | undefined;
+            const result = nodes.result as SelectedPosition | undefined;
+            if (
+                selected && result &&
+                typeof selected === 'object' &&
+                !Array.isArray(selected) &&
+                position in selected &&
+                position in result &&
+                nodes.rangeMin &&
+                nodes.rangeMax &&
+                typeof nodes.rangeMin === 'object' &&
+                typeof nodes.rangeMax === 'object'
+            ) {
+                const min = (nodes.rangeMin as Record<string, number>)[position];
+                const max = (nodes.rangeMax as Record<string, number>)[position];
+                if (
+                    step == "subtract" &&
+                    typeof min === "number" &&
+                    typeof max === "number" &&
+                    selected[position]! > min &&
+                    result[position]! <= max
+                ) {
+                    selected[position]! -= 1;
+                    result[position]! -= 1;
+                } 
+
+                if (
+                    step == "add" &&
+                    typeof min === "number" &&
+                    typeof max === "number" &&
+                    selected[position]! >= min &&
+                    selected[position]! < max
+                ) {
+                    selected[position]! += 1;
+                    result[position]! += 1;
+                }
+            }
+        };
+    }
+}
+
+
+const crosshairPositionIntervalId = ref<number | null>(null);
+const currentCrosshairPositionStep = ref<string | null>(null);
+
+// 開始觸發 crosshair position
+function startCrosshairPosition(step: string, position: string) {
+    currentCrosshairPositionStep.value = step;
+    // 清除現有的計時器
+    if (crosshairPositionIntervalId.value !== null) {
+        clearInterval(crosshairPositionIntervalId.value);
+    }
+    // 設置新的計時器，每隔 100 毫秒觸發一次函式
+    crosshairPositionIntervalId.value = window.setInterval(() => handlerCrosshairPosition(currentCrosshairPositionStep.value!, position), DELAY_TIME);
+};
+
+// 停止觸發 crosshair position
+function stopCrosshairPosition() {
+    if (crosshairPositionIntervalId.value !== null) {
+        clearInterval(crosshairPositionIntervalId.value);
+        crosshairPositionIntervalId.value = null;
+    }
+};
+
+// 控制 crosshair position 遞減
+function handlerCrosshairSubtractUp() {
+    startCrosshairPosition("subtract", "y");
+};
+
+function handlerCrosshairSubtractLeft() {
+    startCrosshairPosition("subtract", "x");
+};
+
+// 控制 crosshair position 遞增
+function handlerCrosshairAddDown() {
+    startCrosshairPosition("add", "y");
+};
+function handlerCrosshairAddRight() {
+    startCrosshairPosition("add", "x");
+};
+
+
 // 儲存選擇節點的 value
 function handlerSave(currentPanelNumber = 0) {
     currentPanelNumber = currentPanelNumber > 0 ? currentPanelNumber : menuState.currentPanelNumber;
-    if(openAllMenu.value || openAssignMenu.value) {
+    if(openAllMenu.value || openAssignMenu.value || isCrosshairLocationNodes.value) {
         switch(currentPanelNumber) {
             case 2:
                 if(menuState.menuPanel && menuState.secondPanel) { saveNodesValue(menuState.secondPanel, menuState.menuPanel, currentPanelNumber); }
@@ -1206,7 +1355,7 @@ function handlerSave(currentPanelNumber = 0) {
 
 function saveNodesValue(nodes: Nodes, previousNodes: Nodes, currentPanelNumber = 0) {
     currentPanelNumber = currentPanelNumber > 0 ? currentPanelNumber : menuState.currentPanelNumber;
-    
+
     const nodesActions: { [key: string]: () => void } = {
         // 離開選單
         [ExitNodesEnum.key]: () => handlerClose(),
@@ -1222,11 +1371,7 @@ function saveNodesValue(nodes: Nodes, previousNodes: Nodes, currentPanelNumber =
         // 上下一頁 目前只處理 secondaryNodesPagination(第三層畫面)
         [NextPageButtonsNodesEnum.key]: () => handlerNavigation("down"),
         [PreviousPageButtonsNodesEnum.key]: () => handlerNavigation("up"),
-        [CrosshairLocationNodesEnum.key]: () => {
-            if(crosshairResult.value.enabled) {
-                handleCrosshairLocationAction();
-            } 
-        }
+        [CrosshairLocationNodesEnum.key]: () => handleCrosshairLocationAction()
     };
 
     const previousNodesActions: { [key: string]: () => void } = {
@@ -1554,7 +1699,6 @@ function handleChangingMessageAction(nodes: Nodes) {
 
 // 原廠設定電源警告判斷
 function factorySettingOSDMessage() {
-
     // 設定 confirm State message
     const setupConfirmState = () => {
         confirmState.confirmMainPanel = PowerConfirmChangeNodesEnum;
@@ -1566,13 +1710,13 @@ function factorySettingOSDMessage() {
     // 當是開啟全部選單時，暫時關閉且紀錄目前開啟的選當類型
     if(openAllMenu.value) {
         openAllMenu.value = false;
-        confirmState.selectedMenus = "openAllMenu";
+        menuState.selectedMenus = "openAllMenu";
     };
 
     // 當是開啟自訂選單時，暫時關閉且紀錄目前開啟的選當類型
     if(openAssignMenu.value) {
         openAssignMenu.value = false;
-        confirmState.selectedMenus = "openAssignMenu";
+        menuState.selectedMenus = "openAssignMenu";
     };
 
     handlerMenuTimeout();
@@ -1583,16 +1727,18 @@ function handleCrosshairLocationAction() {
     if (crosshairResult.value.enabled && crosshairResult.value.start == false) {
         if(openAllMenu.value) {
             openAllMenu.value = false;
-            confirmState.selectedMenus = "openAllMenu";
+            menuState.selectedMenus = "openAllMenu";
             crosshairResult.value.start = true;
         };
 
         if(openAssignMenu.value) {
             openAssignMenu.value = false;
-            confirmState.selectedMenus = "openAssignMenu";
+            menuState.selectedMenus = "openAssignMenu";
             crosshairResult.value.start = true;
         };
-    } else if(crosshairResult.value.start) {
+    }
+
+    else if(crosshairResult.value.enabled && crosshairResult.value.start) {
         crosshairResult.value.start = false;
         restoreSelectedMenu();
     }
@@ -1600,11 +1746,13 @@ function handleCrosshairLocationAction() {
 
 // 重啟選擇的 menu
 function restoreSelectedMenu() {
-    if (confirmState.selectedMenus === "openAllMenu") {
+    if (menuState.selectedMenus === "openAllMenu") {
         openAllMenu.value = true;
     } else {
         openAssignMenu.value = true;
     }
+
+
 }
 
 // 處理 confirm 取消後的動作，選擇為返回(Back)或離開(Exit)選項
@@ -1860,4 +2008,27 @@ function handlerMenuTimeout() {
         }
 	}
 }
+.crosshair {
+    width: $screen-width;
+    height: $screen-height;
+    position: relative;
+
+    .combination {
+        width: 40px;
+        height: 40px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        position: absolute;
+        content: '';
+        top: v-bind("crosshairResult.position.y");
+        left: v-bind("crosshairResult.position.x");
+
+        :deep(div.combination-icon) {
+            position: absolute;
+            content: '';
+        }
+    }
+}
+
 </style>

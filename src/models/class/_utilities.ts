@@ -18,11 +18,11 @@ export class DefaultNodes implements Nodes {
     page = 1;
     parents = null;
     mode = ModeType.button;
-    rangeMin = 0;
-    rangeMax = 0;
+    rangeMin: number | { x: number; y: number } = 0;
+    rangeMax: number | { x: number; y: number } = 0;
     step = 1;
     horizontalRangeFocus = false;
-    rangeMaxIcon = null;
+    rangeMaxIcon = null
     rangeMinIcon = null;
     only = ["DisplayPort", "HDMI 1", "HDM 2"];
     mergeGrid = false;

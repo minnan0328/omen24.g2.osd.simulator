@@ -42,9 +42,9 @@ export interface Nodes {
     page: number; // 當有啟用分頁需加入 NextPageButtonsNodes 及 PreviousPageButtonsNodes
     parents: string | null;
     mode: string;
-    rangeMin: number;
-    rangeMax: number;
-    step: number;
+    rangeMin: number | object | null;
+    rangeMax: number | object | null;
+    step: number | null;
     horizontalRangeFocus: boolean;
     rangeMaxIcon: string | null;
     rangeMinIcon: string | null;
