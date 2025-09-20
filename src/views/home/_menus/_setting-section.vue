@@ -67,36 +67,36 @@
                 :class="['secondary-section', { 'customRGB-range-section': secondarySectionNodes.key == rgbGainAdjustNodesEnum.key }]">
 
                 <div class="setting-info-menu-left"
-                    v-if="secondarySectionNodes.key == monitorScreenResult.refFreshRate.key
-                    || secondarySectionNodes.key == monitorScreenResult.messageTimers.key">
+                    v-if="secondarySectionNodes.key == gamingResult.refFreshRate.key
+                    || secondarySectionNodes.key == gamingResult.messageTimers.key">
 
                     <span :class="['setting-info-value',
-                            monitorScreenResult.refFreshRate.key,
-                            monitorScreenResult.refFreshRate.color
+                            gamingResult.refFreshRate.key,
+                            gamingResult.refFreshRate.color
                         ]"
-                        v-if="secondarySectionNodes.key == monitorScreenResult.refFreshRate.key
-                        && monitorScreenResult.refFreshRate.enabled"
-                        v-text="monitorScreenResult.refFreshRate.rate">
+                        v-if="secondarySectionNodes.key == gamingResult.refFreshRate.key
+                        && gamingResult.refFreshRate.enabled"
+                        v-text="gamingResult.refFreshRate.rate">
                     </span>
 
                     <span :class="['setting-info-value',
-                            monitorScreenResult.messageTimers.key,
-                            monitorScreenResult.messageTimers.color
+                            gamingResult.messageTimers.key,
+                            gamingResult.messageTimers.color
                         ]"
-                        v-show="secondarySectionNodes.key == monitorScreenResult.messageTimers.key
-                        && monitorScreenResult.messageTimers.enabled
-                        && secondarySectionNodes.nodes[2]!.result == monitorScreenResult.messageTimers.result"
-                        v-text="toDisplayTimeFormat(monitorScreenResult.messageTimers.timer[monitorScreenResult.messageTimers.result] as number)">
+                        v-show="secondarySectionNodes.key == gamingResult.messageTimers.key
+                        && gamingResult.messageTimers.enabled
+                        && secondarySectionNodes.nodes[2]!.result == gamingResult.messageTimers.result"
+                        v-text="toDisplayTimeFormat(gamingResult.messageTimers.timer[gamingResult.messageTimers.result] as number)">
                     </span>
 
                     <span :class="['setting-info-value',
-                            monitorScreenResult.messageTimers.key,
-                            monitorScreenResult.messageTimers.color
+                            gamingResult.messageTimers.key,
+                            gamingResult.messageTimers.color
                         ]"
-                        v-show="secondarySectionNodes.key == monitorScreenResult.messageTimers.key
-                        && monitorScreenResult.messageTimers.enabled
-                        && secondarySectionNodes.nodes[3]!.result == monitorScreenResult.messageTimers.result"
-                        v-text="toDisplayTimeFormat(monitorScreenResult.messageTimers.timer[monitorScreenResult.messageTimers.result] as number)">
+                        v-show="secondarySectionNodes.key == gamingResult.messageTimers.key
+                        && gamingResult.messageTimers.enabled
+                        && secondarySectionNodes.nodes[3]!.result == gamingResult.messageTimers.result"
+                        v-text="toDisplayTimeFormat(gamingResult.messageTimers.timer[gamingResult.messageTimers.result] as number)">
                     </span>
                 </div>
 
@@ -165,8 +165,8 @@
                     <div class="combination">
                         <svgIcon v-for="(node, index) in secondarySectionNodes.nodes" :key="index"
                             :node="node"
-                            :color="crosshairResult.color"
-                            :enabledIcon="crosshairResult.result"
+                            :color="gamingResult.crosshairLocation.color"
+                            :enabledIcon="gamingResult.crosshairLocation.result"
                             :combination="true">
                         </svgIcon>
                     </div>
@@ -187,7 +187,7 @@ import type { PropType } from 'vue';
 import type { Nodes } from '@/types';
 import { ModeType } from '@/types';
 import { isEnableNode, toLanguageText, toDisplayValueLanguageText, toDisplayTimeFormat } from '@/service/service';
-import { monitorScreenResult, crosshairResult } from '@/service/monitor-state-result';
+import { gamingResult } from '@/service/monitor-state-result';
 
 // components
 import info from './_components/_info.vue';

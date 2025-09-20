@@ -43,6 +43,7 @@ const monitorHeight = 526;
 const menuWidth = 480;
 const menuHeight = 356;
 
+// 取得圖片顏色
 const toImageColor = computed(() => {
     // 自訂 RGB，RGB 轉換
     const RGB = {
@@ -56,7 +57,7 @@ const toImageColor = computed(() => {
     return `${combinedHue}deg`;
 });
 
-
+// 診斷模式
 const DiagnosticPatternsEnum = reactive({
     enabled: false,
     result: removeAndLowercase(management.value.nodes[2].nodes![1].result as string, "Full Screen"),
@@ -71,7 +72,7 @@ const DiagnosticPatternsEnum = reactive({
     intervalId: null as number | null
 });
 
-// 將 timer 狀態移到 module 層級，避免 computed 重設
+// 訊息計時器
 const MessageTimersEnum = reactive({
     timer: {
         [SpeedrunTimerNodesEnum.result]: 0,
@@ -79,6 +80,11 @@ const MessageTimersEnum = reactive({
     },
     start: false,
     intervalId: null as number | null
+});
+
+// 十字準星
+const CrosshairEnum = reactive({
+    start: false
 });
 
 // 螢幕與圖片設定
@@ -166,78 +172,7 @@ export const monitorScreenResult = computed(() => {
             y: input.value.result == "VGA" ? `${(((image.value.nodes[2].nodes![1].result as number) / 100) * (20 - (-20)) - 20)}px` : 0
         },
         // 取得影像縮放設定 Image Scaling
-        imageScaling: image.value.nodes[5].result.replace(/\s+/g, ''),
-        // 當前更新率
-        refFreshRate: {
-            key: gaming.value.nodes[2].key,
-            enabled: gaming.value.nodes[2].result == OnNodesEnum.result,
-            color: gaming.value.nodes[2].nodes[2].result,
-            location: gaming.value.nodes[2].nodes[3].result,
-            rate: 120
-        },
-        // 取得訊息顯示時間
-        messageTimers: {
-            key: gaming.value.nodes[4].key,
-            enabled: [gaming.value.nodes[4].nodes[0].result, gaming.value.nodes[4].nodes[2].result, gaming.value.nodes[4].nodes[3].result].includes(gaming.value.nodes[4].result as string),
-            get start() {
-                return MessageTimersEnum.start;
-            },
-            set start(value: boolean) {
-                MessageTimersEnum.start = value;
-            },
-            result: gaming.value.nodes[4].result,
-            get timer() {
-                return MessageTimersEnum.timer;
-            },
-            set timer(value: any) {
-                MessageTimersEnum.timer = value;
-            },
-            color: gaming.value.nodes[4].nodes[7].result,
-            location: gaming.value.nodes[4].nodes[8].result,
-            message: gaming.value.nodes[4].nodes![6].nodes!.find((n: Nodes) => n.result == gaming.value.nodes[4].nodes![6].result),
-            clearInterval: function() {
-                if (MessageTimersEnum.intervalId !== null) {
-                    clearInterval(MessageTimersEnum.intervalId);
-                    MessageTimersEnum.intervalId = null;
-                }
-            },
-            implement: function(callback?: Function) {
-                if(this.enabled && this.start) {
-                    const step = {
-                        [SpeedrunTimerNodesEnum.result]: 1,
-                        [CountdownTimerNodesEnum.result]: -1
-                    };
-                    MessageTimersEnum.intervalId = setInterval(() => {
-
-                        if(this.result <= CountdownTimerNodesEnum.result && this.timer[this.result] == 0) {
-                            this.start = false;
-                            this.clearInterval();
-                            callback && callback();
-                            const message = MessageNodesEnum.nodes.find((n: Nodes) => n.result == MessageNodesEnum.result);
-                            dialog.toast({ message: message.language, image: iconClock });
-                            return;
-                        }
-
-                        this.timer[this.result]! += step[this.result]!;
-
-                    }, 1000);
-                } else {
-                    this.clearInterval();
-                }
-            },
-            resetTimer: function() {
-                this.clearInterval();
-                this.start = false;
-                this.timer = JSON.parse(JSON.stringify({
-                    [SpeedrunTimerNodesEnum.result]: 0,
-                    [CountdownTimerNodesEnum.result]: minutesTolSeconds(gaming.value.nodes[4].nodes![3].nodes![0].result as number)
-                }));
-            }
-        },
-        multiMonitorAlign: {
-            enabled: gaming.value.nodes[5].result == OnNodesEnum.selected,
-            color: gaming.value.nodes[5].nodes![2].result,
-        }
+        imageScaling: image.value.nodes[5].result.replace(/\s+/g, '')
     }
 });
 
@@ -329,6 +264,99 @@ export const menuStateResult = computed(() => {
     }
 });
 
+// 取得遊戲模式
+export const gamingResult = computed(() => {
+    return {
+        // 當前更新率
+        refFreshRate: {
+            key: gaming.value.nodes[2].key,
+            enabled: gaming.value.nodes[2].result == OnNodesEnum.result,
+            color: gaming.value.nodes[2].nodes[2].result,
+            location: gaming.value.nodes[2].nodes[3].result,
+            rate: 120
+        },
+        // 取得訊息顯示時間
+        messageTimers: {
+            key: gaming.value.nodes[4].key,
+            enabled: [gaming.value.nodes[4].nodes[0].result, gaming.value.nodes[4].nodes[2].result, gaming.value.nodes[4].nodes[3].result].includes(gaming.value.nodes[4].result as string),
+            get start() {
+                return MessageTimersEnum.start;
+            },
+            set start(value: boolean) {
+                MessageTimersEnum.start = value;
+            },
+            result: gaming.value.nodes[4].result,
+            get timer() {
+                return MessageTimersEnum.timer;
+            },
+            set timer(value: any) {
+                MessageTimersEnum.timer = value;
+            },
+            color: gaming.value.nodes[4].nodes[7].result,
+            location: gaming.value.nodes[4].nodes[8].result,
+            message: gaming.value.nodes[4].nodes![6].nodes!.find((n: Nodes) => n.result == gaming.value.nodes[4].nodes![6].result),
+            clearInterval: function() {
+                if (MessageTimersEnum.intervalId !== null) {
+                    clearInterval(MessageTimersEnum.intervalId);
+                    MessageTimersEnum.intervalId = null;
+                }
+            },
+            implement: function(callback?: Function) {
+                if(this.enabled && this.start) {
+                    
+                    const step = {
+                        [SpeedrunTimerNodesEnum.result]: 1,
+                        [CountdownTimerNodesEnum.result]: -1
+                    };
+                    MessageTimersEnum.intervalId = setInterval(() => {
+
+                        if(this.result <= CountdownTimerNodesEnum.result && this.timer[this.result] == 0) {
+                            this.start = false;
+                            this.clearInterval();
+                            callback && callback();
+                            const message = MessageNodesEnum.nodes.find((n: Nodes) => n.result == MessageNodesEnum.result);
+                            dialog.toast({ message: message.language, image: iconClock });
+                            return;
+                        }
+
+                        this.timer[this.result]! += step[this.result]!;
+
+                    }, 1000);
+                } else {
+                    this.clearInterval();
+                }
+            },
+            resetTimer: function() {
+                this.clearInterval();
+                this.start = false;
+                this.timer = JSON.parse(JSON.stringify({
+                    [SpeedrunTimerNodesEnum.result]: 0,
+                    [CountdownTimerNodesEnum.result]: minutesTolSeconds(gaming.value.nodes[4].nodes![3].nodes![0].result as number)
+                }));
+            }
+        },
+        multiMonitorAlign: {
+            enabled: gaming.value.nodes[5].result == OnNodesEnum.selected,
+            color: gaming.value.nodes[5].nodes![2].result,
+        },
+        crosshairLocation: {
+            enabled: gaming.value.nodes[3].result == OnNodesEnum.selected,
+            result: gaming.value.nodes[3].nodes[2].result,
+            color: gaming.value.nodes[3].nodes![3].result,
+            position: {
+                x: `${gaming.value.nodes[3].nodes![4].result.x}px`,
+                y: `${gaming.value.nodes[3].nodes![4].result.y}px`
+            },
+            get start() {
+                return CrosshairEnum.start;
+            },
+            set start(value: boolean) {
+                CrosshairEnum.start = value;
+            } 
+        }
+    }
+});
+
 // 取得螢幕
 export const monitorResult = computed(() => {
     return {
@@ -341,27 +369,6 @@ export const monitorResult = computed(() => {
     }
 });
 
-const CrosshairEnum = reactive({
-    start: false
-});
-
-export const crosshairResult = computed(() => {
-    return {
-        enabled: gaming.value.nodes[3].result == OnNodesEnum.selected,
-        result: gaming.value.nodes[3].nodes[2].result,
-        color: gaming.value.nodes[3].nodes![3].result,
-        position: {
-            x: `${gaming.value.nodes[3].nodes![4].result.x}px`,
-            y: `${gaming.value.nodes[3].nodes![4].result.y}px`
-        },
-        get start() {
-            return CrosshairEnum.start;
-        },
-        set start(value: boolean) {
-            CrosshairEnum.start = value;
-        }
-    }
-});
 
 // 取讀銳利度
 const getSharpness = computed(() => {

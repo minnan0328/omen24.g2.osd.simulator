@@ -13,36 +13,51 @@
     <div :class="['screen', monitorScreenResult.imageScaling]"
         v-if="showScreen
             && !monitorScreenResult.diagnosticPatterns.enabled
-            && !monitorScreenResult.multiMonitorAlign.enabled">
+            && !gamingResult.multiMonitorAlign.enabled">
         <img :src="monitorScreenResult.image" alt="">
 
         <span :class="['setting-info-value',
-                monitorScreenResult.refFreshRate.key, 
-                monitorScreenResult.refFreshRate.color,
-                monitorScreenResult.refFreshRate.location
+                gamingResult.refFreshRate.key, 
+                gamingResult.refFreshRate.color,
+                gamingResult.refFreshRate.location
             ]"
-            v-if="!showMonitorStatus && showGamingSettingText && monitorScreenResult.refFreshRate.enabled"
-            v-text="monitorScreenResult.refFreshRate.rate">
+            v-if="!showMonitorStatus && showGamingSettingText && gamingResult.refFreshRate.enabled"
+            v-text="gamingResult.refFreshRate.rate">
         </span>
 
         <span :class="['setting-info-value',
-                monitorScreenResult.messageTimers.key,
-                monitorScreenResult.messageTimers.color,
-                monitorScreenResult.messageTimers.location
+                gamingResult.messageTimers.key,
+                gamingResult.messageTimers.color,
+                gamingResult.messageTimers.location
             ]"
-            v-if="!showMonitorStatus && showGamingSettingText && monitorScreenResult.messageTimers.enabled"
-            v-text="toDisplayTimeFormat(monitorScreenResult.messageTimers.timer[monitorScreenResult.messageTimers.result] as number)">
+            v-if="!showMonitorStatus && showGamingSettingText && gamingResult.messageTimers.enabled"
+            v-text="toDisplayTimeFormat(gamingResult.messageTimers.timer[gamingResult.messageTimers.result] as number)">
         </span>
+
+        <!-- 十字準星 -->
+        <div class="crosshair" v-if="!showMonitorStatus && showGamingCrosshair && gamingResult.crosshairLocation.enabled">
+            <div class="combination">
+                <iconSvg 
+                    v-for="(node, index) in CrosshairConfigureNodesEnum.nodes" :key="index"
+                    :node="node"
+                    :enabledIcon="gamingResult.crosshairLocation.result"
+                    :combination="true"
+                    :color="gamingResult.crosshairLocation.color"
+                    :position="gamingResult.crosshairLocation.position">
+                </iconSvg>
+            </div>
+        </div>
+        <!-- 十字準星 -->
     </div>
     <div v-if="monitorScreenResult.diagnosticPatterns.enabled
         && monitorScreenResult.diagnosticPatterns.result
-        && !monitorScreenResult.multiMonitorAlign.enabled"
+        && !gamingResult.multiMonitorAlign.enabled"
         :key="monitorScreenResult.diagnosticPatterns.result"
         :class="['screen diagnostic-patterns', monitorScreenResult.diagnosticPatterns.result]">
     </div>
 
-    <div v-if="monitorScreenResult.multiMonitorAlign.enabled"
-        :class="['screen', 'multi-monitor-align', monitorScreenResult.multiMonitorAlign.color]">
+    <div v-if="gamingResult.multiMonitorAlign.enabled"
+        :class="['screen', 'multi-monitor-align', gamingResult.multiMonitorAlign.color]">
         <svg width="784" height="429" viewBox="0 0 784 429" fill="none" xmlns="http://www.w3.org/2000/svg">
             <rect x="744" width="7" height="40" fill="white"/>
             <rect x="784" y="33" width="7" height="40" transform="rotate(90 784 33)" fill="white"/>
@@ -76,9 +91,13 @@
 <script lang="ts" setup>
 import { onMounted } from 'vue';
 import monitorStatus from '@/views/home/_monitor-status/monitor-status.vue';
-import { menuStateResult, monitorScreenResult } from '@/service/monitor-state-result';
+import { menuStateResult, monitorScreenResult, gamingResult } from '@/service/monitor-state-result';
 import { toDisplayTimeFormat } from '@/service/service';
+import iconSvg from '@/views/home/_menus/_components/_icon-svg.vue';
+import CrosshairConfigureNodes from '@/models/class/gaming/_crosshair/_configure-nodes';
 
+
+const CrosshairConfigureNodesEnum = new CrosshairConfigureNodes();
 
 const props = defineProps({
     openMonitor: {
@@ -102,6 +121,10 @@ const props = defineProps({
         default: false
     },
     showGamingSettingText: {
+        type: Boolean,
+        default: false  
+    },
+    showGamingCrosshair: {
         type: Boolean,
         default: false  
     }
@@ -217,6 +240,30 @@ onMounted(() => {
         @include gaming-setting-text-location;
     }
 }
+
+.crosshair {
+    width: $screen-width;
+    height: $screen-height;
+    position: relative;
+
+    .combination {
+        width: 40px;
+        height: 40px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        position: absolute;
+        content: '';
+        top: v-bind("gamingResult.crosshairLocation.position.y");
+        left: v-bind("gamingResult.crosshairLocation.position.x");
+
+        :deep(div.combination-icon) {
+            position: absolute;
+            content: '';
+        }
+    }
+}
+
 
 .initial-enter-active {
     transition: opacity 1s ease;

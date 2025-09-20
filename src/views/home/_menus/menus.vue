@@ -33,21 +33,6 @@
                 v-model:thirdSectionNodes="confirmState.confirmThirdPanel">
         </confirm>
         <!-- 原廠設定改變的 conform -->
-
-        <!-- 十字準星 -->
-        <div class="crosshair" v-if="crosshairResult.enabled && crosshairResult.start">
-            <div class="combination">
-                <iconSvg 
-                    v-for="(node, index) in CrosshairConfigureNodesEnum.nodes" :key="index"
-                    :node="node"
-                    :enabledIcon="crosshairResult.result"
-                    :combination="true"
-                    :color="crosshairResult.color"
-                    :position="crosshairResult.position">
-                </iconSvg>
-            </div>
-        </div>
-        <!-- 十字準星 -->
         
         <!-- 控制選單按鈕 -->
         <menuControllerItem v-if="openControllerMenus" v-model:handleControllerButtonList="handleControllerButtonList!"></menuControllerItem>
@@ -98,7 +83,7 @@ import type { StoreState } from '@/stores/index';
 import type { Nodes, ControllerButtonList, HomeEvent } from '@/types';
 import { ModeType } from '@/types';
 import { isEnableNode, minutesTolSeconds } from '@/service/service';
-import { menuStateResult, monitorScreenResult, crosshairResult } from '@/service/monitor-state-result';
+import { menuStateResult, monitorScreenResult, gamingResult } from '@/service/monitor-state-result';
 
 // components
 import headerSection from './_header-section.vue';
@@ -243,10 +228,17 @@ const props = defineProps({
     startUpFinish: { type: Boolean, default: false },
     showScreen: { type: Boolean, default: false },
     showMonitorStatus: { type: Boolean, default: false },
-    showGamingSettingText: { type: Boolean, default: false }
+    showGamingSettingText: { type: Boolean, default: false },
+    showGamingCrosshair: { type: Boolean, default: false }
 });
 
-const emit = defineEmits(['update:showScreen', 'update:showMonitorStatus', 'update:startUpFinish', 'update:showGamingSettingText']);
+const emit = defineEmits([
+    'update:showScreen',
+    'update:showMonitorStatus',
+    'update:startUpFinish',
+    'update:showGamingSettingText',
+    'update:showGamingCrosshair'
+]);
 
 const menuTimeOutIntervalId = ref<number | null>(null);
 
@@ -406,6 +398,7 @@ function handlerControllerMenus() {
     
     if(props.openMonitor && props.startUpFinish) {
         emit("update:showGamingSettingText", false);
+        emit("update:showGamingCrosshair", false);
         openControllerMenus.value = true;
     };
 };
@@ -426,12 +419,23 @@ function handleAssignButton(key: string) {
         return;
     }
 
+
     if(key == AssignNextActiveInputNodesEnum.key) {
         openAllMenu.value = true;
         selectedMenuPanel(assignMenus.value[key]!.node as Nodes);
         handlerNextPanel();
+    } else if(key == AssignRefreshRateNodesEnum.key)  {
+        saveNodesValue(assignMenus.value[key]!.node.nodes![0], assignMenus.value[key]!.node, 3);
+        handlerClose();
+    } else if(key == AssignMessageTimersNodesEnum.key) {
+        saveNodesValue(assignMenus.value[key]!.node.nodes[4], assignMenus.value[key]!.node, 3);
+        handlerClose();
+    } else if(key == AssignCrosshairNodesEnum.key) {
+        const on = assignMenus.value[key]!.node.result == OnNodesEnum.result;
+        const index = on ? 1 : 0;
+        saveNodesValue(assignMenus.value[key]!.node.nodes[index], assignMenus.value[key]!.node, 3);
+        handlerClose();
     }
-
     else {
         menuState.menuPanel = null;
         menuState.secondPanel = null;
@@ -460,7 +464,7 @@ function selectedMenuPanel(nodes: Nodes) {
 
 /* 控制選單按鈕組合列表 */
 // 是否啟用選單控制按鈕
-const isCrosshairLocationNodes = computed(() => crosshairResult.value.enabled && crosshairResult.value.start && !openAllMenu.value && !openAssignMenu.value);
+const isCrosshairLocationNodes = computed(() => gamingResult.value.crosshairLocation.enabled && gamingResult.value.crosshairLocation.start && !openAllMenu.value && !openAssignMenu.value);
 const isMenuControllerButton = computed(() => openControllerMenus.value && !openAllMenu.value && !openAssignMenu.value && !confirmState.openConfirm && !isCrosshairLocationNodes.value);
 
 const MenuControllerTypes: Record<string, ControllerButtonList> = reactive({
@@ -614,7 +618,7 @@ function handlerModeControllerButtonList(nodes: Nodes, previousNodes: Nodes) {
     const isHorizontalRangeNode = nodes.mode == ModeType.horizontalRange && previousNodes.nodes && previousNodes.nodes?.length > 1;
     // 多個螢幕校正
     const isMultiMonitorAlignNodes = previousNodes.key == MultiMonitorAlignNodesEnum.key
-        && monitorScreenResult.value.multiMonitorAlign.enabled;
+        && gamingResult.value.multiMonitorAlign.enabled;
 
     if(isCrosshairLocationNodes.value) {
         return positionButtonList;
@@ -1179,7 +1183,7 @@ function handlerRangeValue(step: string) {
             // 當為訊息時間器時，更新 timer 值
             if(previousNodes.key == CountdownTimerNodesEnum.key) {
                 const key = CountdownTimerNodesEnum.result as string;
-                monitorScreenResult.value.messageTimers.timer[key] = JSON.parse(JSON.stringify(minutesTolSeconds(nodes.result as number)));
+                gamingResult.value.messageTimers.timer[key] = JSON.parse(JSON.stringify(minutesTolSeconds(nodes.result as number)));
             }
 
             // 當調整亮度與對比時候，關閉動態對比
@@ -1480,11 +1484,13 @@ function saveNodesValue(nodes: Nodes, previousNodes: Nodes, currentPanelNumber =
                         previousNodes.nodes![2]!.disabled = true;
                         previousNodes.nodes![3]!.disabled = true;
                         previousNodes.nodes![4]!.disabled = true;
+                        emit("update:showGamingCrosshair", false);
                     },
                     [OnNodesEnum.key]: () => {
                         previousNodes.nodes![2]!.disabled = false;
                         previousNodes.nodes![3]!.disabled = false;
                         previousNodes.nodes![4]!.disabled = false;
+                        emit("update:showGamingCrosshair", true);
                     }
                 };
 
@@ -1525,11 +1531,11 @@ function saveNodesValue(nodes: Nodes, previousNodes: Nodes, currentPanelNumber =
                     },
                     // 當為訊息時間器時，啟動或暫停
                     [StartStopNodesEnum.key]: () => {
-                        monitorScreenResult.value.messageTimers.start = !monitorScreenResult.value.messageTimers.start;
-                        monitorScreenResult.value.messageTimers.implement(()=> handlerClose())
+                        gamingResult.value.messageTimers.start = !gamingResult.value.messageTimers.start;
+                        gamingResult.value.messageTimers.implement(()=> handlerClose())
                     },
                     // 當為訊息時間器時，重設預設值
-                    [ResetTimerNodesEnum.key]: () => monitorScreenResult.value.messageTimers.resetTimer()
+                    [ResetTimerNodesEnum.key]: () => gamingResult.value.messageTimers.resetTimer()
                 };
 
                 if (nodes.key in actions) {
@@ -1540,26 +1546,11 @@ function saveNodesValue(nodes: Nodes, previousNodes: Nodes, currentPanelNumber =
             [MultiMonitorAlignNodesEnum.key]: () => {
                 const actions = {
                     [OffNodesEnum.key]: () => {
-                        previousNodes.nodes![2]!.disabled = true;
+                        gamingResult.value.multiMonitorAlign.enabled = false;
                     },
                     [OnNodesEnum.key]: () => {
-                        previousNodes.nodes![2]!.disabled = false;
-                    }
-                };
-
-                if (nodes.key in actions) {
-                    actions[nodes.key]!();
-                    return;
-                }
-            },
-            [MultiMonitorAlignNodesEnum.key]: () => {
-                const actions = {
-                    [OffNodesEnum.key]: () => {
-                        monitorScreenResult.value.multiMonitorAlign.enabled = false;
-                    },
-                    [OnNodesEnum.key]: () => {
-                        monitorScreenResult.value.multiMonitorAlign.enabled = true;
-                        
+                        gamingResult.value.multiMonitorAlign.enabled = true;
+                        // 切換到 off
                         handlerNavigation("down");
                     }
                 };
@@ -1724,22 +1715,25 @@ function factorySettingOSDMessage() {
 };
 
 function handleCrosshairLocationAction() {
-    if (crosshairResult.value.enabled && crosshairResult.value.start == false) {
+    if (gamingResult.value.crosshairLocation.enabled && gamingResult.value.crosshairLocation.start == false) {
         if(openAllMenu.value) {
             openAllMenu.value = false;
             menuState.selectedMenus = "openAllMenu";
-            crosshairResult.value.start = true;
+            gamingResult.value.crosshairLocation.start = true;
+            emit("update:showGamingCrosshair", true);
         };
 
         if(openAssignMenu.value) {
             openAssignMenu.value = false;
             menuState.selectedMenus = "openAssignMenu";
-            crosshairResult.value.start = true;
+            gamingResult.value.crosshairLocation.start = true;
+            emit("update:showGamingCrosshair", true);
         };
     }
 
-    else if(crosshairResult.value.enabled && crosshairResult.value.start) {
-        crosshairResult.value.start = false;
+    else if(gamingResult.value.crosshairLocation.enabled && gamingResult.value.crosshairLocation.start) {
+        gamingResult.value.crosshairLocation.start = false;
+        emit("update:showGamingCrosshair", false);
         restoreSelectedMenu();
     }
 }
@@ -1811,6 +1805,7 @@ function handlerClose() {
 
     // 當關閉 menu 開啟
     emit("update:showGamingSettingText", true);
+    emit("update:showGamingCrosshair", true);
 
     menuState.menuPanel = null;
     menuState.secondPanel = null;
@@ -1864,51 +1859,51 @@ defineExpose({ handlerClose });
 
 // 處理選單顯示時效
 function handlerMenuTimeout() {
-    // clearInterval(menuTimeOutIntervalId.value!);
-    // menuTimeOutIntervalId.value = null;
+    clearInterval(menuTimeOutIntervalId.value!);
+    menuTimeOutIntervalId.value = null;
 
-    // // 當為診斷模式時關閉倒數關閉
-    // if (menuTimeOutIntervalId.value != null && monitorScreenResult.value.diagnosticPatterns.enabled) {
-    //     clearInterval(menuTimeOutIntervalId.value!);
-    //     menuTimeOutIntervalId.value = null;
-    // } else if(menuTimeOutIntervalId.value == null && monitorScreenResult.value.diagnosticPatterns.enabled == false) {
-    //     menuTimeOutIntervalId.value = setTimeout(() => {
-    //         if(openAssignMenu.value) {
-    //             handlerClose();
-    //         }
+    // 當為診斷模式時關閉倒數關閉
+    if (menuTimeOutIntervalId.value != null && monitorScreenResult.value.diagnosticPatterns.enabled) {
+        clearInterval(menuTimeOutIntervalId.value!);
+        menuTimeOutIntervalId.value = null;
+    } else if(menuTimeOutIntervalId.value == null && monitorScreenResult.value.diagnosticPatterns.enabled == false) {
+        menuTimeOutIntervalId.value = setTimeout(() => {
+            if(openAssignMenu.value) {
+                handlerClose();
+            }
 
             
-    //         openAllMenu.value = false;
-    //         openControllerMenus.value = false;
-    //         // 當關閉 menu 開啟
-    //         emit("update:showGamingSettingText", true);
+            openAllMenu.value = false;
+            openControllerMenus.value = false;
+            // 當關閉 menu 開啟
+            emit("update:showGamingSettingText", true);
     
-    //         if(menuState.menuPanel && menuState.secondPanel) {
+            if(menuState.menuPanel && menuState.secondPanel) {
 
-    //             if(menuState.menuPanel.key == ColorNodesEnum.key) {
-    //                 menuState.menuPanel.result = menuState.menuPanel.selected;
-    //                 menuState.secondPanel = null;
-    //                 menuState.secondPanelIndex = 0;
-    //                 menuState.currentPanelNumber = 1;
-    //             }
+                if(menuState.menuPanel.key == ColorNodesEnum.key) {
+                    menuState.menuPanel.result = menuState.menuPanel.selected;
+                    menuState.secondPanel = null;
+                    menuState.secondPanelIndex = 0;
+                    menuState.currentPanelNumber = 1;
+                }
 
-    //             menuState.thirdPanel = null;
-    //             menuState.thirdPanelIndex = 0;
-    //             menuState.fourthPanel = null;
-    //             menuState.fourthPanelIndex = 0;
-    //             menuState.currentPanelNumber = 2;
+                menuState.thirdPanel = null;
+                menuState.thirdPanelIndex = 0;
+                menuState.fourthPanel = null;
+                menuState.fourthPanelIndex = 0;
+                menuState.currentPanelNumber = 2;
 
-    //             // 恢復原本選擇亮度與顏色
-    //             setBrightnessValue();
-    //             // 特殊邏輯，恢復預設值
-    //             returnToDefaultValue();
-    //         }
+                // 恢復原本選擇亮度與顏色
+                setBrightnessValue();
+                // 特殊邏輯，恢復預設值
+                returnToDefaultValue();
+            }
     
-    //     }, (menuStateResult.value.menuTimeout as number) * 1000);
-    // } else {
-    //     clearInterval(menuTimeOutIntervalId.value!);
-    //     menuTimeOutIntervalId.value = null;
-    // }
+        }, (menuStateResult.value.menuTimeout as number) * 1000);
+    } else {
+        clearInterval(menuTimeOutIntervalId.value!);
+        menuTimeOutIntervalId.value = null;
+    }
 }
 
 </script>
@@ -2007,28 +2002,6 @@ function handlerMenuTimeout() {
             bottom: 0px;
         }
 	}
-}
-.crosshair {
-    width: $screen-width;
-    height: $screen-height;
-    position: relative;
-
-    .combination {
-        width: 40px;
-        height: 40px;
-        display: flex;
-        align-items: center;
-        justify-content: center;
-        position: absolute;
-        content: '';
-        top: v-bind("crosshairResult.position.y");
-        left: v-bind("crosshairResult.position.x");
-
-        :deep(div.combination-icon) {
-            position: absolute;
-            content: '';
-        }
-    }
 }
 
 </style>

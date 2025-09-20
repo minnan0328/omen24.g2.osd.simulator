@@ -32,7 +32,8 @@
                                 v-model:showMonitorStatus="showMonitorStatus"
                                 v-model:showScreen="showScreen"
                                 v-model:startUpFinish="startUpFinish"
-                                v-model:showGamingSettingText="showGamingSettingText">
+                                v-model:showGamingSettingText="showGamingSettingText"
+                                v-model:showGamingCrosshair="showGamingCrosshair">
                             </monitorScreen>
 
                             <div class="menu-buttons-image">
@@ -46,6 +47,7 @@
                                 v-model:showScreen="showScreen"
                                 v-model:showMonitorStatus="showMonitorStatus"
                                 v-model:showGamingSettingText="showGamingSettingText"
+                                v-model:showGamingCrosshair="showGamingCrosshair"
                                 ref="childMenusComponentRef">
                                 <template v-slot:openMonitor>
                                     <button class="controller-btn open-btn" @click="handleMonitor"></button>
@@ -108,6 +110,7 @@ const childMenusComponentRef = ref(null);
 // 2. 1 啟用時，啟動 menu 不顯示
 // 3. 1 不啟用時，不顯示
 const showGamingSettingText = ref(true);
+const showGamingCrosshair = ref(true);
 
 function handleMonitor() {
     openMonitor.value = !openMonitor.value;
