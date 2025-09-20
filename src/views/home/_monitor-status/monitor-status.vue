@@ -19,6 +19,8 @@
             <p v-text="toLanguageText(menuStateResult.autoSwitchInput.state!.language!)"></p>
             <p v-text="`${toLanguageText(menuStateResult.color.name.language)}:`"></p>
             <p v-text="toLanguageText(menuStateResult.color.state?.language!)"></p>
+            <p v-text="`${toLanguageText(menuStateResult.information.displayMode.language)}:`"></p>
+            <p v-text="toLanguageText(menuStateResult.information.displayMode?.language!)"></p>
         </div>
 
         <div class="monitor-status-info mode">
