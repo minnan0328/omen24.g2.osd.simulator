@@ -1,8 +1,10 @@
 import { useMenuStore } from '@/stores/index';
 import { OffNodes } from '@/models/class/_utilities';
+import ColorNodes from '@/models/class/color/color';
 
 const menuStore = useMenuStore();
 const OffNodesEnum = new OffNodes();
+const ColorNodesEnum = new ColorNodes();
 
 export function setBrightnessValue() {
     menuStore.$state.information.nodes[2].selected = menuStore.$state.color.selected;
@@ -25,4 +27,12 @@ export function setBrightnessValue() {
         menuStore.$state.image.nodes[2].result = OffNodesEnum.result;
         menuStore.$state.image.nodes[2].selected = OffNodesEnum.selected;
     }
+};
+
+export function resetColorRGB() {
+    const originalColorResult = JSON.parse(JSON.stringify(ColorNodesEnum.nodes.find(n => n.result == menuStore.$state.color.result)));
+    const colorResult = menuStore.$state.color.nodes.find(n => n.result == menuStore.$state.color.result);
+    
+    colorResult.rgb = JSON.parse(JSON.stringify(originalColorResult.rgb));
+    setBrightnessValue();
 };

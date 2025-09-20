@@ -162,7 +162,7 @@ import {
     AssignEmptyNodes
 } from '@/models/class/menu/_assign-buttons/_utilities';
 
-import { setBrightnessValue } from '@/service/brightnessDefaultValue';
+import { setBrightnessValue, resetColorRGB } from '@/service/brightnessDefaultValue';
 
 const MenusDefaultEnum = new MenusDefaultModel();
 
@@ -1627,6 +1627,10 @@ function deepFindAndReset(target: any, defaultObj: any, key: string) {
 
 // 重置動作
 function handleResetAction() {
+    if(menuState.menuPanel?.key == ColorNodesEnum.key) {
+        resetColorRGB();
+        return
+    }
     const resetPanel: { [key: number]: Nodes | null } = {
         2: menuState.menuPanel,
         3: menuState.secondPanel,
@@ -1634,7 +1638,9 @@ function handleResetAction() {
     };
     const panel = resetPanel[menuState.currentPanelNumber];
     if (!panel) return;
-    let  key = panel.key;
+
+
+    let key =  panel.key;
 
     // 遞迴尋找並重設 menuStore.$state 與 MenusDefaultEnum
     let found = false;
