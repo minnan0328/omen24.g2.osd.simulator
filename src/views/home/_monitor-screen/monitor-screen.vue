@@ -30,7 +30,7 @@
                 gamingResult.messageTimers.color,
                 gamingResult.messageTimers.location
             ]"
-            v-if="!showMonitorStatus && showGamingSettingText && gamingResult.messageTimers.enabled"
+            v-else-if="!showMonitorStatus && showGamingSettingText && gamingResult.messageTimers.enabled"
             v-text="toDisplayTimeFormat(gamingResult.messageTimers.timer[gamingResult.messageTimers.result] as number)">
         </span>
 

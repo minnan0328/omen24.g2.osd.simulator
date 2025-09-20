@@ -40,7 +40,7 @@ export class DefaultNodes implements Nodes {
         Russian: ""
     };
     unitText = null;
-    timeUnit = null;
+    timeUnit = "";
     useIcon = false;
     svgIcon = null;
     nodes!: Nodes[] | null;

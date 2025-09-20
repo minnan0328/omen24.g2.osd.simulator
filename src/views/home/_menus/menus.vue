@@ -419,7 +419,6 @@ function handleAssignButton(key: string) {
         return;
     }
 
-
     if(key == AssignNextActiveInputNodesEnum.key) {
         openAllMenu.value = true;
         selectedMenuPanel(assignMenus.value[key]!.node as Nodes);
@@ -1359,7 +1358,7 @@ function handlerSave(currentPanelNumber = 0) {
 
 function saveNodesValue(nodes: Nodes, previousNodes: Nodes, currentPanelNumber = 0) {
     currentPanelNumber = currentPanelNumber > 0 ? currentPanelNumber : menuState.currentPanelNumber;
-
+    
     const nodesActions: { [key: string]: () => void } = {
         // 離開選單
         [ExitNodesEnum.key]: () => handlerClose(),
@@ -1490,7 +1489,6 @@ function saveNodesValue(nodes: Nodes, previousNodes: Nodes, currentPanelNumber =
                         previousNodes.nodes![2]!.disabled = false;
                         previousNodes.nodes![3]!.disabled = false;
                         previousNodes.nodes![4]!.disabled = false;
-                        emit("update:showGamingCrosshair", true);
                     }
                 };
 
@@ -1509,13 +1507,19 @@ function saveNodesValue(nodes: Nodes, previousNodes: Nodes, currentPanelNumber =
                         previousNodes.nodes![8]!.disabled = true;    
                     },
                     [OnNodesEnum.key]: () => {
+                        previousNodes.selected = previousNodes.nodes![2]!.selected;
+                        previousNodes.result = previousNodes.nodes![2]!.result;
+                        menus.value.nodes[0]!.nodes[2]!.selected = OffNodesEnum.selected;
+                        menus.value.nodes[0]!.nodes[2]!.result = OffNodesEnum.result;
                         previousNodes.nodes![4]!.disabled = false;
                         previousNodes.nodes![5]!.disabled = false;
                         previousNodes.nodes![6]!.disabled = false;
                         previousNodes.nodes![7]!.disabled = false;
-                        previousNodes.nodes![8]!.disabled = false;    
+                        previousNodes.nodes![8]!.disabled = false;
                     },
                     [SpeedrunTimerNodesEnum.key]: () => {
+                        menus.value.nodes[0]!.nodes[2]!.selected = OffNodesEnum.selected;
+                        menus.value.nodes[0]!.nodes[2]!.result = OffNodesEnum.result;
                         previousNodes.nodes![4]!.disabled = false;
                         previousNodes.nodes![5]!.disabled = false;
                         previousNodes.nodes![6]!.disabled = false;
@@ -1523,6 +1527,8 @@ function saveNodesValue(nodes: Nodes, previousNodes: Nodes, currentPanelNumber =
                         previousNodes.nodes![8]!.disabled = false;    
                     },
                     [CountdownTimerNodesEnum.key]: () => {
+                        menus.value.nodes[0]!.nodes[2]!.selected = OffNodesEnum.selected;
+                        menus.value.nodes[0]!.nodes[2]!.result = OffNodesEnum.result;
                         previousNodes.nodes![4]!.disabled = false;
                         previousNodes.nodes![5]!.disabled = false;
                         previousNodes.nodes![6]!.disabled = false;
@@ -1750,7 +1756,6 @@ function handleCrosshairLocationAction() {
             openAssignMenu.value = false;
             menuState.selectedMenus = "openAssignMenu";
             gamingResult.value.crosshairLocation.start = true;
-            emit("update:showGamingCrosshair", true);
         };
     }
 
