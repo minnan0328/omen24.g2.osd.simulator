@@ -96,7 +96,7 @@ const Inactive = ref({
     font-weight: bold;
     z-index: 1;
     width: 240px;
-    height: 134px;
+    height: 152px;
 
     &.Top {
         top: 32px;

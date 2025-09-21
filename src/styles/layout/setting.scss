@@ -130,9 +130,9 @@
                 color: $black-50;
             }
 
-            &.selected:not(.disabled) {
+            &.selected:not(.disabled){
                 background-color: $black;
-                border: 1px solid $blue;
+                border: 1px solid $white;
                 color: $white;
 
                 &.focus {

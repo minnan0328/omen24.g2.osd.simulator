@@ -1,7 +1,7 @@
 <template>
     <div class="ribbon">
         <div class="logo">
-            <img src="@/assets/images/hp-old-logo.svg" alt="HP">
+            <img src="@/assets/images/hp-old-logo.png" alt="HP">
         </div>
         <div class="title">
             <h2>{{config.screenModel}} OSD Simulator</h2>

@@ -1,6 +1,6 @@
 <template>
-    <div v-if="currentNode.mode == ModeType.checkBox" :class="['customize-checkbox', { 'border-bottom-line': isLastNode(currentNode, previousNodes) }]">
-        <div :class="['checkbox', { selected: nodes?.key == currentNode.key, disabled: currentNode.disabled }]">
+    <div v-if="currentNode.mode == ModeType.checkBox" :class="['customize-checkbox ', { 'border-bottom-line': isLastNode(currentNode, previousNodes) }]">
+        <div :class="['checkbox item', { selected: nodes?.key == currentNode.key, disabled: currentNode.disabled }]">
             <div :class="['box', { checked: isChecked(currentNode), disabled: currentNode.disabled }]"></div>
             <svgIcon v-if="currentNode.useIcon"  :node="currentNode"></svgIcon>
             <div v-else v-text="toLanguageText(currentNode.language!)"></div>
@@ -98,15 +98,7 @@ function isLastNode(node: Nodes, previousNodes: Nodes): boolean {
             }
         }
 
-        &.disabled {
-            color: $black-50;
-        }
-
         &.selected:not(.disabled) {
-            background-color: $black;
-            border: 1px solid $blue;
-            color: $white;
-
             .checkbox {
                 .box {
                     background-color: $black-28;

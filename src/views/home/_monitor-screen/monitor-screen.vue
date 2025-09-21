@@ -1,4 +1,4 @@
-<template v-if="modelValue">
+<template>
     <Transition name="initial">
         <div class="screen-initial" v-show="screenInitial && menuStateResult.OSDMessage.powerOnLogo">
             <img src="@/assets/images/screen-initial.jpg" alt="">

@@ -212,6 +212,20 @@ provide<HomeEvent>("homeEvent", {
 
     .monitor-block {
         position: relative;
+        z-index: 1;
+
+        &::after {
+            position: absolute;
+            content: "";
+            width: 30px;
+            height: 146px;
+            right: -24px;
+            bottom: 168px;
+            border-top: 2px solid $white;
+            border-right: 2px solid $white;
+            border-bottom: 2px solid $white;
+            z-index: -1;
+        }
 
         .wrapper {
             position: absolute;
@@ -241,18 +255,22 @@ provide<HomeEvent>("homeEvent", {
         }
 
         .menu-buttons-image {
+            width: 202px;
+            height: 95px;
             position: absolute;
             bottom: -150px;
-            right: 22px;
+            right: -6px;
+            border: 2px solid $white;
+            border-radius: 10px;
 
             img {
-                width: 115%;
+                width: 100%;
             }
 
             .power-guide {
                 position: absolute;
                 bottom: -36px;
-                right: -24px;
+                right: 14px;
                 white-space: nowrap;
 
                 &::before {
@@ -273,7 +291,7 @@ provide<HomeEvent>("homeEvent", {
                 white-space: nowrap;
                 content: "";
                 bottom: -36px;
-                right: 18px;
+                right: 52px;
             }
         }
     }

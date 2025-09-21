@@ -1,6 +1,6 @@
 <template>
     <div v-if="currentNode.mode == ModeType.radio"
-        :class="['customize-radio',  currentNode.key, currentNode.parents, {
+        :class="['customize-radio item',  currentNode.key, currentNode.parents, {
             selected: nodes?.key == currentNode.key,
             'border-bottom-line': isLastNode(currentNode, previousNodes!),
             disabled: currentNode.disabled
@@ -62,8 +62,6 @@ function isLastNode(node: Nodes, previousNodes: Nodes): boolean {
 
 </script>
 <style lang="scss" scoped>
-
-
 .customize-radio {
     height: 26px;
     border: 1px solid transparent;
@@ -106,10 +104,6 @@ function isLastNode(node: Nodes, previousNodes: Nodes): boolean {
     }
 
     &.selected:not(.disabled) {
-        background-color: $black;
-        border: 1px solid $blue;
-        color: $white;
-
         &.customize-radio {
             .round {
                 background-color: $black-28;

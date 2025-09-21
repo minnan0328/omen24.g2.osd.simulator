@@ -1,5 +1,5 @@
 <template>
-    <div class="range" v-if="isEnableNode(currentNode) && currentNode.mode == ModeType.verticalRange">
+    <div class="range setting-item" v-if="isEnableNode(currentNode) && currentNode.mode == ModeType.verticalRange">
         <div :class="['vertical-range', {
                     selected: nodes && nodes?.key == currentNode.key,
                     color: isColor,
@@ -15,7 +15,7 @@
                 <span v-if="currentNode.rangeMaxIcon" v-text="currentNode.rangeMax"></span>
             </div>
 
-            <div :class="['range-graduate', { selected: nodes && nodes?.key == currentNode.key, 'merge-grid': isColor }]">
+            <div :class="['range-graduate item', { selected: nodes && nodes?.key == currentNode.key, 'merge-grid': isColor }]">
                 <div :class="['graduate', currentNode.key, { max: currentNode.selected == currentNode.rangeMax }]">
                 </div>
             </div>
@@ -141,12 +141,6 @@ function convertRange(value: number, rangeMin: number, rangeMax: number) {
             align-items: center;
             border: 1px solid transparent;
             position: relative;
-
-            &.selected:not(.disabled) {
-                background-color: $black;
-                border: 1px solid $blue;
-                color: $white;
-            }
 
             .graduate {
                 width: 4px;

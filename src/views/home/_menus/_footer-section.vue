@@ -1,8 +1,8 @@
 <template>
     <div class="footer">
         <div class="current-mode">
-            {{ toLanguageText(menuStateResult.information.displayMode.result) }}: {{ menuStateResult.information.currentMode.result }}
-        </div>
+            {{ toLanguageText(menuStateResult.information.displayMode.language) }}: {{ menuStateResult.information.currentMode.result }}
+        </div>  
         <div class="current-input">
             {{ toLanguageText(menuStateResult.input.language) }}: {{ menuStateResult.input.result }}
         </div>

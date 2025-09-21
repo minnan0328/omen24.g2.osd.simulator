@@ -591,7 +591,7 @@ function handlerModeControllerButtonList(nodes: Nodes, previousNodes: Nodes) {
     // 多個 range value 組合
     const rangeNextButtonList: ControllerButtonList[] = [ MenuControllerTypes.empty!, MenuControllerTypes.rangeAdd!, MenuControllerTypes.rangeSubtract!,  MenuControllerTypes.previous!, MenuControllerTypes.nextRight! ];
     // 多個直向 range value 組合，且最後一個時候
-    const rangeNextButtonListLast: ControllerButtonList[] = [ MenuControllerTypes.empty!, MenuControllerTypes.rangeSubtract!, MenuControllerTypes.rangeAdd!,  MenuControllerTypes.previous!, MenuControllerTypes.next! ];
+    const rangeNextButtonListLast: ControllerButtonList[] = [ MenuControllerTypes.empty!, MenuControllerTypes.rangeAdd!, MenuControllerTypes.rangeSubtract!, MenuControllerTypes.previous!, MenuControllerTypes.next! ];
     // 多個縱向 range value 組合 unfocus
     const rangeNextButtonListUnfocus: ControllerButtonList[] = [ MenuControllerTypes.checkSave!, MenuControllerTypes.arrowUp!, MenuControllerTypes.arrowBottom!, MenuControllerTypes.previous!, MenuControllerTypes.nextSave! ];
     // assign button 確認選擇的按鈕組合
@@ -1988,10 +1988,6 @@ function handlerMenuTimeout() {
 		height: 46px;
         bottom: 24px;
         right: 0px;
-        border: 1px dashed $white;
-        border-radius: 50%;
-        background-color: rgba(255, 255, 255, .15);
-    
 
         &:hover,
         &.show-guide {

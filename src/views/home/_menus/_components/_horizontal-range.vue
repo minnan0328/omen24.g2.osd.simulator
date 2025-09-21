@@ -1,6 +1,6 @@
 <template>
-    <div class="range" v-if="isEnableNode(currentNode) && currentNode.mode == ModeType.horizontalRange">
-        <div :class="['vertical-range', {
+    <div class="range " v-if="isEnableNode(currentNode) && currentNode.mode == ModeType.horizontalRange">
+        <div :class="['vertical-range ', {
                 selected: nodes?.key == currentNode.key,
                 focus: currentNode.horizontalRangeFocus,
                 disabled: currentNode.disabled
@@ -87,9 +87,9 @@ function convertRange(value: number, rangeMin: number, rangeMax: number) {
 
             &.selected:not(.disabled),
             &.focus:not(.disabled) {
-                background-color: $black;
-                border: 1px solid $blue;
-                color: $white;
+                    background-color: $black;
+                    border: 1px solid $white;
+                    color: $white;
             }
 
             .graduate {
