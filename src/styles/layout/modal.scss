@@ -11,6 +11,15 @@
     padding: 16px 8px;
     font-size: 10px;
 
+    .warn-img {
+        position: absolute;
+        top: 10px;
+        left: 10px;
+        width: 48px;
+        height: 48px;
+
+    }
+
     &.toast {
         display: flex;
         align-items: center;
@@ -46,7 +55,7 @@
             border: 2px solid $black;
 
             &.selected {
-                border-color: $white;
+                border-color: $selected-border-color;
             }
 
             &.Confirm {
