@@ -8,7 +8,7 @@
             disabled: currentNode.disabled
         }]">
         <span v-text="toLanguageText(currentNode.language!)"></span>
-        <span v-if="previousNodes && previousNodes.key == 'FactoryReset' && currentNode.result == 'Yes'">（ENERGY STAR®）</span>
+        <!-- <span v-if="previousNodes && previousNodes.key == 'FactoryReset' && currentNode.result == 'Yes'">（ENERGY STAR®）</span> -->
     </div>
 </template>
 <script setup lang="ts">

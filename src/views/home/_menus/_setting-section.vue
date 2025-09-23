@@ -150,9 +150,9 @@
                     <horizontalRange :currentNode="thirdNodes" :nodes="thirdSectionNodes"></horizontalRange>
                 </template>
 
-                <div class="setting-item factory-reset-image" v-if="secondarySectionNodes.key == factoryResetNodesEnum.key">
+                <!-- <div class="setting-item factory-reset-image" v-if="secondarySectionNodes.key == factoryResetNodesEnum.key">
                     <img src="@/assets/images/energy-star.jpg" alt="">
-                </div>
+                </div> -->
 
                 <div class="setting-item image-scaling" v-if="secondarySectionNodes.key == imageScalingNodesEnum.key">
                     <p>The “Image Scaling” OSD menu for this product is disabled for all 16:9 aspect ratio resolutions.</p>
