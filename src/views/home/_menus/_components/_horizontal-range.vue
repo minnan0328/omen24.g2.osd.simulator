@@ -88,7 +88,7 @@ function convertRange(value: number, rangeMin: number, rangeMax: number) {
             &.selected:not(.disabled),
             &.focus:not(.disabled) {
                     background-color: $black;
-                    border: 1px solid $white;
+                    border: 1px solid $selected-border-color;
                     color: $white;
             }
 

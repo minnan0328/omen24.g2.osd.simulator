@@ -132,7 +132,7 @@
 
             &.selected:not(.disabled){
                 background-color: $black;
-                border: 1px solid $white;
+                border: 1px solid $selected-border-color;
                 color: $white;
 
                 &.focus {
