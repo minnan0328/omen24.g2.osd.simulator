@@ -2,6 +2,7 @@ import type { Nodes } from "@/types";
 import { ModeType } from "@/types";
 import { DefaultNodes } from '../_utilities';
 
+const DefaultNodesEnum = new DefaultNodes();
 export default class RTSNodes extends DefaultNodes implements Nodes {
     key = "RTS";
     selected = "RTS";
@@ -23,4 +24,27 @@ export default class RTSNodes extends DefaultNodes implements Nodes {
         BrazilianPortuguese: "RTS",
         Russian: "RTS"
     };
+    nodes = [
+        {
+            ...JSON.parse(JSON.stringify(DefaultNodesEnum)),
+            key: "RTSMessage",
+            selected: null,
+            result: null,
+            mode: ModeType.info,
+            parents: this.key,
+            language: {
+                German: "Echtzeitstrategie",
+                SimplifiedChinese: "实时战略",
+                TraditionalChinese: "即時策略",
+                English: "Real-Time Strategy",
+                Español: "Estrategia en tiempo real",
+                French: "Stratégie en temps réel",
+                Italian: "Strategia in tempo reale",
+                Japanese: "リアルタイム ストラテジー",
+                Nederlands: "Realtime strategie",
+                BrazilianPortuguese: "Estratégia em tempo real",
+                Russian: "Стратегия в реальном времени"
+            }
+        }
+    ]
 };
