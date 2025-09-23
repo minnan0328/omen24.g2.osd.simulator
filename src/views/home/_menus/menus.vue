@@ -430,9 +430,7 @@ function handleAssignButton(key: string) {
         saveNodesValue(assignMenus.value[key]!.node.nodes[4], assignMenus.value[key]!.node, 3);
         handlerClose();
     } else if(key == AssignCrosshairNodesEnum.key) {
-        const on = assignMenus.value[key]!.node.result == OnNodesEnum.result;
-        const index = on ? 1 : 0;
-        saveNodesValue(assignMenus.value[key]!.node.nodes[index], assignMenus.value[key]!.node, 3);
+        saveNodesValue(assignMenus.value[key]!.node.nodes[0], assignMenus.value[key]!.node, 3);
         handlerClose();
     }
     else {
