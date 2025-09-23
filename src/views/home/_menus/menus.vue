@@ -605,7 +605,9 @@ function handlerModeControllerButtonList(nodes: Nodes, previousNodes: Nodes) {
     
     // 當為 reset and back, button 下一層沒有節點的時候
     const isLastNode = nodes.key == ResetNodesEnum.key || nodes.key == BackNodesEnum.key
-        || (nodes.mode == ModeType.radio || nodes.mode == ModeType.button || nodes.mode == ModeType.checkBox || nodes.mode == ModeType.paginationButton) && !nodes.nodes;
+        || (nodes.mode == ModeType.radio || nodes.mode == ModeType.button || nodes.mode == ModeType.checkBox || nodes.mode == ModeType.paginationButton) && !nodes.nodes
+        // radio 的下一層目前資訊只會在第0個
+        || (nodes.mode == ModeType.radio) && nodes.nodes && nodes.nodes[0]?.mode == ModeType.info;
     
     // 單個 range value node
     const isSingleRangeNode = (nodes.mode == ModeType.verticalRange || nodes.mode == ModeType.horizontalRange) && previousNodes.nodes?.length == 1;

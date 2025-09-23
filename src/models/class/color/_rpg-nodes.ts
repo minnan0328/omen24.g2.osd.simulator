@@ -2,6 +2,7 @@ import type { Nodes } from "@/types";
 import { ModeType } from "@/types";
 import { DefaultNodes } from '../_utilities';
 
+const DefaultNodesEnum = new DefaultNodes();
 export default class RPGNodes extends DefaultNodes implements Nodes {
     key = "RPG";
     selected = "RPG";
@@ -23,4 +24,27 @@ export default class RPGNodes extends DefaultNodes implements Nodes {
         BrazilianPortuguese: "RPG",
         Russian: "RPG"
     };
+    nodes = [
+        {
+            ...JSON.parse(JSON.stringify(DefaultNodesEnum)),
+            key: "RPGMessage",
+            selected: null,
+            result: null,
+            mode: ModeType.info,
+            parents: this.key,
+            language: {
+                German: "RPGs",
+                SimplifiedChinese: "角色扮演游戏",
+                TraditionalChinese: "角色扮演遊戲",
+                English: "Role Playing Games",
+                Español: "Juegos de rol",
+                French: "Jeux de rôle",
+                Italian: "Giochi di ruolo",
+                Japanese: "ロール プレイング ゲーム",
+                Nederlands: "Rollengames",
+                BrazilianPortuguese: "Jogos de representação de papéis (RPG)",
+                Russian: "Ролевые игры"
+            }
+        }
+    ]
 };

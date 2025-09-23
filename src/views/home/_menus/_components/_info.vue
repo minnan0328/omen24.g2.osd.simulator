@@ -1,7 +1,7 @@
 <template>
     <div v-if="currentNode.mode == ModeType.info" 
         :class="['item', { 'merge-grid': currentNode.mergeGrid, disabled: currentNode.disabled }]"
-        v-text="`${toLanguageText(currentNode.language!)}:`">
+        v-text="`${toLanguageText(currentNode.language!)}`">
     </div>
 </template>
 <script setup lang="ts">
