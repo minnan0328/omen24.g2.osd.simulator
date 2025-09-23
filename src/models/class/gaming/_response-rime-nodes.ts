@@ -72,22 +72,22 @@ export default class ResponseTimeNodes extends DefaultNodes implements Nodes {
         {
             ...JSON.parse(JSON.stringify(DefaultNodesEnum)),
             key: "Level3",
-            selected: "Level 4",
-            result: "Level 4",
+            selected: "Level 3",
+            result: "Level 3",
             parents: this.key,
             mode: ModeType.radio,
             language: {
-                German: "Ebene 4",
-                SimplifiedChinese: "4 级",
-                TraditionalChinese: "4 級",
-                English: "Level 4",
-                Español: "Nivel 4",
-                French: "Niveau 4",
-                Italian: "Livello 4",
-                Japanese: "レベル 4",
-                Nederlands: "Niveau 4",
-                BrazilianPortuguese: "Nível 4",
-                Russian: "Уровень 4"
+                German: "Ebene 3",
+                SimplifiedChinese: "3 级",
+                TraditionalChinese: "3 級",
+                English: "Level 3",
+                Español: "Nivel 3",
+                French: "Niveau 3",
+                Italian: "Livello 3",
+                Japanese: "レベル 3",
+                Nederlands: "Niveau 3",
+                BrazilianPortuguese: "Nível 3",
+                Russian: "Уровень 3"
             }
         },
         {
