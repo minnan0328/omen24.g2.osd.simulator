@@ -6,6 +6,7 @@ export default class BlueNodes extends DefaultNodes implements Nodes {
     key = "Black";
     selected = "Black";
     result = "Black";
+    optionColor = "rgb(0, 0, 0)";
     livePreview = true;
     mode = ModeType.radio;
     language = {

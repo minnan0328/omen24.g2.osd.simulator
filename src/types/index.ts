@@ -32,6 +32,7 @@ export interface Nodes {
     result: number | string | string[] | boolean | object | null;
     brightness: number | null;
     rgb: { r: number, g: number, b: number } | null;
+    optionColor: string | null;
     assignItemDisplay: Boolean;
     menuItemDisplay: Boolean;
     disabled: Boolean;

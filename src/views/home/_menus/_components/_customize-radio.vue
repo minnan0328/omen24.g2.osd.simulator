@@ -6,7 +6,8 @@
             disabled: currentNode.disabled
         }]">
         <div :class="['round', { checked: isSelected(currentNode, previousNodes), disabled: currentNode.disabled }]"></div>
-        <div v-text="toLanguageText(currentNode.language!)"></div>
+        <div v-if="currentNode.optionColor" class="color-box" :style="{ backgroundColor: currentNode.optionColor }"></div>
+        <div v-else v-text="toLanguageText(currentNode.language!)"></div>
     </div>
 </template>
 <script setup lang="ts">
@@ -92,6 +93,11 @@ function isLastNode(node: Nodes, previousNodes: Nodes): boolean {
             left: 2px;
             top: 2px;
         }
+    }
+
+    .color-box {
+        width: 16px;
+        height: 16px;
     }
 
     &.disabled {

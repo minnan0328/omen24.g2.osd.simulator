@@ -6,6 +6,7 @@ export default class PurpleNodes extends DefaultNodes implements Nodes {
     key = "Purple";
     selected = "Purple";
     result = "Purple";
+    optionColor = "rgb(191, 15, 250)";
     livePreview = true;
     mode = ModeType.radio;
     language = {

@@ -6,6 +6,7 @@ export default class WhiteNodes extends DefaultNodes implements Nodes {
     key = "White";
     selected = "White";
     result = "White";
+    optionColor = "rgb(255, 255, 255)";
     livePreview = true;
     mode = ModeType.radio;
     language = {
