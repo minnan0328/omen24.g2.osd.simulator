@@ -9,7 +9,8 @@ export default class LocationNodes extends DefaultNodes implements Nodes {
     assignItemDisplay = false;
     disabled = true;
     rangeMin = { x: -10, y: -10 };
-    rangeMax = { x: 940, y: 506 };
+    rangeMax = { x: 930, y: 496 };
+    step = 5;
     mode = ModeType.button;
     language = {
         German: "Speicherort",

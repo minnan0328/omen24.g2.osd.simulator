@@ -1274,9 +1274,9 @@ function handlerCrosshairPosition(step: string, position: string) {
                     selected[position]! > min &&
                     result[position]! <= max
                 ) {
-                    selected[position]! -= 1;
-                    result[position]! -= 1;
-                } 
+                    selected[position]! -= nodes.step!;
+                    result[position]! -= nodes.step!;
+                }
 
                 if (
                     step == "add" &&
@@ -1285,8 +1285,8 @@ function handlerCrosshairPosition(step: string, position: string) {
                     selected[position]! >= min &&
                     selected[position]! < max
                 ) {
-                    selected[position]! += 1;
-                    result[position]! += 1;
+                    selected[position]! += nodes.step!;
+                    result[position]! += nodes.step!;
                 }
             }
         };
