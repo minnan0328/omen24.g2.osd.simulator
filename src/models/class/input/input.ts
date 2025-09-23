@@ -4,10 +4,12 @@ import { DefaultNodes, ResetNodes, BackNodes, ExitNodes, OnNodes, OffNodes } fro
 import AutoSwitchInputNodes from './_auto-switch-input-nodes';
 import DPHotPlugDetectionNodes from './_dp-hot-plug-detection-nodes';
 import DisplayPortModeNodes from './_ display-port-mode-nodes';
+import HDMICECNodes from './_hdml-cec-nodes';
 
 let AutoSwitchInputNodesEnum = new AutoSwitchInputNodes(); 
 let DPHotPlugDetectionNodesEnum = new DPHotPlugDetectionNodes(); 
 let DisplayPortModeNodesEnum = new DisplayPortModeNodes(); 
+let HDMICECNodesEnum = new HDMICECNodes();
 let DefaultNodesEnum = new DefaultNodes(); 
 let ResetNodesEnum = new ResetNodes(); 
 let BackNodesEnum = new BackNodes();
@@ -19,7 +21,7 @@ export default class Input extends DefaultNodes implements Nodes {
     key = "Input";
     selected = "HDMI 1";
     result = "HDMI 1";
-    size = 9;
+    size = 10;
     mode = ModeType.button;
     language = {
         German: "Eingabe",
@@ -108,6 +110,10 @@ export default class Input extends DefaultNodes implements Nodes {
         },
         {
             ...JSON.parse(JSON.stringify(DisplayPortModeNodesEnum)),
+            parents: this.key
+        },
+        {
+            ...JSON.parse(JSON.stringify(HDMICECNodesEnum)),
             parents: this.key
         },
         {

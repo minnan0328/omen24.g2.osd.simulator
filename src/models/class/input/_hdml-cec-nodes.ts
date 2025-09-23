@@ -10,8 +10,9 @@ export default class HDMLCECNodes extends DefaultNodes implements Nodes {
     key = "HDMICEC";
     selected = OnNodesEnum.selected;
     result = OnNodesEnum.result;
+    assignItemDisplay = false;
     size = 3;
-    mode = ModeType.radio;
+    mode = ModeType.button;
     language = {
         German: "HDMI CEC",
         SimplifiedChinese: "HDMI CEC",

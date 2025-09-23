@@ -40,12 +40,7 @@ const props = defineProps({
 });
 
 function isSelected(node: Nodes, previousNodes: (Nodes | null)) {
-    // Audio Follows Video 因為 UI 切版關係，不在自己的 child currentNode 裡面
-    if(previousNodes?.key == menuStore.$state.input.nodes[4].key) {
-        return menuStore.$state.input.nodes[4].nodes[1].selected == node.selected;
-    } else {
-        return previousNodes!.selected == node.selected;
-    }
+    return previousNodes!.selected == node.selected;
 }
 
 

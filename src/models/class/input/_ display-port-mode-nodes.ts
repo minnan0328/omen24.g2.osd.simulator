@@ -71,6 +71,27 @@ export default class DisplayPortModeNodes extends DefaultNodes implements Nodes 
                 Russian: "DisplayPort 1.2"
             }
         },
+        {
+            ...JSON.parse(JSON.stringify(DefaultNodesEnum)),
+            key: "DisplayPort1.4",
+            selected: "DisplayPort 1.4",
+            result: "DisplayPort 1.4",
+            parents: this.key,
+            mode: ModeType.radio,
+            language: {
+                German: "DisplayPort 1.4",
+                SimplifiedChinese: "DisplayPort 1.4",
+                TraditionalChinese: "DisplayPort 1.4",
+                English: "DisplayPort 1.4",
+                Español: "DisplayPort 1.4",
+                French: "DisplayPort 1.4",
+                Italian: "DisplayPort 1.4",
+                Japanese: "DisplayPort 1.4",
+                Nederlands: "DisplayPort 1.4",
+                BrazilianPortuguese: "DisplayPort 1.4",
+                Russian: "DisplayPort 1.4"
+            }
+        },
         // 上一步
         {
             ...JSON.parse(JSON.stringify(BackNodesEnum)),
