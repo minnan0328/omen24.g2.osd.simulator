@@ -1187,8 +1187,9 @@ function handlerRangeValue(step: string) {
 
             // 當調整亮度與對比時候，關閉動態對比
             if(previousNodes.key == BrightnessNodesEnum.key || previousNodes.key == ContrastNodesEnum.key) {
-                menus.value.nodes[0]!.nodes[2].result = OffNodesEnum.result;
-                menus.value.nodes[0]!.nodes[2].selected = OffNodesEnum.selected;
+                
+                menus.value.nodes[1]!.nodes[1].result = OffNodesEnum.result;
+                menus.value.nodes[1]!.nodes[1].selected = OffNodesEnum.selected;
             }
 
             // 當調整 Menu Position 時候，顯示 H=xx, V=xx
