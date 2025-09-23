@@ -4,7 +4,7 @@
             <img :src="image" alt="">
         </div>
         <div>
-            <p>{{ toLanguageText(message) }} Progress...</p>
+            <p>{{ toLanguageText(message) }}</p>
         </div>
     </div>
 </template>
