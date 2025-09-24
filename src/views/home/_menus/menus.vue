@@ -162,7 +162,7 @@ import {
     AssignEmptyNodes
 } from '@/models/class/menu/_assign-buttons/_utilities';
 
-import { setBrightnessValue, resetColorRGB } from '@/service/brightnessDefaultValue';
+import { setBrightnessValue, setDynamicContrastValue, resetColorRGB } from '@/service/set-default-value';
 
 const MenusDefaultEnum = new MenusDefaultModel();
 
@@ -832,8 +832,6 @@ function selectEnabledNode(node: Nodes, startIndex: number, setValue: (node: Nod
                 || (openAssignMenu.value && node.nodes[index]!.mode == ModeType.radio && node.nodes[index]!.assignItemDisplay)
             ) {
                 let selectedIndex = (node.selected || node.selected === 0) ? node.nodes.findIndex(n => n.selected === node.selected) : index;
-                console.log(selectedIndex);
-                
                 index = selectedIndex >= 0 ? selectedIndex : index;
                 setValue(node.nodes[index]!, index);
                 return;
@@ -1187,9 +1185,7 @@ function handlerRangeValue(step: string) {
 
             // 當調整亮度與對比時候，關閉動態對比
             if(previousNodes.key == BrightnessNodesEnum.key || previousNodes.key == ContrastNodesEnum.key) {
-                
-                menus.value.nodes[1]!.nodes[1].result = OffNodesEnum.result;
-                menus.value.nodes[1]!.nodes[1].selected = OffNodesEnum.selected;
+                setDynamicContrastValue();
             }
 
             // 當調整 Menu Position 時候，顯示 H=xx, V=xx
@@ -1704,8 +1700,6 @@ function handleChangingMessageAction(nodes: Nodes) {
             factorySettings.value = false;
             confirmState.openConfirm = false;
             restoreSelectedMenu();
-            // 選擇下一層
-            handlerNextPanel();
             // 處理儲存內容
             handlerSave(menuState.currentPanelNumber);
         },

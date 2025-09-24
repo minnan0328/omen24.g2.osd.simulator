@@ -180,6 +180,9 @@ onMounted(() => {
 }
 
 .screen {
+    --rgb-r: v-bind("monitorScreenResult.RGB.R");
+    --rgb-g: v-bind("monitorScreenResult.RGB.G");
+    --rgb-b: v-bind("monitorScreenResult.RGB.B");
     position: absolute;
     width: $screen-width;
     height: $screen-height;
@@ -198,6 +201,20 @@ onMounted(() => {
         }
     }
 
+    &::before {
+        position: absolute;
+        content: "";
+        top: 0;
+        left: 0;
+        right: 0;
+        bottom: 0;
+        width: $screen-width;
+        height: $screen-height;
+        background-color: rgb(var(--rgb-r), var(--rgb-g), var(--rgb-b));
+        z-index: 1;
+        mix-blend-mode: multiply;
+    }
+
     img {
         width: $screen-width;
         height: $screen-height;
@@ -205,7 +222,7 @@ onMounted(() => {
         bottom: v-bind("monitorScreenResult.imagePosition.y");
         left:  v-bind("monitorScreenResult.imagePosition.x");
         filter: 
-            hue-rotate(v-bind("monitorScreenResult.RGB"))
+            // hue-rotate(v-bind("monitorScreenResult.RGB"))
             brightness(v-bind("monitorScreenResult.brightness"))
             contrast(v-bind("monitorScreenResult.contrast"))
             blur(v-bind("monitorScreenResult.sharpness"));

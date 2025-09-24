@@ -42,6 +42,7 @@ const props = defineProps<{
     height: 84px;
 	bottom: 8px;
 	right: 8px;
+    z-index: 2;
 
     &.accessibility {
         transform: scale(1.1);
