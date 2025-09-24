@@ -32,7 +32,7 @@ export default defineConfig(({ command, mode, isSsrBuild, isPreview }) => {
 			}
 		},
 		build: {
-			assetsInlineLimit: 10000,
+			assetsInlineLimit: 55000,
 			rollupOptions: {
 				output: {
 					chunkFileNames: 'scripts/[name]-[hash].js',
