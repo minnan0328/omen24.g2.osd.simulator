@@ -1,7 +1,7 @@
 <template>
     <div class="sidebar setting">
         <div class="hp-logo">
-            <img src="@/assets/images/hp-logo.png" alt="">
+            <img src="@/assets/images/hp-logo.svg" alt="">
         </div>
         <div class="options setting-item">
             <template  v-for="menu in menus.nodes" v-text="toLanguageText(menu.language)">
