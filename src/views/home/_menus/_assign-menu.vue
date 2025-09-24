@@ -1,7 +1,7 @@
 <template>
     <div :class="['menu assign-menu', mainSectionNodes!.key, { 'accessibility': menuStateResult.accessibility }]">
         <div class="header">
-            <p>{{ mainSectionNodes!.key == InputNodesEnum.key ? "Hot " : "" }}{{ toLanguageText(mainSectionNodes!.language!) }}</p>
+            <p>{{ toLanguageText(mainSectionNodes!.language!) }}</p>
         </div>
 
         <div class="body">
@@ -59,9 +59,6 @@ import customizeRadio from './_components/_customize-radio.vue';
 import { BackNodes, ResetNodes } from '@/models/class/_utilities';
 
 import { menuStateResult } from '@/service/monitor-state-result';
-import InputNodes from '@/models/class/input/input';
-
-const InputNodesEnum = new InputNodes();
 
 const BackNodesEnum = new BackNodes();
 const ResetNodesEnum = new ResetNodes();
