@@ -828,9 +828,12 @@ function selectEnabledNode(node: Nodes, startIndex: number, setValue: (node: Nod
             if (
                 openAllMenu.value && isEnableNode(node.nodes[index]!) && !node.nodes[index]!.disabled && node.nodes[index]!.menuItemDisplay
                 || (openAssignMenu.value && node.nodes[index]!.mode !== ModeType.info)
-                || (openAssignMenu.value && node.nodes[index]!.mode == ModeType.button && !node.nodes[index]!.assignItemDisplay)
+                || (openAssignMenu.value && node.nodes[index]!.mode == ModeType.button && node.nodes[index]!.assignItemDisplay)
+                || (openAssignMenu.value && node.nodes[index]!.mode == ModeType.radio && node.nodes[index]!.assignItemDisplay)
             ) {
                 let selectedIndex = (node.selected || node.selected === 0) ? node.nodes.findIndex(n => n.selected === node.selected) : index;
+                console.log(selectedIndex);
+                
                 index = selectedIndex >= 0 ? selectedIndex : index;
                 setValue(node.nodes[index]!, index);
                 return;
@@ -1054,6 +1057,7 @@ function updatePanelIndex(node: Nodes, nodeIndex: number, step: number, send: (p
             || openAssignMenu.value && node.nodes[index]!.key == ResetNodesEnum.key
             || openAssignMenu.value && node.nodes[index]!.key == BackNodesEnum.key
             || openAssignMenu.value && node.nodes[index]!.mode == ModeType.button && !node.nodes[index]!.assignItemDisplay
+            || openAssignMenu.value && node.nodes[index]!.mode == ModeType.radio && !node.nodes[index]!.assignItemDisplay
         ) {
             updatePanelIndex(node, index ,step, send);
         } else {
