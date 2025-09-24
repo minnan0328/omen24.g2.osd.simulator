@@ -419,11 +419,7 @@ function handleAssignButton(key: string) {
         return;
     }
 
-    if(key == AssignNextActiveInputNodesEnum.key) {
-        openAllMenu.value = true;
-        selectedMenuPanel(assignMenus.value[key]!.node as Nodes);
-        handlerNextPanel();
-    } else if(key == AssignRefreshRateNodesEnum.key)  {
+    if(key == AssignRefreshRateNodesEnum.key)  {
         saveNodesValue(assignMenus.value[key]!.node.nodes![0], assignMenus.value[key]!.node, 3);
         handlerClose();
     } else if(key == AssignMessageTimersNodesEnum.key) {
