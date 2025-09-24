@@ -31,6 +31,12 @@ export function setBrightnessValue() {
     }
 };
 
+
+export function setDynamicContrastValue() {
+    menuStore.$state.image.nodes[2].result = OffNodesEnum.result;
+    menuStore.$state.image.nodes[2].selected = OffNodesEnum.selected;
+}
+
 export function resetColorRGB() {
     const originalColorResult = JSON.parse(JSON.stringify(ColorNodesEnum.nodes.find(n => n.result == menuStore.$state.color.result)));
     const colorResult = menuStore.$state.color.nodes.find(n => n.result == menuStore.$state.color.result);
