@@ -25,7 +25,7 @@
                         </div>
 
                         <div class="wrapper" id="monitor-wrapper">
-                            <div class="power-light" v-show="openMonitor && monitorResult.powerLED"></div>
+                            <div class="power-light" v-if="openMonitor && monitorResult.powerLED"></div>
     
                             <monitorScreen v-if="openMonitor" v-model:openMonitor="openMonitor"
                                 v-model:screenInitial="screenInitial"
