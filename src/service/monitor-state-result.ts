@@ -43,20 +43,6 @@ const monitorHeight = 526;
 const menuWidth = 480;
 const menuHeight = 356;
 
-// 取得圖片顏色
-const toImageColor = computed(() => {
-    // 自訂 RGB，RGB 轉換
-    const RGB = {
-        r: (color.value.nodes[8].nodes) ? color.value.nodes[8].nodes[0].result as number : 255,
-        g:(color.value.nodes[8].nodes) ? color.value.nodes[8].nodes[1].result as number : 255,
-        b: (color.value.nodes[8].nodes) ? color.value.nodes[8].nodes[2].result as number : 255
-    }
-
-    const combinedHue = (RGB.r + RGB.g + RGB.b) / 20;
-
-    return `${combinedHue}deg`;
-});
-
 // 診斷模式
 const DiagnosticPatternsEnum = reactive({
     enabled: false,
@@ -97,10 +83,14 @@ export const monitorScreenResult = computed(() => {
             monitorHeight: `${monitorHeight}px`
         }, 
         // 取得亮度值 Brightness
-        brightness: `${image.value.nodes[0].result}%`,
+        brightness: `${image.value.nodes[0].nodes[0].result}%`,
         // 取得對比值 Contrast
-        contrast: `${image.value.nodes[1].result}%`,
-        RGB: toImageColor.value,
+        contrast: `${image.value.nodes[1].nodes[0].result}%`,
+        RGB: {
+            R: (color.value.nodes[8].nodes) ? color.value.nodes[8].nodes[0].result as number : 255,
+            G:(color.value.nodes[8].nodes) ? color.value.nodes[8].nodes[1].result as number : 255,
+            B: (color.value.nodes[8].nodes) ? color.value.nodes[8].nodes[2].result as number : 255
+        },
         // 取得銳利度
         sharpness: getSharpness.value,
         // 取得診斷模式顏色

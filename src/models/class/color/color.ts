@@ -27,6 +27,7 @@ export default class Color extends DefaultNodes implements Nodes {
     key = "Color";
     selected = FPSNodesEnum.selected;
     result = FPSNodesEnum.result;
+    brightness = FPSNodesEnum.brightness;
     size = 12;
     mode = ModeType.button;
     language = {
