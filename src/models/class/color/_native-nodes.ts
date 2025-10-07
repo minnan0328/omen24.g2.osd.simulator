@@ -13,6 +13,7 @@ export default class NativeNodes extends DefaultNodes implements Nodes {
     rgb = { r: 255, g: 255, b: 255 };
     livePreview = true;
     mode = ModeType.radio;
+    size = 5;
     language = {
         German: "Eigen",
         SimplifiedChinese: "本机",
@@ -27,6 +28,34 @@ export default class NativeNodes extends DefaultNodes implements Nodes {
         Russian: "Исходный"
     };
     nodes = [
+        {
+            ...JSON.parse(JSON.stringify(DefaultNodesEnum)),
+            selected: null,
+            result: null,
+            mode: ModeType.info,
+            parents: this.key,
+        },
+        {
+            ...JSON.parse(JSON.stringify(DefaultNodesEnum)),
+            selected: null,
+            result: null,
+            mode: ModeType.info,
+            parents: this.key,
+        },
+        {
+            ...JSON.parse(JSON.stringify(DefaultNodesEnum)),
+            selected: null,
+            result: null,
+            mode: ModeType.info,
+            parents: this.key,
+        },
+        {
+            ...JSON.parse(JSON.stringify(DefaultNodesEnum)),
+            selected: null,
+            result: null,
+            mode: ModeType.info,
+            parents: this.key,
+        },
         {
             ...JSON.parse(JSON.stringify(DefaultNodesEnum)),
             key: "NativeMessage",

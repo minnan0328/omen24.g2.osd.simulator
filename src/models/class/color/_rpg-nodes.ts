@@ -11,6 +11,7 @@ export default class RPGNodes extends DefaultNodes implements Nodes {
     rgb = { r: 255, g: 255, b: 255 };
     livePreview = true;
     mode = ModeType.radio;
+    size = 2;
     language = {
         German: "Rollenspiel",
         SimplifiedChinese: "角色扮演游戏",
@@ -25,6 +26,13 @@ export default class RPGNodes extends DefaultNodes implements Nodes {
         Russian: "RPG"
     };
     nodes = [
+        {
+            ...JSON.parse(JSON.stringify(DefaultNodesEnum)),
+            selected: null,
+            result: null,
+            mode: ModeType.info,
+            parents: this.key,
+        },
         {
             ...JSON.parse(JSON.stringify(DefaultNodesEnum)),
             key: "RPGMessage",

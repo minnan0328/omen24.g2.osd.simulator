@@ -13,6 +13,7 @@ export default class CoolNodes extends DefaultNodes implements Nodes {
     rgb = { r: 255, g: 188, b: 90 };
     livePreview = true;
     mode = ModeType.radio;
+    size = 7;
     language = {
         German: "Nacht",
         SimplifiedChinese: "夜晚",
@@ -27,6 +28,48 @@ export default class CoolNodes extends DefaultNodes implements Nodes {
         Russian: "Ночь"
     };
     nodes = [
+        {
+            ...JSON.parse(JSON.stringify(DefaultNodesEnum)),
+            selected: null,
+            result: null,
+            mode: ModeType.info,
+            parents: this.key,
+        },
+        {
+            ...JSON.parse(JSON.stringify(DefaultNodesEnum)),
+            selected: null,
+            result: null,
+            mode: ModeType.info,
+            parents: this.key,
+        },
+        {
+            ...JSON.parse(JSON.stringify(DefaultNodesEnum)),
+            selected: null,
+            result: null,
+            mode: ModeType.info,
+            parents: this.key,
+        },
+        {
+            ...JSON.parse(JSON.stringify(DefaultNodesEnum)),
+            selected: null,
+            result: null,
+            mode: ModeType.info,
+            parents: this.key,
+        },
+        {
+            ...JSON.parse(JSON.stringify(DefaultNodesEnum)),
+            selected: null,
+            result: null,
+            mode: ModeType.info,
+            parents: this.key,
+        },
+        {
+            ...JSON.parse(JSON.stringify(DefaultNodesEnum)),
+            selected: null,
+            result: null,
+            mode: ModeType.info,
+            parents: this.key,
+        },
         {
             ...JSON.parse(JSON.stringify(DefaultNodesEnum)),
             key: "NightMessage",

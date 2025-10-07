@@ -11,6 +11,7 @@ export default class RTSNodes extends DefaultNodes implements Nodes {
     rgb = { r: 255, g: 255, b: 255 };
     livePreview = true;
     mode = ModeType.radio;
+    size = 3;
     language = {
         German: "RTS",
         SimplifiedChinese: "即时战略游戏",
@@ -25,6 +26,20 @@ export default class RTSNodes extends DefaultNodes implements Nodes {
         Russian: "RTS"
     };
     nodes = [
+        {
+            ...JSON.parse(JSON.stringify(DefaultNodesEnum)),
+            selected: null,
+            result: null,
+            mode: ModeType.info,
+            parents: this.key,
+        },
+        {
+            ...JSON.parse(JSON.stringify(DefaultNodesEnum)),
+            selected: null,
+            result: null,
+            mode: ModeType.info,
+            parents: this.key,
+        },
         {
             ...JSON.parse(JSON.stringify(DefaultNodesEnum)),
             key: "RTSMessage",

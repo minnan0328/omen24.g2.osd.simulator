@@ -11,6 +11,7 @@ export default class sRGBNodes extends DefaultNodes implements Nodes {
     rgb = { r: 255, g: 255, b: 255 };
     livePreview = true;
     mode = ModeType.radio;
+    size = 4;
     language = {
         German: "sRGB",
         SimplifiedChinese: "标准RGB",
@@ -25,6 +26,27 @@ export default class sRGBNodes extends DefaultNodes implements Nodes {
         Russian: "sRGB"
     };
     nodes = [
+        {
+            ...JSON.parse(JSON.stringify(DefaultNodesEnum)),
+            selected: null,
+            result: null,
+            mode: ModeType.info,
+            parents: this.key,
+        },
+        {
+            ...JSON.parse(JSON.stringify(DefaultNodesEnum)),
+            selected: null,
+            result: null,
+            mode: ModeType.info,
+            parents: this.key,
+        },
+        {
+            ...JSON.parse(JSON.stringify(DefaultNodesEnum)),
+            selected: null,
+            result: null,
+            mode: ModeType.info,
+            parents: this.key,
+        },
         {
             ...JSON.parse(JSON.stringify(DefaultNodesEnum)),
             key: "sRGBMessage",

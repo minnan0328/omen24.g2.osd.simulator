@@ -64,7 +64,7 @@
                 </template>
             </div>
             <div v-if="mainSectionNodes && secondarySectionNodes && secondarySectionNodes.nodes" 
-                :class="['secondary-section', { 'customRGB-range-section': secondarySectionNodes.key == rgbGainAdjustNodesEnum.key }]">
+                :class="['secondary-section g', { 'customRGB-range-section': secondarySectionNodes.key == rgbGainAdjustNodesEnum.key }]">
 
                 <div class="setting-info-menu-left"
                     v-if="secondarySectionNodes.key == gamingResult.refFreshRate.key
@@ -146,8 +146,8 @@
                             :previousNodes="secondarySectionNodes">
                         </nextPageButtons>
                     </div>
-                    <verticalRange :currentNode="thirdNodes" :nodes="thirdSectionNodes"></verticalRange>
-                    <horizontalRange :currentNode="thirdNodes" :nodes="thirdSectionNodes"></horizontalRange>
+                    <verticalRange v-else-if="thirdNodes.mode == ModeType.verticalRange" :currentNode="thirdNodes" :nodes="thirdSectionNodes"></verticalRange>
+                    <horizontalRange v-else-if="thirdNodes.mode == ModeType.horizontalRange" :currentNode="thirdNodes" :nodes="thirdSectionNodes"></horizontalRange>
                 </template>
 
                 <!-- <div class="setting-item factory-reset-image" v-if="secondarySectionNodes.key == factoryResetNodesEnum.key">
