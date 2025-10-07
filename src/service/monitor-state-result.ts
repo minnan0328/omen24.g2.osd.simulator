@@ -201,7 +201,7 @@ export const menuStateResult = computed(() => {
             // 水平
             x: getMenuRotation == 90 || getMenuRotation ==  270 ? "440px" : `${(menu.value.nodes[1].nodes![0].result as number / 100) * ((monitorWidth) - menuWidth) - (deviation)}px`,
             // 垂直
-            y: getMenuRotation == 90 || getMenuRotation ==  270 ? "70px" : `${(menu.value.nodes[1].nodes![1].result as number / 100) * ((monitorHeight - menuHeight) - 0) + 0}px`
+            y: getMenuRotation == 90 || getMenuRotation ==  270 ? "80px" : `${(menu.value.nodes[1].nodes![1].result as number / 100) * ((monitorHeight - menuHeight) - 0) + 0}px`
         },
         // 選單透明度
         menuTransparency: ((10 - (menu.value.nodes[2].result as number)) / 10) + 0.2,

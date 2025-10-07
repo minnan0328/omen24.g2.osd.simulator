@@ -40,7 +40,7 @@ const props = defineProps<{
     border: 0.8px solid $black;
     width: 84px;
     height: 84px;
-	bottom: 8px;
+	bottom: 18px;
 	right: 8px;
     z-index: 3;
 
