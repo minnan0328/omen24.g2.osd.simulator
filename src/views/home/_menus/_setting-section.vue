@@ -188,7 +188,7 @@ import type { Nodes } from '@/types';
 import { ModeType } from '@/types';
 import { isEnableNode, toLanguageText, toDisplayValueLanguageText, toDisplayTimeFormat } from '@/service/service';
 import { gamingResult } from '@/service/monitor-state-result';
-import hpLogoColor from '@/assets/images/hp-logo-color.svg';
+import hpLogoColor from '@/assets/images/hp-logo-color.png';
 
 // components
 import info from './_components/_info.vue';
