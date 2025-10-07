@@ -11,6 +11,7 @@ export default class HDMLCECNodes extends DefaultNodes implements Nodes {
     selected = OnNodesEnum.selected;
     result = OnNodesEnum.result;
     assignItemDisplay = false;
+    displayValue = true;
     size = 3;
     mode = ModeType.button;
     language = {
