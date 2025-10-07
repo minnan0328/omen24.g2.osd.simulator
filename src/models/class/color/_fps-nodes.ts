@@ -7,7 +7,7 @@ export default class FPSNodes extends DefaultNodes implements Nodes {
     key = "FPS";
     selected = "FPS";
     result = "FPS";
-    brightness = 68;
+    brightness = 80;
     rgb = { r: 255, g: 215, b: 255 };
     livePreview = true;
     mode = ModeType.radio;

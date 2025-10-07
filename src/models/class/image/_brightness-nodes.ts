@@ -6,8 +6,8 @@ import { DefaultNodes } from '../_utilities';
 const DefaultNodesEnum = new DefaultNodes();
 export default class BrightnessNodes extends DefaultNodes implements Nodes {
     key = "Brightness";
-    selected = 68;
-    result = 68;
+    selected = 80;
+    result = 80;
     displayValue = true;
     size = 1;
     mode = ModeType.button;

@@ -9,7 +9,7 @@ export default class CoolNodes extends DefaultNodes implements Nodes {
     key = "Night";
     selected = "Night";
     result = "Night";
-    brightness = 52;
+    brightness = 44;
     rgb = { r: 255, g: 188, b: 90 };
     livePreview = true;
     mode = ModeType.radio;
