@@ -9,8 +9,8 @@ const BackNodesEnum = new BackNodes();
 
 export default class DisplayPortModeNodes extends DefaultNodes implements Nodes {
     key = "DisplayPortMode";
-    selected = "DisplayPort 1.2";
-    result = "DisplayPort 1.2";
+    selected = "DisplayPort 1.4";
+    result = "DisplayPort 1.4";
     assignItemDisplay = false;
     displayValue = true;
     size = 3;
