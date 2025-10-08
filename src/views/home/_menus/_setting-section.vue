@@ -136,7 +136,7 @@
 
                         <!-- 設定狀態 -->
                         <div class="item state-item" v-if="thirdNodes.displayState">
-                            <span class="state" >state：{{toDisplayValueLanguageText(thirdNodes)}}</span>
+                            <span class="state" >status：{{toDisplayValueLanguageText(thirdNodes)}}</span>
                         </div>
                         <!-- 設定狀態 -->
 
