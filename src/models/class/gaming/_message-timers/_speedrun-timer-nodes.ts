@@ -5,7 +5,6 @@ const DefaultNodesEnum = new DefaultNodes();
 
 export default class SpeedrunTimerNodes extends DefaultNodes implements Nodes {
     key = "SpeedrunTimer";
-    assignItemDisplay = false;
     displayValue = true;
     selected = "Speedrun Timer";
     result = "Speedrun Timer";

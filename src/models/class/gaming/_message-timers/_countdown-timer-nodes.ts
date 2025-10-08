@@ -5,7 +5,6 @@ const DefaultNodesEnum = new DefaultNodes();
 
 export default class CountdownTimerNodes extends DefaultNodes implements Nodes {
     key = "CountdownTimer";
-    assignItemDisplay = false;
     displayValue = true;
     selected = "Countdown Timer";
     result = "Countdown Timer";

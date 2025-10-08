@@ -53,7 +53,8 @@ export default class CrosshairNodes extends DefaultNodes implements Nodes {
         },
         {
             ...JSON.parse(JSON.stringify(LocationNodesEnum)),
-            parents: this.key
+            parents: this.key,
+            assignItemDisplay: true
         },
         {
             ...JSON.parse(JSON.stringify(ResetNodesEnum)),

@@ -44,13 +44,6 @@ export default class MessageTimersNodes extends DefaultNodes implements Nodes {
     };
     nodes = [
         {
-            ...JSON.parse(JSON.stringify(OnNodesEnum)),
-            selected: "Speedrun Timer",
-            result: "Speedrun Timer",
-            menuItemDisplay: false,
-            parents: this.key
-        },
-        {
             ...JSON.parse(JSON.stringify(OffNodesEnum)),
             parents: this.key
         },

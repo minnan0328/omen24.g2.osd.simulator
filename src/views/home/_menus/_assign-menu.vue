@@ -25,7 +25,7 @@
         
                         <customizeRadio
                             :currentNode="secondNodes" :nodes="secondarySectionNodes"
-                            :previousNodes="mainSectionNodes" :bottomLine="false">
+                            :previousNodes="mainSectionNodes" :bottomLine="enabledBottomLine(mainSectionNodes!)">
                         </customizeRadio>
         
                         <!-- value -->
@@ -73,6 +73,12 @@ const props = defineProps({
         default: null
     }
 });
+
+function enabledBottomLine(node: Nodes) {
+    const enabledNodes = ["MessageTimers"];
+    
+    return enabledNodes.includes(node.key) && isEnableNode(node);
+}
 
 </script>
 

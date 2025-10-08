@@ -85,7 +85,7 @@
                         ]"
                         v-show="secondarySectionNodes.key == gamingResult.messageTimers.key
                         && gamingResult.messageTimers.enabled
-                        && secondarySectionNodes.nodes[2]!.result == gamingResult.messageTimers.result"
+                        && secondarySectionNodes.nodes[1]!.result == gamingResult.messageTimers.result"
                         v-text="toDisplayTimeFormat(gamingResult.messageTimers.timer[gamingResult.messageTimers.result] as number)">
                     </span>
 

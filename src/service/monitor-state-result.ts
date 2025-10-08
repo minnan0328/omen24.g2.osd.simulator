@@ -62,7 +62,7 @@ const DiagnosticPatternsEnum = reactive({
 const MessageTimersEnum = reactive({
     timer: {
         [SpeedrunTimerNodesEnum.result]: 0,
-        [CountdownTimerNodesEnum.result]: minutesTolSeconds(gaming.value.nodes[4].nodes![3].nodes![0].result as number)
+        [CountdownTimerNodesEnum.result]: minutesTolSeconds(gaming.value.nodes[4].nodes![2].nodes![0].result as number)
     },
     start: false,
     intervalId: null as number | null
@@ -268,7 +268,7 @@ export const gamingResult = computed(() => {
         // 取得訊息顯示時間
         messageTimers: {
             key: gaming.value.nodes[4].key,
-            enabled: [gaming.value.nodes[4].nodes[0].result, gaming.value.nodes[4].nodes[2].result, gaming.value.nodes[4].nodes[3].result].includes(gaming.value.nodes[4].result as string),
+            enabled: [gaming.value.nodes[4].nodes[1].result, gaming.value.nodes[4].nodes[2].result].includes(gaming.value.nodes[4].result as string),
             get start() {
                 return MessageTimersEnum.start;
             },
@@ -282,9 +282,9 @@ export const gamingResult = computed(() => {
             set timer(value: any) {
                 MessageTimersEnum.timer = value;
             },
-            color: gaming.value.nodes[4].nodes[7].result,
-            location: gaming.value.nodes[4].nodes[8].result,
-            message: gaming.value.nodes[4].nodes![6].nodes!.find((n: Nodes) => n.result == gaming.value.nodes[4].nodes![6].result),
+            color: gaming.value.nodes[4].nodes[6].result,
+            location: gaming.value.nodes[4].nodes[7].result,
+            message: gaming.value.nodes[4].nodes![5].nodes!.find((n: Nodes) => n.result == gaming.value.nodes[4].nodes![5].result),
             clearInterval: function() {
                 if (MessageTimersEnum.intervalId !== null) {
                     clearInterval(MessageTimersEnum.intervalId);
@@ -321,7 +321,7 @@ export const gamingResult = computed(() => {
                 this.start = false;
                 this.timer = JSON.parse(JSON.stringify({
                     [SpeedrunTimerNodesEnum.result]: 0,
-                    [CountdownTimerNodesEnum.result]: minutesTolSeconds(gaming.value.nodes[4].nodes![3].nodes![0].result as number)
+                    [CountdownTimerNodesEnum.result]: minutesTolSeconds(gaming.value.nodes[4].nodes![2].nodes![0].result as number)
                 }));
             }
         },

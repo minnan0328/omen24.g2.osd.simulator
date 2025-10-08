@@ -419,29 +419,15 @@ function handleAssignButton(key: string) {
         return;
     }
 
-    if(key == AssignRefreshRateNodesEnum.key)  {
-        saveNodesValue(assignMenus.value[key]!.node.nodes![0], assignMenus.value[key]!.node, 3);
-        handlerClose();
-    } else if(key == AssignMessageTimersNodesEnum.key) {
-        saveNodesValue(assignMenus.value[key]!.node.nodes[4], assignMenus.value[key]!.node, 3);
-        handlerClose();
-    } else if(key == AssignCrosshairNodesEnum.key) {
-        const on = assignMenus.value[key]!.node.result == OnNodesEnum.result;
-        const index = on ? 1 : 0;
-        saveNodesValue(assignMenus.value[key]!.node.nodes[index], assignMenus.value[key]!.node, 3);
-        handlerClose();
-    }
-    else {
-        menuState.menuPanel = null;
-        menuState.secondPanel = null;
-        menuState.menuPanelIndex = 0;
-        menuState.secondPanelIndex = 0;
-        menuState.assignPanelOrderIndex = assignPanelOrder.findIndex(a => a == key);
-        openAssignMenu.value = true;
-        menuState.selectedMenus = "openAssignMenu";
-        selectedMenuPanel(assignMenus.value[key]!.node as Nodes);
-        handlerNextPanel();
-    }
+    menuState.menuPanel = null;
+    menuState.secondPanel = null;
+    menuState.menuPanelIndex = 0;
+    menuState.secondPanelIndex = 0;
+    menuState.assignPanelOrderIndex = assignPanelOrder.findIndex(a => a == key);
+    openAssignMenu.value = true;
+    menuState.selectedMenus = "openAssignMenu";
+    selectedMenuPanel(assignMenus.value[key]!.node as Nodes);
+    handlerNextPanel();
 
     handlerMenuTimeout();
 };
@@ -1499,48 +1485,47 @@ function saveNodesValue(nodes: Nodes, previousNodes: Nodes, currentPanelNumber =
             [MessageTimersNodesEnum.key]: () => {
                 const actions = {
                     [OffNodesEnum.key]: () => {
-                        previousNodes.nodes![4]!.disabled = true;
-                        previousNodes.nodes![5]!.disabled = true;
-                        previousNodes.nodes![6]!.disabled = true;
-                        previousNodes.nodes![7]!.disabled = true;
-                        previousNodes.nodes![8]!.disabled = true;    
-                    },
-                    [OnNodesEnum.key]: () => {
-                        previousNodes.selected = previousNodes.nodes![2]!.selected;
-                        previousNodes.result = previousNodes.nodes![2]!.result;
-                        menus.value.nodes[0]!.nodes[2]!.selected = OffNodesEnum.selected;
-                        menus.value.nodes[0]!.nodes[2]!.result = OffNodesEnum.result;
+                        previousNodes.nodes![3]!.disabled = false;
                         previousNodes.nodes![4]!.disabled = false;
                         previousNodes.nodes![5]!.disabled = false;
                         previousNodes.nodes![6]!.disabled = false;
-                        previousNodes.nodes![7]!.disabled = false;
-                        previousNodes.nodes![8]!.disabled = false;
+                        previousNodes.nodes![7]!.disabled = false;  
                     },
                     [SpeedrunTimerNodesEnum.key]: () => {
                         menus.value.nodes[0]!.nodes[2]!.selected = OffNodesEnum.selected;
                         menus.value.nodes[0]!.nodes[2]!.result = OffNodesEnum.result;
+                        previousNodes.nodes![3]!.disabled = false;
                         previousNodes.nodes![4]!.disabled = false;
                         previousNodes.nodes![5]!.disabled = false;
                         previousNodes.nodes![6]!.disabled = false;
                         previousNodes.nodes![7]!.disabled = false;
-                        previousNodes.nodes![8]!.disabled = false;    
                     },
                     [CountdownTimerNodesEnum.key]: () => {
                         menus.value.nodes[0]!.nodes[2]!.selected = OffNodesEnum.selected;
                         menus.value.nodes[0]!.nodes[2]!.result = OffNodesEnum.result;
+                        previousNodes.nodes![3]!.disabled = false;
                         previousNodes.nodes![4]!.disabled = false;
                         previousNodes.nodes![5]!.disabled = false;
                         previousNodes.nodes![6]!.disabled = false;
                         previousNodes.nodes![7]!.disabled = false;
-                        previousNodes.nodes![8]!.disabled = false;  
                     },
                     // 當為訊息時間器時，啟動或暫停
                     [StartStopNodesEnum.key]: () => {
                         gamingResult.value.messageTimers.start = !gamingResult.value.messageTimers.start;
-                        gamingResult.value.messageTimers.implement(()=> handlerClose())
+                        gamingResult.value.messageTimers.implement(()=> handlerClose());
+
+                        if(openAssignMenu.value) {
+                            handlerClose();
+                        }
                     },
                     // 當為訊息時間器時，重設預設值
-                    [ResetTimerNodesEnum.key]: () => gamingResult.value.messageTimers.resetTimer()
+                    [ResetTimerNodesEnum.key]: () => {
+                        gamingResult.value.messageTimers.resetTimer();
+
+                        if(openAssignMenu.value) {
+                            handlerClose();
+                        }
+                    }
                 };
 
                 if (nodes.key in actions) {
@@ -1753,6 +1738,7 @@ function handleCrosshairLocationAction() {
             openAssignMenu.value = false;
             menuState.selectedMenus = "openAssignMenu";
             gamingResult.value.crosshairLocation.start = true;
+            emit("update:showGamingCrosshair", true);
         };
     }
 
