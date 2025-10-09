@@ -33,6 +33,7 @@ export default class MessageNodes extends DefaultNodes implements Nodes {
             selected: "Your Gaming Timer has Expired !",
             result: "Your Gaming Timer has Expired !",
             parents: this.key,
+            disabled: true,
             mode: ModeType.radio,
             language: {
                 German: "Dein Spieltimer ist abgelaufen!",
@@ -54,6 +55,7 @@ export default class MessageNodes extends DefaultNodes implements Nodes {
             selected: "Please Stop Playing the Game !",
             result: "Please Stop Playing the Game !",
             parents: this.key,
+            disabled: true,
             mode: ModeType.radio,
             language: {
                 German: "Beenden Sie bitte das Spiel!",
@@ -75,6 +77,7 @@ export default class MessageNodes extends DefaultNodes implements Nodes {
             selected: "Please Take a Break !",
             result: "Please Take a Break !",
             parents: this.key,
+            disabled: true,
             mode: ModeType.radio,
             language: {
                 German: "Machen Sie bitte eine Pause!",
@@ -96,6 +99,7 @@ export default class MessageNodes extends DefaultNodes implements Nodes {
             selected: "Please Shutdown the Computer !",
             result: "Please Shutdown the Computer !",
             parents: this.key,
+            disabled: true,
             mode: ModeType.radio,
             language: {
                 German: "Bitte den Computer ausschalten!",

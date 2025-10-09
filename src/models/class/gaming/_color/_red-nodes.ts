@@ -8,6 +8,7 @@ export default class RedNodes extends DefaultNodes implements Nodes {
     result = "Red";
     optionColor = "rgb(255, 0, 0)";
     livePreview = true;
+    disabled = true;
     mode = ModeType.radio;
     language = {
         German: "Rot",

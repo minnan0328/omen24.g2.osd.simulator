@@ -8,6 +8,7 @@ export default class LightBlueNodes extends DefaultNodes implements Nodes {
     result = "Light-Blue";
     optionColor = "rgb(104, 149, 209)";
     livePreview = true;
+    disabled = true;
     mode = ModeType.radio;
     language = {
         German: "Hellblau",

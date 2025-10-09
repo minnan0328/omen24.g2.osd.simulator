@@ -22,7 +22,8 @@
         <!-- 自訂的小選單 -->
         <assignMenu v-if="openAssignMenu && menuState.menuPanel"
                     v-model:mainSectionNodes="menuState.menuPanel"
-                    v-model:secondarySectionNodes="menuState.secondPanel">
+                    v-model:secondarySectionNodes="menuState.secondPanel"
+                    v-model:thirdSectionNodes="menuState.thirdPanel">
         </assignMenu>
         <!-- 自訂的小選單 -->
         
@@ -421,8 +422,12 @@ function handleAssignButton(key: string) {
 
     menuState.menuPanel = null;
     menuState.secondPanel = null;
+    menuState.thirdPanel = null;
+    menuState.fourthPanel = null;
     menuState.menuPanelIndex = 0;
     menuState.secondPanelIndex = 0;
+    menuState.thirdPanelIndex = 0;
+    menuState.fourthPanelIndex = 0;
     menuState.assignPanelOrderIndex = assignPanelOrder.findIndex(a => a == key);
     openAssignMenu.value = true;
     menuState.selectedMenus = "openAssignMenu";
@@ -666,8 +671,12 @@ function handlerAssignNextPanel() {
 
     menuState.menuPanel = null;
     menuState.secondPanel = null;
+    menuState.thirdPanel = null;
+    menuState.fourthPanel = null;
     menuState.menuPanelIndex = 0;
     menuState.secondPanelIndex = 0;
+    menuState.thirdPanelIndex = 0;
+    menuState.fourthPanelIndex = 0;
     menuState.assignPanelOrderIndex += 1;
     menuState.assignPanelOrderIndex = menuState.assignPanelOrderIndex == assignPanelOrder.length ? 0 : menuState.assignPanelOrderIndex;
     const key = assignPanelOrder[menuState.assignPanelOrderIndex] as string;
@@ -692,8 +701,12 @@ function handlerAssignPreviousPanel() {
 
     menuState.menuPanel = null;
     menuState.secondPanel = null;
+    menuState.thirdPanel = null;
+    menuState.fourthPanel = null;
     menuState.menuPanelIndex = 0;
     menuState.secondPanelIndex = 0;
+    menuState.thirdPanelIndex = 0;
+    menuState.fourthPanelIndex = 0;
     menuState.assignPanelOrderIndex -= 1;
     menuState.assignPanelOrderIndex = menuState.assignPanelOrderIndex < 0 ? assignPanelOrder.length - 1 : menuState.assignPanelOrderIndex;
     const key = assignPanelOrder[menuState.assignPanelOrderIndex] as string;
@@ -712,7 +725,7 @@ function handlerAssignPreviousPanel() {
 
 /* 選擇下一層(Panel) */
 // 選擇下一層目標
-function handlerNextPanel() {
+function handlerNextPanel(focusSelected = true) {
     let isRadioNodes = false;
 
     if(menuState.menuPanel?.nodes) {
@@ -740,7 +753,7 @@ function handlerNextPanel() {
                     menuState.temporaryStorage = JSON.parse(JSON.stringify(menuState.menuPanel));
                 }
 
-            });
+            }, focusSelected);
         } else if(menuState.secondPanel?.nodes && !menuState.thirdPanel) {
             isRadioNodes = menuState.secondPanel!.mode == ModeType.radio && !!menuState.secondPanel!.nodes;
 
@@ -774,7 +787,7 @@ function handlerNextPanel() {
                     monitorScreenResult.value.diagnosticPatterns.enabled = true;
                     monitorScreenResult.value.diagnosticPatterns.implement();
                 }
-            });
+            }, focusSelected);
         } else if(menuState.secondPanel!.nodes && menuState.thirdPanel && menuState.thirdPanel.nodes && !menuState.fourthPanel) {
             isRadioNodes = menuState.thirdPanel?.mode == ModeType.radio && !!menuState.thirdPanel.nodes;
 
@@ -797,7 +810,7 @@ function handlerNextPanel() {
                     menuState.temporaryStorage = null;
                     menuState.temporaryStorage = JSON.parse(JSON.stringify(menuState.thirdPanel));
                 }
-            });
+            }, focusSelected);
         }
     }
 
@@ -805,7 +818,7 @@ function handlerNextPanel() {
 };
 
 // 選擇啟用的節點
-function selectEnabledNode(node: Nodes, startIndex: number, setValue: (node: Nodes, index: number) => void) {
+function selectEnabledNode(node: Nodes, startIndex: number, setValue: (node: Nodes, index: number) => void, focusSelected: boolean) {
     if (node.nodes) {
         let index = startIndex;
         const length = node.nodes.length;
@@ -819,7 +832,7 @@ function selectEnabledNode(node: Nodes, startIndex: number, setValue: (node: Nod
                 || (openAssignMenu.value && node.nodes[index]!.mode == ModeType.button && node.nodes[index]!.assignItemDisplay)
                 || (openAssignMenu.value && node.nodes[index]!.mode == ModeType.radio && node.nodes[index]!.assignItemDisplay)
             ) {
-                let selectedIndex = (node.selected || node.selected === 0) ? node.nodes.findIndex(n => n.selected === node.selected) : index;
+                let selectedIndex = (focusSelected && (node.selected || node.selected === 0)) ? node.nodes.findIndex(n => n.selected === node.selected) : index;
                 index = selectedIndex >= 0 ? selectedIndex : index;
                 setValue(node.nodes[index]!, index);
                 return;
@@ -1034,7 +1047,7 @@ function updatePanelIndex(node: Nodes, nodeIndex: number, step: number, send: (p
         index = updateIndex(index, node.nodes.length);
         
         const oldNodes = JSON.parse(JSON.stringify(node));
-        
+
         if (
             !isEnableNode(node.nodes[index]!) || node.nodes[index]!.disabled
             // 暫時先寫死跳過
@@ -1047,14 +1060,31 @@ function updatePanelIndex(node: Nodes, nodeIndex: number, step: number, send: (p
         ) {
             updatePanelIndex(node, index ,step, send);
         } else {
-            page = Math.floor(index / node.size) + 1;
-            
-            if(page != oldNodes.page) {
-                index += index == 0 || index == (node.nodes.length - 1)
-                    ? 0 : page > oldNodes.page
-                    ? 1 : -1;
+            // 當為 assignItemChildrenDisplay 時候，且在第一個或最後一個節點時候，直接跳到上一層或下一層
+            if(openAssignMenu.value && step == 1 && index == 0 && node!.assignItemChildrenDisplay) {
+                handlePrevious();
+                handlerNavigation("down");
+            }  else if(openAssignMenu.value && step == -1 && index == (node.nodes.length - 2) && node!.assignItemChildrenDisplay) {
+                handlePrevious();
+                handlerNavigation("up");
             }
-            send(page, index);
+            else {
+                page = Math.floor(index / node.size) + 1;
+                
+                if(page != oldNodes.page) {
+                    index += index == 0 || index == (node.nodes.length - 1)
+                        ? 0 : page > oldNodes.page
+                        ? 1 : -1;
+                }
+                send(page, index);
+            }
+            // 如果下一個節點有子節點，且開啟 assignItemChildrenDisplay 時候，直接進入下一層
+            if(openAssignMenu.value && node.nodes[index]!.nodes && node.nodes[index]!.assignItemChildrenDisplay) {
+                // 重置下一層的 index 為第一個
+                menuState.thirdPanelIndex = step > 0 ? 0 : (node.nodes[index]!.nodes!.length - 2);
+                handlerNextPanel(false);
+
+            }
         }
     }
 };
@@ -1450,10 +1480,15 @@ function saveNodesValue(nodes: Nodes, previousNodes: Nodes, currentPanelNumber =
                     [OffNodesEnum.key]: () => {
                         previousNodes.nodes![2]!.disabled = true;
                         previousNodes.nodes![3]!.disabled = true;
+                        previousNodes.nodes![2]?.nodes?.forEach(n => n.disabled = true);
+                        previousNodes.nodes![3]?.nodes?.forEach(n => n.disabled = true);
+
                     },
                     [OnNodesEnum.key]: () => {
                         previousNodes.nodes![2]!.disabled = false;
                         previousNodes.nodes![3]!.disabled = false;
+                        previousNodes.nodes![2]?.nodes?.forEach(n => n.disabled = false);
+                        previousNodes.nodes![3]?.nodes?.forEach(n => n.disabled = false);
                     }
                 };
 
@@ -1468,12 +1503,16 @@ function saveNodesValue(nodes: Nodes, previousNodes: Nodes, currentPanelNumber =
                         previousNodes.nodes![2]!.disabled = true;
                         previousNodes.nodes![3]!.disabled = true;
                         previousNodes.nodes![4]!.disabled = true;
+                        previousNodes.nodes![2]?.nodes?.forEach(n => n.disabled = true);
+                        previousNodes.nodes![3]?.nodes?.forEach(n => n.disabled = true);
                         emit("update:showGamingCrosshair", false);
                     },
                     [OnNodesEnum.key]: () => {
                         previousNodes.nodes![2]!.disabled = false;
                         previousNodes.nodes![3]!.disabled = false;
                         previousNodes.nodes![4]!.disabled = false;
+                        previousNodes.nodes![2]?.nodes?.forEach(n => n.disabled = false);
+                        previousNodes.nodes![3]?.nodes?.forEach(n => n.disabled = false);
                     }
                 };
 
@@ -1485,11 +1524,16 @@ function saveNodesValue(nodes: Nodes, previousNodes: Nodes, currentPanelNumber =
             [MessageTimersNodesEnum.key]: () => {
                 const actions = {
                     [OffNodesEnum.key]: () => {
-                        previousNodes.nodes![3]!.disabled = false;
-                        previousNodes.nodes![4]!.disabled = false;
-                        previousNodes.nodes![5]!.disabled = false;
-                        previousNodes.nodes![6]!.disabled = false;
-                        previousNodes.nodes![7]!.disabled = false;  
+                        previousNodes.nodes![3]!.disabled = true;
+                        previousNodes.nodes![4]!.disabled = true;
+                        previousNodes.nodes![5]!.disabled = true;
+                        previousNodes.nodes![6]!.disabled = true;
+                        previousNodes.nodes![7]!.disabled = true;
+
+                        previousNodes.nodes![5]?.nodes?.forEach(n => n.disabled = true);
+                        previousNodes.nodes![6]?.nodes?.forEach(n => n.disabled = true);
+                        previousNodes.nodes![7]?.nodes?.forEach(n => n.disabled = true);
+
                     },
                     [SpeedrunTimerNodesEnum.key]: () => {
                         menus.value.nodes[0]!.nodes[2]!.selected = OffNodesEnum.selected;
@@ -1499,6 +1543,10 @@ function saveNodesValue(nodes: Nodes, previousNodes: Nodes, currentPanelNumber =
                         previousNodes.nodes![5]!.disabled = false;
                         previousNodes.nodes![6]!.disabled = false;
                         previousNodes.nodes![7]!.disabled = false;
+
+                        previousNodes.nodes![5]?.nodes?.forEach(n => n.disabled = false);
+                        previousNodes.nodes![6]?.nodes?.forEach(n => n.disabled = false);
+                        previousNodes.nodes![7]?.nodes?.forEach(n => n.disabled = false);
                     },
                     [CountdownTimerNodesEnum.key]: () => {
                         menus.value.nodes[0]!.nodes[2]!.selected = OffNodesEnum.selected;
@@ -1508,6 +1556,10 @@ function saveNodesValue(nodes: Nodes, previousNodes: Nodes, currentPanelNumber =
                         previousNodes.nodes![5]!.disabled = false;
                         previousNodes.nodes![6]!.disabled = false;
                         previousNodes.nodes![7]!.disabled = false;
+
+                        previousNodes.nodes![5]?.nodes?.forEach(n => n.disabled = false);
+                        previousNodes.nodes![6]?.nodes?.forEach(n => n.disabled = false);
+                        previousNodes.nodes![7]?.nodes?.forEach(n => n.disabled = false);
                     },
                     // 當為訊息時間器時，啟動或暫停
                     [StartStopNodesEnum.key]: () => {
@@ -1919,7 +1971,6 @@ function handlerMenuTimeout() {
 
 </script>
 <style lang="scss" scoped>
-
 
 .menu-wrapper {
     position: absolute;

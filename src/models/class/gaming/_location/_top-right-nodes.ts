@@ -8,6 +8,7 @@ export default class TopRightNodes extends DefaultNodes implements Nodes {
     result = "Top-Right";
     size = 3;
     mode = ModeType.radio;
+    disabled = true;
     language = {
         German: "Oben Rechts",
         SimplifiedChinese: "右上",

@@ -33,6 +33,7 @@ export default class ConfigureNodes extends DefaultNodes implements Nodes {
             selected: "option 1 bmp",
             result: "option 1 bmp",
             parents: this.key,
+            disabled: false,
             mode: ModeType.checkBox,
             useIcon: true,
             svgIcon: `
@@ -59,6 +60,7 @@ export default class ConfigureNodes extends DefaultNodes implements Nodes {
             selected: "option 2 bmp",
             result: "option 2 bmp",
             parents: this.key,
+            disabled: false,
             mode: ModeType.checkBox,
             useIcon: true,
             svgIcon: `
@@ -88,6 +90,7 @@ export default class ConfigureNodes extends DefaultNodes implements Nodes {
             selected: "option 3 bmp",
             result: "option 3 bmp",
             parents: this.key,
+            disabled: false,
             mode: ModeType.checkBox,
             useIcon: true,
             svgIcon: `
@@ -117,6 +120,7 @@ export default class ConfigureNodes extends DefaultNodes implements Nodes {
             selected: "option 4 bmp",
             result: "option 4 bmp",
             parents: this.key,
+            disabled: false,
             mode: ModeType.checkBox,
             useIcon: true,
             svgIcon: `
@@ -146,6 +150,7 @@ export default class ConfigureNodes extends DefaultNodes implements Nodes {
             selected: "option 5 bmp",
             result: "option 5 bmp",
             parents: this.key,
+            disabled: false,
             mode: ModeType.checkBox,
             useIcon: true,
             svgIcon: `

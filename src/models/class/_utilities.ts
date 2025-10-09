@@ -10,6 +10,7 @@ export class DefaultNodes implements Nodes {
     rgb = { r: 255, g: 255, b: 255 }; // RGB 顏色值
     optionColor = ""; // HEX 顏色值
     assignItemDisplay = true; // 顯示在快捷 menu 上面
+    assignItemChildrenDisplay = false; // 顯示在快捷 menu 的子選單上面
     menuItemDisplay = true; // 顯示在 menu 上面
     disabled = false; // 是否禁用該選項
     displayValue = false; // 顯示選擇的結果在下一層 menu 上面

@@ -8,6 +8,7 @@ export default class OrangeNodes extends DefaultNodes implements Nodes {
     result = "Orange";
     optionColor = "rgb(255, 139, 6)";
     livePreview = true;
+    disabled = true;
     mode = ModeType.radio;
     language = {
         German: "Orange",

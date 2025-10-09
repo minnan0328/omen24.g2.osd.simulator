@@ -34,6 +34,7 @@ export interface Nodes {
     rgb: { r: number, g: number, b: number } | null;
     optionColor: string | null;
     assignItemDisplay: Boolean;
+    assignItemChildrenDisplay: Boolean;
     menuItemDisplay: Boolean;
     disabled: Boolean;
     displayValue: boolean;

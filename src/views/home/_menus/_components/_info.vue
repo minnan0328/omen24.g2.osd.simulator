@@ -1,7 +1,7 @@
 <template>
     <div v-if="currentNode.mode == ModeType.info" 
         :class="['item', { 'merge-grid': currentNode.mergeGrid, disabled: currentNode.disabled }]"
-        v-text="`${toLanguageText(currentNode.language!)}`">
+        v-text="`${toLanguageText(currentNode.language!)}${enabledSymbol ? ':' : ''}`">
     </div>
 </template>
 <script setup lang="ts">
@@ -14,6 +14,10 @@ const props = defineProps({
     currentNode: {
         type: Object as PropType<Nodes>,
         required: true
+    },
+    enabledSymbol: {
+        type: Boolean,
+        default: false
     }
 });
 </script>

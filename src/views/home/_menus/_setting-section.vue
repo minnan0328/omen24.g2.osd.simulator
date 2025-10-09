@@ -241,7 +241,7 @@ const isTwoColumns = computed(() => {
 });
 
 function enabledBottomLine(node: Nodes) {
-    const enabledNodes = ["ResetTimer", "Location", "MessageTimers", "Configure", "option5bmp", "RefreshRate", "MultiMonitorAlign", "OSDMessages"];
+    const enabledNodes = ["ResetTimer", "MessageTimers", "Configure", "option5bmp", "RefreshRate", "MultiMonitorAlign", "OSDMessages"];
 
     return enabledNodes.includes(node.key) && isEnableNode(node);
 }

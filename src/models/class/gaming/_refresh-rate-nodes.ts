@@ -46,7 +46,9 @@ export default class RefreshRateNodes extends DefaultNodes implements Nodes {
         },
         {
             ...JSON.parse(JSON.stringify(LocationNodesEnum)),
-            parents: this.key
+            parents: this.key,
+            assignItemDisplay: true,
+            assignItemChildrenDisplay: true
         },
         {
             ...JSON.parse(JSON.stringify(ResetNodesEnum)),

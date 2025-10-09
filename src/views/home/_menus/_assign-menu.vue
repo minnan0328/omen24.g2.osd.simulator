@@ -10,11 +10,12 @@
                     <div :class="['setting-item', secondNodes.key, { 'unset-grid': secondNodes.mode != ModeType.info }]"
                         v-if="isEnableNode(secondNodes) 
                         && secondNodes.key != ResetNodesEnum.key
+                        && !secondNodes.assignItemChildrenDisplay
                         && isEnableNode(secondNodes) && secondNodes.key != BackNodesEnum.key
                         && isEnableNode(secondNodes) && secondNodes.mode != ModeType.verticalRange
                         && secondNodes.assignItemDisplay">
                         
-                        <info :currentNode="secondNodes"></info>
+                        <info :currentNode="secondNodes" :enabledSymbol="true"></info>
         
                         <buttonItem
                             :currentNode="secondNodes"
@@ -38,6 +39,23 @@
                         </template>
                         <!-- value -->
                     </div>
+
+                    <template v-else-if="secondNodes.assignItemChildrenDisplay && secondNodes.nodes && secondNodes.nodes.length > 0">
+
+                        <div :class="['setting-item', secondNodes.key]">
+                            <labelComponent :currentNode="secondNodes" :enabledSymbol="true"></labelComponent>
+                        </div>
+
+                        <template v-for="childrenNodes in secondNodes.nodes">
+                            <div :class="['setting-item', childrenNodes.key, { 'unset-grid': childrenNodes.mode != ModeType.info }]">
+                                <customizeRadio
+                                    :currentNode="childrenNodes" :nodes="thirdSectionNodes"
+                                    :previousNodes="secondNodes" :bottomLine="false">
+                                </customizeRadio>
+                            </div>
+                        </template>
+                    </template>
+
                     <verticalRange :currentNode="secondNodes"></verticalRange>
                 </template>
             </div>
@@ -55,6 +73,7 @@ import info from './_components/_info.vue';
 import buttonItem from './_components/_button-item.vue';
 import verticalRange from './_components/_vertical-range.vue';
 import customizeRadio from './_components/_customize-radio.vue';
+import labelComponent from './_components/_label.vue';
 
 import { BackNodes, ResetNodes } from '@/models/class/_utilities';
 
@@ -69,6 +88,10 @@ const props = defineProps({
         default: null
     },
     secondarySectionNodes: {
+        type: Object as PropType<Nodes | null>,
+        default: null
+    },
+    thirdSectionNodes: {
         type: Object as PropType<Nodes | null>,
         default: null
     }

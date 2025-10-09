@@ -8,6 +8,7 @@ export default class PurpleNodes extends DefaultNodes implements Nodes {
     result = "Purple";
     optionColor = "rgb(191, 15, 250)";
     livePreview = true;
+    disabled = true;
     mode = ModeType.radio;
     language = {
         German: "Lila",
