@@ -265,7 +265,7 @@ export const menuStateResult = computed(() => {
 export const gamingResult = computed(() => {
     return {
         // 當前更新率
-        refFreshRate: {
+        refreshRate: {
             key: gaming.value.nodes[2].key,
             enabled: gaming.value.nodes[2].result == OnNodesEnum.result,
             color: gaming.value.nodes[2].nodes[2].result,

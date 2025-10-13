@@ -64,19 +64,19 @@
                 </template>
             </div>
             <div v-if="mainSectionNodes && secondarySectionNodes && secondarySectionNodes.nodes" 
-                :class="['secondary-section g', { 'customRGB-range-section': secondarySectionNodes.key == rgbGainAdjustNodesEnum.key }]">
+                :class="['secondary-section', { 'customRGB-range-section': secondarySectionNodes.key == rgbGainAdjustNodesEnum.key }]">
 
                 <div class="setting-info-menu-left"
-                    v-if="secondarySectionNodes.key == gamingResult.refFreshRate.key
+                    v-if="secondarySectionNodes.key == gamingResult.refreshRate.key
                     || secondarySectionNodes.key == gamingResult.messageTimers.key">
 
                     <span :class="['setting-info-value',
-                            gamingResult.refFreshRate.key,
-                            gamingResult.refFreshRate.color
+                            gamingResult.refreshRate.key,
+                            gamingResult.refreshRate.color
                         ]"
-                        v-if="secondarySectionNodes.key == gamingResult.refFreshRate.key
-                        && gamingResult.refFreshRate.enabled"
-                        v-text="gamingResult.refFreshRate.rate">
+                        v-if="secondarySectionNodes.key == gamingResult.refreshRate.key
+                        && gamingResult.refreshRate.enabled"
+                        v-text="gamingResult.refreshRate.rate">
                     </span>
 
                     <span :class="['setting-info-value',

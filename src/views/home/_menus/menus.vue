@@ -1537,6 +1537,8 @@ function saveNodesValue(nodes: Nodes, previousNodes: Nodes, currentPanelNumber =
 
                     },
                     [SpeedrunTimerNodesEnum.key]: () => {
+                        gamingResult.value.messageTimers.start = false;
+
                         menus.value.nodes[0]!.nodes[2]!.selected = OffNodesEnum.selected;
                         menus.value.nodes[0]!.nodes[2]!.result = OffNodesEnum.result;
                         previousNodes.nodes![3]!.disabled = false;
@@ -1550,6 +1552,8 @@ function saveNodesValue(nodes: Nodes, previousNodes: Nodes, currentPanelNumber =
                         previousNodes.nodes![7]?.nodes?.forEach(n => n.disabled = false);
                     },
                     [CountdownTimerNodesEnum.key]: () => {
+                        gamingResult.value.messageTimers.start = false;
+
                         menus.value.nodes[0]!.nodes[2]!.selected = OffNodesEnum.selected;
                         menus.value.nodes[0]!.nodes[2]!.result = OffNodesEnum.result;
                         previousNodes.nodes![3]!.disabled = false;
@@ -1566,10 +1570,6 @@ function saveNodesValue(nodes: Nodes, previousNodes: Nodes, currentPanelNumber =
                     [StartStopNodesEnum.key]: () => {
                         gamingResult.value.messageTimers.start = !gamingResult.value.messageTimers.start;
                         gamingResult.value.messageTimers.implement(()=> handlerClose());
-
-                        if(openAssignMenu.value) {
-                            handlerClose();
-                        }
                     },
                     // 當為訊息時間器時，重設預設值
                     [ResetTimerNodesEnum.key]: () => {

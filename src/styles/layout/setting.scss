@@ -34,23 +34,26 @@
             justify-content: space-around;
             align-items: center;
         }
+    }
 
-        .setting-info-menu-left {
-            position: absolute;
-            left: 140px;
-            top: 8px;
-            width: max-content;
-            height: max-content;
-            z-index: 1;
+    .setting-info-menu-left {
+        position: absolute;
+        left: 140px;
+        top: 8px;
+        width: max-content;
+        height: max-content;
+        z-index: 1;
 
-            .setting-info-value {
-                font-size: 12px;
-                line-height: 1.22;
-                color: $white;
+        &.assign-info-menu-left {
+            left: 160px;
+        }
 
-                @include gaming-setting-text-color;
-            }
-            
+        .setting-info-value {
+            font-size: 12px;
+            line-height: 1.22;
+            color: $white;
+
+            @include gaming-setting-text-color;
         }
     }
 

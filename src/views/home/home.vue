@@ -106,7 +106,7 @@ const showScreen = ref(false);
 const startUpFinish = ref(false);
 const childMenusComponentRef = ref(null);
 
-// 1. gaming 的 refFreshRate 及 messageTimers 啟用時候
+// 1. gaming 的 refreshRate 及 messageTimers 啟用時候
 // 2. 1 啟用時，啟動 menu 不顯示
 // 3. 1 不啟用時，不顯示
 const showGamingSettingText = ref(true);

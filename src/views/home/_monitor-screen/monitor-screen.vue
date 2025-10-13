@@ -17,12 +17,12 @@
         <img :src="monitorScreenResult.image" alt="">
 
         <span :class="['setting-info-value',
-                gamingResult.refFreshRate.key, 
-                gamingResult.refFreshRate.color,
-                gamingResult.refFreshRate.location
+                gamingResult.refreshRate.key, 
+                gamingResult.refreshRate.color,
+                gamingResult.refreshRate.location
             ]"
-            v-if="!showMonitorStatus && showGamingSettingText && gamingResult.refFreshRate.enabled"
-            v-text="gamingResult.refFreshRate.rate">
+            v-if="!showMonitorStatus && showGamingSettingText && gamingResult.refreshRate.enabled"
+            v-text="gamingResult.refreshRate.rate">
         </span>
 
         <span :class="['setting-info-value',

@@ -6,6 +6,30 @@
 
         <div class="body">
             <div :class="['assign-setting', mainSectionNodes!.key]">
+                <div class="setting-info-menu-left assign-info-menu-left"
+                    v-if="mainSectionNodes!.key == gamingResult.messageTimers.key">
+
+                    <span :class="['setting-info-value',
+                            gamingResult.messageTimers.key,
+                            gamingResult.messageTimers.color
+                        ]"
+                        v-if="mainSectionNodes!.key == gamingResult.messageTimers.key
+                        && gamingResult.messageTimers.enabled
+                        && mainSectionNodes!.nodes![1]!.result == gamingResult.messageTimers.result"
+                        v-text="toDisplayTimeFormat(gamingResult.messageTimers.timer[gamingResult.messageTimers.result] as number)">
+                    </span>
+
+                    <span :class="['setting-info-value',
+                            gamingResult.messageTimers.key,
+                            gamingResult.messageTimers.color
+                        ]"
+                        v-if="mainSectionNodes!.key == gamingResult.messageTimers.key
+                        && gamingResult.messageTimers.enabled
+                        && mainSectionNodes!.nodes![2]!.result == gamingResult.messageTimers.result"
+                        v-text="toDisplayTimeFormat(gamingResult.messageTimers.timer[gamingResult.messageTimers.result] as number)">
+                    </span>
+                </div>
+
                 <template v-for="secondNodes in mainSectionNodes!.nodes">
                     <div :class="['setting-item', secondNodes.key, { 'unset-grid': secondNodes.mode != ModeType.info }]"
                         v-if="isEnableNode(secondNodes) 
@@ -67,7 +91,7 @@
 import type { PropType } from 'vue';
 import type { Nodes } from '@/types';
 import { ModeType } from '@/types';
-import { isEnableNode, toLanguageText } from '@/service/service';
+import { isEnableNode, toLanguageText, toDisplayTimeFormat } from '@/service/service';
 // components
 import info from './_components/_info.vue';
 import buttonItem from './_components/_button-item.vue';
@@ -77,7 +101,7 @@ import labelComponent from './_components/_label.vue';
 
 import { BackNodes, ResetNodes } from '@/models/class/_utilities';
 
-import { menuStateResult } from '@/service/monitor-state-result';
+import { menuStateResult, gamingResult } from '@/service/monitor-state-result';
 
 const BackNodesEnum = new BackNodes();
 const ResetNodesEnum = new ResetNodes();
