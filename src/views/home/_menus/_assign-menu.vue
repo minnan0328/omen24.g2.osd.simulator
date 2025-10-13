@@ -56,7 +56,7 @@
                         </template>
                     </template>
 
-                    <verticalRange :currentNode="secondNodes"></verticalRange>
+                    <verticalRange v-else-if="secondNodes.mode == ModeType.verticalRange" :currentNode="secondNodes"></verticalRange>
                 </template>
             </div>
         </div>
