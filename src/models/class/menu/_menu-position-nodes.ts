@@ -9,8 +9,8 @@ const BackNodesEnum = new BackNodes();
 
 export default class MenuPositionNodes extends DefaultNodes implements Nodes {
     key = "MenuPosition";
-    selected = "H=98, V=8";
-    result = "H=98, V=8";
+    selected = "H=97, V=8";
+    result = "H=97, V=8";
     displayValue = true;
     size = 3;
     mode = ModeType.button;
@@ -32,8 +32,8 @@ export default class MenuPositionNodes extends DefaultNodes implements Nodes {
             // Range (0~100)
             ...JSON.parse(JSON.stringify(DefaultNodesEnum)),
             key: "Horizontal",
-            selected: 98,
-            result: 98,
+            selected: 97,
+            result: 97,
             parents: this.key,
             mode: ModeType.horizontalRange,
             rangeMin: 0,
