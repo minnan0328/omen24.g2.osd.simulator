@@ -169,8 +169,15 @@ export const monitorScreenResult = computed(() => {
 // 選單狀態設定
 export const menuStateResult = computed(() => {
     // 選單 100% 時的 x 座標 - 預設百分比的 x 座標 - 8
-    const maxDecrease = 98; // 經過計算後的最大遞減值
+    // 選單 100% 時的 y 座標 - 預設百分比的 y 座標 + 0
+    // 選單偏移量計算方式
+    // 選單百分比 < 98 時，選單偏移量會隨著選單百分比遞增
+    // 選單百分比 >= 98 時，選單偏移量會隨著選單百分比遞減
+    // 最大遞減基準值
+    const maxDecrease = 98; 
+    // 遞增閾值
     const increaseThreshold = 98;
+    // 遞減閾值
     const decreaseThreshold = 100;
     // 計算遞增係數
     const increase = maxDecrease / increaseThreshold;
@@ -179,7 +186,7 @@ export const menuStateResult = computed(() => {
     // 計算 deviation 的值
     let deviation: number;
 
-    if (menu.value.nodes[1].nodes![0].result as number <= increaseThreshold) {
+    if (menu.value.nodes[1].nodes![0].result as number < increaseThreshold) {
         // 遞增值 * 目前選單百分比
         deviation = (increase * menu.value.nodes[1].nodes![0].result as number) ;
     } else { 
