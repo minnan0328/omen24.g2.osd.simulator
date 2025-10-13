@@ -1524,6 +1524,7 @@ function saveNodesValue(nodes: Nodes, previousNodes: Nodes, currentPanelNumber =
             [MessageTimersNodesEnum.key]: () => {
                 const actions = {
                     [OffNodesEnum.key]: () => {
+                        gamingResult.value.messageTimers.resetTimer();
                         previousNodes.nodes![3]!.disabled = true;
                         previousNodes.nodes![4]!.disabled = true;
                         previousNodes.nodes![5]!.disabled = true;

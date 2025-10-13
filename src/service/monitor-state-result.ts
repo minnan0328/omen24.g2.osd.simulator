@@ -326,10 +326,10 @@ export const gamingResult = computed(() => {
             resetTimer: function() {
                 this.clearInterval();
                 this.start = false;
-                this.timer = JSON.parse(JSON.stringify({
+                this.timer = reactive({
                     [SpeedrunTimerNodesEnum.result]: 0,
                     [CountdownTimerNodesEnum.result]: minutesTolSeconds(gaming.value.nodes[4].nodes![2].nodes![0].result as number)
-                }));
+                });
             }
         },
         multiMonitorAlign: {
