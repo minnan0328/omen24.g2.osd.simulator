@@ -1,6 +1,6 @@
 <template>
-    <div v-if="currentNode.assignItemChildrenDisplay && currentNode.nodes && currentNode.nodes.length > 0" 
-        :class="['item', { 'merge-grid': currentNode.mergeGrid, disabled: currentNode.disabled }]"
+    <div v-if="currentNode.assignItemChildrenDisplay" 
+        :class="['item', { 'merge-grid': currentNode.mergeGrid, disabled: currentNode.disabled, label: currentNode.assignItemChildrenDisplay }]"
         v-text="`${toLanguageText(currentNode.language!)}${enabledSymbol ? ':' : ''}`">
     </div>
 </template>
@@ -8,6 +8,7 @@
 import type { PropType } from 'vue';
 import type { Nodes } from '@/types';
 import { toLanguageText } from '@/service/service';
+import { ModeType } from '@/types';
 
 const props = defineProps({
     currentNode: {
