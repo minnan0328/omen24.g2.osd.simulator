@@ -20,7 +20,7 @@
             <p v-text="`${toLanguageText(menuStateResult.color.name.language)}:`"></p>
             <p v-text="toLanguageText(menuStateResult.color.state?.language!)"></p>
             <p v-text="`${toLanguageText(menuStateResult.information.displayMode.language)}:`"></p>
-            <p v-text="toLanguageText(menuStateResult.information.displayMode?.language!)"></p>
+            <p v-text="toLanguageText(displayModeResultLanguage)"></p>
         </div>
 
         <div class="monitor-status-info mode">
@@ -79,6 +79,21 @@ const Inactive = ref({
         Russian: "Неактивен"
     }
 });
+
+const displayModeResultLanguage = {
+    German: "Normal",
+    SimplifiedChinese: "正常",
+    TraditionalChinese: "正常",
+    English: "Normal",
+    Español: "Normal",
+    French: "Normal",
+    Italian: "Normale",
+    Japanese: "標準",
+    Nederlands: "Normaal",
+    BrazilianPortuguese: "Normal",
+    Russian: "Обычный"
+};
+
 
 </script>
 <style lang="scss" scoped>
