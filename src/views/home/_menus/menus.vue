@@ -1574,10 +1574,6 @@ function saveNodesValue(nodes: Nodes, previousNodes: Nodes, currentPanelNumber =
                     // 當為訊息時間器時，重設預設值
                     [ResetTimerNodesEnum.key]: () => {
                         gamingResult.value.messageTimers.resetTimer();
-
-                        if(openAssignMenu.value) {
-                            handlerClose();
-                        }
                     }
                 };
 
