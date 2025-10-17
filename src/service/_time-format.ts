@@ -6,9 +6,10 @@ export const toDisplayTimeFormat = (
     const minutes = Math.floor((totalSeconds % 3600) / 60);
     const seconds = totalSeconds % 60;
 
-    const pad = (num: number): string => num.toString().padStart(2, '0');
+    const secPad = (num: number): string => num.toString().padStart(2, '0');
+    const minPad = (num: number): string => num.toString().padStart(1, '0');
 
-    return `${pad(minutes)}:${pad(seconds)}`;
+    return `${minPad(minutes)}:${secPad(seconds)}`;
 };
 
 export const minutesTolSeconds = (time: number): number => {
