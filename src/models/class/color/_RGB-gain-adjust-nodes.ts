@@ -56,8 +56,8 @@ export default class CustomRGBNodes extends DefaultNodes implements Nodes {
         {
             ...JSON.parse(JSON.stringify(DefaultNodesEnum)),
             key: "GreenColor",
-            selected: 215,
-            result: 215,
+            selected: 235,
+            result: 235,
             parents: this.key,
             mode: ModeType.verticalRange,
             rangeMin: 0,
@@ -80,8 +80,8 @@ export default class CustomRGBNodes extends DefaultNodes implements Nodes {
         {
             ...JSON.parse(JSON.stringify(DefaultNodesEnum)),
             key: "BlueColor",
-            selected: 255,
-            result: 255,
+            selected: 245,
+            result: 245,
             parents: this.key,
             mode: ModeType.verticalRange,
             rangeMin: 0,
