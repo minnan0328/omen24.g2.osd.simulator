@@ -233,7 +233,7 @@ onMounted(() => {
     }
 
     &.multi-monitor-align {
-        z-index: 3;
+        z-index: 4;
         background-color: $black-16;
         svg {
             width: $screen-width;
