@@ -64,7 +64,7 @@ function isLastNode(node: Nodes, previousNodes: Nodes): boolean {
     flex-wrap: nowrap;
 
     &.border-bottom-line {
-        border-bottom: 1px solid $black-1E;
+        border-bottom: 1px solid $black-28;
     }
 
     &.AudioFollowsVideo {

@@ -65,7 +65,7 @@ function isLastNode(node: Nodes, previousNodes: Nodes): boolean {
     border: 1px solid transparent;
 
     &.border-bottom-line {
-        border-bottom: 1px solid $black-1E;
+        border-bottom: 1px solid $black-28;
     }
 
     .checkbox {
