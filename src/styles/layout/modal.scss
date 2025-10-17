@@ -52,15 +52,15 @@
         .confirm-button {
             padding: 8px 16px;
             color: $white;
-            background-color: $light-grey;
+            background-color: rgb(50, 50, 50);
             border: 2px solid $black;
 
             &.selected {
-                border-color: $selected-border-color;
+                border-color: $white;
             }
 
             &.Confirm {
-                color: rgb(119, 252, 2);
+                color: rgb(0, 255, 0);
             }
 
             &.Cancel {
