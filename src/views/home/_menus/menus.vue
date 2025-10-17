@@ -2000,9 +2000,9 @@ function handlerMenuTimeout() {
     opacity: v-bind("menuStateResult.menuTransparency");
     
     &.accessibility {
-        transform: scale(1.2) rotate(v-bind("menuStateResult.menuRotation"));
-        bottom: 40px;
-        left: 324px;
+        transform: scale(1.3) rotate(v-bind("menuStateResult.menuRotation"));
+        bottom: 64px;
+        left: 290px;
         margin: 0;
     }
 }
