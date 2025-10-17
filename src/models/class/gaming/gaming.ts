@@ -28,7 +28,7 @@ export default class Gaming extends DefaultNodes implements Nodes {
         German: "Spiele",
         SimplifiedChinese: "游戏",
         TraditionalChinese: "遊戲",
-        English: "Games",
+        English: "Gaming",
         Español: "Juegos",
         French: "Jeux",
         Italian: "Giochi",
