@@ -34,7 +34,7 @@ const language = {
 <style lang="scss" scoped>
 	.footer {
         padding: 6px 12px;
-		color: $white;
+		color: rgb(156, 156, 156);
 		font-size: 10px;
 		position: absolute;
 		bottom: 0;
