@@ -134,8 +134,8 @@ function enabledBottomLine(node: Nodes) {
     position: absolute;
 	background-color: $black-09;
     transform: rotate(v-bind("menuStateResult.menuRotation"));
-	bottom: 12px;
-	right: 100px;
+	bottom: 34px;
+	right: 112px;
     background-color: $black-16;
     width: 200px;
 	height: 304px;
