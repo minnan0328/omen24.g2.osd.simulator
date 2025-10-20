@@ -174,24 +174,49 @@ export const menuStateResult = computed(() => {
     // 選單百分比 < 98 時，選單偏移量會隨著選單百分比遞增
     // 選單百分比 >= 98 時，選單偏移量會隨著選單百分比遞減
     // 最大遞減基準值
-    const maxDecrease = 98; 
+    const maxDecrease = {
+        x: 98,
+        y: 16
+    }; 
     // 遞增閾值
-    const increaseThreshold = 98;
+    const increaseThreshold = {
+        x: 98,
+        y: 8
+    };
     // 遞減閾值
     const decreaseThreshold = 100;
     // 計算遞增係數
-    const increase = maxDecrease / increaseThreshold;
+    const increase = {
+        x: maxDecrease.x / increaseThreshold.x,
+        y: maxDecrease.y / increaseThreshold.y
+    };
     // 計算遞減係數
-    const decrease = maxDecrease / (decreaseThreshold - increaseThreshold);
+    const decrease = {
+        x: maxDecrease.x / (decreaseThreshold - increaseThreshold.x),
+        y: maxDecrease.y / (decreaseThreshold - increaseThreshold.y)
+    };
     // 計算 deviation 的值
-    let deviation: number;
+    let deviation: {
+        x: number;
+        y: number;
+    } = {
+        x: 0,
+        y: 0
+    };
 
-    if (menu.value.nodes[1].nodes![0].result as number < increaseThreshold) {
+    if (menu.value.nodes[1].nodes![0].result as number < increaseThreshold.x) {
         // 遞增值 * 目前選單百分比
-        deviation = (increase * menu.value.nodes[1].nodes![0].result as number) ;
+        deviation.x = (increase.x * menu.value.nodes[1].nodes![0].result as number);
     } else { 
         // 最大遞減基準值 - 遞減值 * 100 - 預設版分比
-        deviation = (maxDecrease - decrease) * (100 - increaseThreshold);
+        deviation.x = (maxDecrease.x - decrease.x) * (100 - increaseThreshold.x);
+    }
+
+    // 添加 y 軸的計算邏輯
+    if (menu.value.nodes[1].nodes![1].result as number < increaseThreshold.y) {
+        deviation.y = (increase.y * menu.value.nodes[1].nodes![1].result as number);
+    } else { 
+        deviation.y = (maxDecrease.y - decrease.y * (menu.value.nodes[1].nodes![1].result as number - increaseThreshold.y));
     }
 
     // 取得選單旋轉角度
@@ -206,9 +231,9 @@ export const menuStateResult = computed(() => {
         // 選單座標位置，旋轉角度的座標位置為 demo 使用，當返回上一步時，就會復原原本選單角度
         menuPosition: {
             // 水平
-            x: getMenuRotation == 90 || getMenuRotation ==  270 ? "440px" : `${(menu.value.nodes[1].nodes![0].result as number / 100) * ((monitorWidth) - menuWidth) - (deviation)}px`,
+            x: getMenuRotation == 90 || getMenuRotation ==  270 ? "440px" : `${(menu.value.nodes[1].nodes![0].result as number / 100) * ((monitorWidth) - menuWidth) - deviation.x}px`,
             // 垂直
-            y: getMenuRotation == 90 || getMenuRotation ==  270 ? "80px" : `${(menu.value.nodes[1].nodes![1].result as number / 100) * ((monitorHeight - menuHeight) - 0) + 0}px`
+            y: getMenuRotation == 90 || getMenuRotation ==  270 ? "92px" : `${(menu.value.nodes[1].nodes![1].result as number / 100) * ((monitorHeight - menuHeight)) + deviation.y}px`
         },
         // 選單透明度
         menuTransparency: ((10 - (menu.value.nodes[2].result as number)) / 10) + 0.2,
