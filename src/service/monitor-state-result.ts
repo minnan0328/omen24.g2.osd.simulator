@@ -175,24 +175,24 @@ export const menuStateResult = computed(() => {
     // 選單百分比 >= 98 時，選單偏移量會隨著選單百分比遞減
     // 最大遞減基準值
     const maxDecrease = {
-        x: 98,
+        x: 102,
         y: 16
     }; 
     // 遞增閾值
     const increaseThreshold = {
-        x: 98,
+        x: 97,
         y: 8
     };
     // 遞減閾值
     const decreaseThreshold = 100;
-    // 計算遞增係數
+    // 計算遞增係數 (從 0 到 97，deviation.x 從 0 到 97.01)
     const increase = {
-        x: maxDecrease.x / increaseThreshold.x,
+        x: 97.01 / increaseThreshold.x, // 97.01 / 97 = 1.0001
         y: maxDecrease.y / increaseThreshold.y
     };
-    // 計算遞減係數
+    // 計算遞減係數 (從 97 到 100，deviation.x 從 97.01 到 102)
     const decrease = {
-        x: maxDecrease.x / (decreaseThreshold - increaseThreshold.x),
+        x: (maxDecrease.x - 97.01) / (decreaseThreshold - increaseThreshold.x), // (102 - 97.01) / (100 - 97) = 4.99 / 3 = 1.663
         y: maxDecrease.y / (decreaseThreshold - increaseThreshold.y)
     };
     // 計算 deviation 的值
@@ -204,12 +204,12 @@ export const menuStateResult = computed(() => {
         y: 0
     };
 
-    if (menu.value.nodes[1].nodes![0].result as number < increaseThreshold.x) {
-        // 遞增值 * 目前選單百分比
+    if (menu.value.nodes[1].nodes![0].result as number <= increaseThreshold.x) {
+        // 遞增階段：從 0 到 97，deviation.x 從 0 到 97.01
         deviation.x = (increase.x * menu.value.nodes[1].nodes![0].result as number);
     } else { 
-        // 最大遞減基準值 - 遞減值 * 100 - 預設版分比
-        deviation.x = (maxDecrease.x - decrease.x) * (100 - increaseThreshold.x);
+        // 遞減階段：從 97 到 100，deviation.x 從 97.01 到 102
+        deviation.x = 97.01 + decrease.x * (menu.value.nodes[1].nodes![0].result as number - increaseThreshold.x);
     }
 
     // 添加 y 軸的計算邏輯

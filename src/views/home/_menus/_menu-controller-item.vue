@@ -41,7 +41,7 @@ const props = defineProps<{
     width: 84px;
     height: 84px;
 	bottom: 30px;
-	right: 8px;
+	right: 12px;
     z-index: 3;
 
     &.accessibility {
