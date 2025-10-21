@@ -142,7 +142,7 @@ function restartScreen() {
             setTimeout(() => {
                 showMonitorStatus.value = false;
                 startUpFinish.value = true;
-            }, 2000);
+            }, 5000);
         }, 1000);
     }
 };

@@ -231,7 +231,7 @@ export const menuStateResult = computed(() => {
         // 選單座標位置，旋轉角度的座標位置為 demo 使用，當返回上一步時，就會復原原本選單角度
         menuPosition: {
             // 水平
-            x: getMenuRotation == 90 || getMenuRotation ==  270 ? "440px" : `${(menu.value.nodes[1].nodes![0].result as number / 100) * ((monitorWidth) - menuWidth) - deviation.x}px`,
+            x: getMenuRotation == 90 || getMenuRotation ==  270 ? "430px" : `${(menu.value.nodes[1].nodes![0].result as number / 100) * ((monitorWidth) - menuWidth) - deviation.x}px`,
             // 垂直
             y: getMenuRotation == 90 || getMenuRotation ==  270 ? "92px" : `${(menu.value.nodes[1].nodes![1].result as number / 100) * ((monitorHeight - menuHeight)) + deviation.y}px`
         },
