@@ -462,8 +462,8 @@ const MenuControllerTypes: Record<string, ControllerButtonList> = reactive({
     checkNextPanel: { image: iconCheck, event: handlerNextPanel, stopEvent: () => {}, type: "Button" },
     arrowBottom: { image: iconArrowBottom, event: handlerNavigationDown, stopEvent: stopNavigationTrigger, type: "eventButton" },
     arrowUp: { image: iconArrowUp, event: handlerNavigationUp, stopEvent: stopNavigationTrigger, type: "eventButton" },
-    arrowRight: { image: iconArrowRight, event: () => { handlerNavigation('up') }, stopEvent: () => {}, type: "Button" },
-    arrowLeft: { image: iconArrowLeft, event: () => { handlerNavigation('down') }, stopEvent: () => {}, type: "Button" },
+    arrowRight: { image: iconArrowRight, event: () => handlerNavigation('up'), stopEvent: () => {}, type: "Button" },
+    arrowLeft: { image: iconArrowLeft, event: () => handlerNavigation('down'), stopEvent: () => {}, type: "Button" },
     previous: { image: iconPrevious, event: handlePrevious, stopEvent: () => {}, type: "Button" },
     previousSave: { image: iconPrevious, event: handlerSave, stopEvent: () => {}, type: "Button" },
     checkNext: { image: iconCheck, event: handlerNextPanel, stopEvent: () => {}, type: "Button" },
@@ -1384,6 +1384,8 @@ function saveNodesValue(nodes: Nodes, previousNodes: Nodes, currentPanelNumber =
             handleResetAction();
 
             if (previousNodes.key === ColorNodesEnum.key) setBrightnessValue();
+
+            handlerNavigation("down");
 
         },
         // 上下一頁 目前只處理 secondaryNodesPagination(第三層畫面)
