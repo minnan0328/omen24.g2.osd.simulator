@@ -36,7 +36,7 @@ export const useMenuStore = defineStore('counter', () => {
         state.gaming = JSON.parse(JSON.stringify(new Gaming()));
         state.color = JSON.parse(JSON.stringify(new Color()));
         state.image = JSON.parse(JSON.stringify(new Image()));
-        state.input = JSON.parse(JSON.stringify(new Input()));
+        state.input.nodes = JSON.parse(JSON.stringify(new Input().nodes));
         state.power = JSON.parse(JSON.stringify(new Power()));
         state.menu = JSON.parse(JSON.stringify(new Menu()));
         state.management = JSON.parse(JSON.stringify(new Management()));

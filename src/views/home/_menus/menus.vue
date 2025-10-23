@@ -1382,9 +1382,6 @@ function saveNodesValue(nodes: Nodes, previousNodes: Nodes, currentPanelNumber =
         // 恢復當前 menu 預設值
         [ResetNodesEnum.key]: () => {
             handleResetAction();
-
-            if (previousNodes.key === ColorNodesEnum.key) setBrightnessValue();
-
             handlerNavigation("down");
 
         },
@@ -1685,15 +1682,22 @@ function deepFindAndReset(target: any, defaultObj: any, key: string) {
 
 // 重置動作
 function handleResetAction() {
+    if(menuState.menuPanel?.key == InputNodesEnum.key) {
+        return;
+    }
+
     if(menuState.menuPanel?.key == ColorNodesEnum.key) {
         resetColorRGB();
+        setBrightnessValue();
         return
-    }
+    };
+
     const resetPanel: { [key: number]: Nodes | null } = {
         2: menuState.menuPanel,
         3: menuState.secondPanel,
         4: menuState.thirdPanel
     };
+
     const panel = resetPanel[menuState.currentPanelNumber];
     if (!panel) return;
 
