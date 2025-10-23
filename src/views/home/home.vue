@@ -41,6 +41,10 @@
                                 <div class="power-guide" v-if="!openMonitor">Power Button</div>
                                 <div class="menu-buttons-guide" v-if="showMonitorStatus">Menu Buttons</div>
                             </div>
+
+                            <div class="language-direction" v-if="enabledLanguageDirection">
+                                <p class="direction">The function is for demonstration purposes only. Returning to the previous page will restore to English.</p>
+                            </div>
     
                             <menus v-model:openMonitor="openMonitor"
                                 v-model:startUpFinish="startUpFinish"
@@ -48,6 +52,7 @@
                                 v-model:showMonitorStatus="showMonitorStatus"
                                 v-model:showGamingSettingText="showGamingSettingText"
                                 v-model:showGamingCrosshair="showGamingCrosshair"
+                                v-model:enabledLanguageDirection="enabledLanguageDirection"
                                 ref="childMenusComponentRef">
                                 <template v-slot:openMonitor>
                                     <button class="controller-btn open-btn" @click="handleMonitor"></button>
@@ -105,6 +110,7 @@ const showMonitorStatus = ref(false);
 const showScreen = ref(false);
 const startUpFinish = ref(false);
 const childMenusComponentRef = ref(null);
+const enabledLanguageDirection = ref(false);
 
 // 1. gaming 的 refreshRate 及 messageTimers 啟用時候
 // 2. 1 啟用時，啟動 menu 不顯示
@@ -292,6 +298,19 @@ provide<HomeEvent>("homeEvent", {
                 content: "";
                 bottom: -36px;
                 right: 52px;
+            }
+        }
+
+        .language-direction {
+            width: 260px;
+            height: max-content;
+            position: absolute;
+            bottom: -132px;
+            right: 180px;
+            line-height: 1.33;
+            
+            .direction{
+                color: $text-red;
             }
         }
     }
