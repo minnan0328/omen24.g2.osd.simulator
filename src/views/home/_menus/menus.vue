@@ -163,7 +163,7 @@ import {
     AssignEmptyNodes
 } from '@/models/class/menu/_assign-buttons/_utilities';
 
-import { setBrightnessValue, setDynamicContrastValue, resetColorRGB } from '@/service/set-default-value';
+import { setBrightnessValue, setDynamicContrastValue, resetColorRGB, resetInputValue } from '@/service/set-default-value';
 
 const MenusDefaultEnum = new MenusDefaultModel();
 
@@ -1683,6 +1683,7 @@ function deepFindAndReset(target: any, defaultObj: any, key: string) {
 // 重置動作
 function handleResetAction() {
     if(menuState.menuPanel?.key == InputNodesEnum.key) {
+        resetInputValue();
         return;
     }
 
