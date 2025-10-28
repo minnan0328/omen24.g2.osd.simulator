@@ -52,7 +52,5 @@ export function resetInputValue() {
 };
 
 export function setAndFreeSyncValue() {
-    console.log('Set And FreeSync Value Called');
-    
     menuStore.$state.gaming.nodes[0].disabled = menuStore.$state.input.nodes[5].result == InputNodesEnum.nodes[5].nodes[0].result && menuStore.$state.input.result == InputNodesEnum.nodes[0].result;
 }

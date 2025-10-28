@@ -1694,6 +1694,7 @@ function deepFindAndReset(target: any, defaultObj: any, key: string) {
 function handleResetAction() {
     if(menuState.menuPanel?.key == InputNodesEnum.key) {
         resetInputValue();
+        setAndFreeSyncValue();
         return;
     }
 
