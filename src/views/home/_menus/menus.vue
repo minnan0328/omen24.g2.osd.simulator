@@ -163,7 +163,7 @@ import {
     AssignEmptyNodes
 } from '@/models/class/menu/_assign-buttons/_utilities';
 
-import { setBrightnessValue, setDynamicContrastValue, resetColorRGB, resetInputValue } from '@/service/set-default-value';
+import { setBrightnessValue, setDynamicContrastValue, resetColorRGB, resetInputValue, setAndFreeSyncValue } from '@/service/set-default-value';
 
 const MenusDefaultEnum = new MenusDefaultModel();
 
@@ -1626,6 +1626,9 @@ function saveNodesValue(nodes: Nodes, previousNodes: Nodes, currentPanelNumber =
             // 即時預覽效果的時候，暫存原始的值，當沒確認時，反回上一步需要恢復為暫存的值
             menuState.temporaryStorage = null;
         }
+
+        setAndFreeSyncValue();
+
     }
 };
 

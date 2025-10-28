@@ -69,6 +69,7 @@ import ribbon from '@/views/home/_ribbon/ribbon.vue';
 import monitorScreen from '@/views/home/_monitor-screen/monitor-screen.vue';
 import menus from '@/views/home/_menus/menus.vue';
 import { monitorResult } from '@/service/monitor-state-result';
+import { setAndFreeSyncValue } from '@/service/set-default-value';
 import config from '@/config/config';
 
 const menuStore = useMenuStore();
@@ -92,8 +93,7 @@ function selectInput(tab: Nodes) {
         menuStore.$state.input.selected = selectedTab.value.selected as string;
         menuStore.$state.input.result = selectedTab.value.result as string;
 
-        menuStore.$state.input.nodes[4].nodes[1].selected = `${menuStore.$state.input.selected} ${menuStore.$state.input.nodes[4].key}`;
-        menuStore.$state.input.nodes[4].nodes[1].result = `${menuStore.$state.input.result} ${menuStore.$state.input.nodes[4].key}`;
+        setAndFreeSyncValue();
     }
 };
 
