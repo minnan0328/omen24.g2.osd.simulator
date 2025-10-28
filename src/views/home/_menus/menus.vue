@@ -230,7 +230,8 @@ const props = defineProps({
     showScreen: { type: Boolean, default: false },
     showMonitorStatus: { type: Boolean, default: false },
     showGamingSettingText: { type: Boolean, default: false },
-    showGamingCrosshair: { type: Boolean, default: false }
+    showGamingCrosshair: { type: Boolean, default: false },
+    enabledLanguageDirection: { type: Boolean, default: false }
 });
 
 const emit = defineEmits([
@@ -238,7 +239,8 @@ const emit = defineEmits([
     'update:showMonitorStatus',
     'update:startUpFinish',
     'update:showGamingSettingText',
-    'update:showGamingCrosshair'
+    'update:showGamingCrosshair',
+    'update:enabledLanguageDirection'
 ]);
 
 const menuTimeOutIntervalId = ref<number | null>(null);
@@ -787,6 +789,11 @@ function handlerNextPanel(focusSelected = true) {
                     monitorScreenResult.value.diagnosticPatterns.enabled = true;
                     monitorScreenResult.value.diagnosticPatterns.implement();
                 }
+
+                if(menuState.thirdPanel.parents == LanguageNodesEnum.key) {
+                    emit("update:enabledLanguageDirection", true);
+                }
+
             }, focusSelected);
         } else if(menuState.secondPanel!.nodes && menuState.thirdPanel && menuState.thirdPanel.nodes && !menuState.fourthPanel) {
             isRadioNodes = menuState.thirdPanel?.mode == ModeType.radio && !!menuState.thirdPanel.nodes;
@@ -1909,6 +1916,8 @@ function returnToDefaultValue() {
     menuStore.$state.menu.nodes[0].selected = "English";
     menuStore.$state.menu.nodes[0].result = "English";
     menuStore.$state.menu.nodes[0].page = 1;
+    emit("update:enabledLanguageDirection", false);
+
 
     //取消無障礙模式
     menuStore.$state.management.nodes[3].selected = OffNodesEnum.selected;
